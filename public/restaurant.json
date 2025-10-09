@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Le Bistrot Parisien",
+    "address": "15 rue de la Paix, 75001 Paris",
+    "cuisine": "Française",
+    "rating": 4.5,
+    "priceRange": "€€€",
+    "description": "Une cuisine traditionnelle française dans un cadre élégant et chaleureux",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 2,
+    "name": "Sushi Master",
+    "address": "8 avenue des Champs-Élysées, 75008 Paris", 
+    "cuisine": "Japonaise",
+    "rating": 4.7,
+    "priceRange": "€€€€",
+    "description": "Les meilleurs sushis de Paris préparés par nos maîtres sushi",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 3,
+    "name": "La Pizzeria",
+    "address": "45 rue du Commerce, 75015 Paris",
+    "cuisine": "Italienne",
+    "rating": 4.3,
+    "priceRange": "€€",
+    "description": "Pizzas authentiques cuites au feu de bois",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 4,
+    "name": "Le Couscous Royal",
+    "address": "23 rue des Martyrs, 75009 Paris",
+    "cuisine": "Marocaine",
+    "rating": 4.6,
+    "priceRange": "€€",
+    "description": "Spécialités marocaines dans un décor des mille et une nuits",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 5,
+    "name": "Dragon d'Or",
+    "address": "12 avenue de Choisy, 75013 Paris",
+    "cuisine": "Chinoise",
+    "rating": 4.4,
+    "priceRange": "€€",
+    "description": "La meilleure cuisine chinoise traditionnelle du quartier",
+    "imageUrl": "/images/restaurants/common.png"
+  }
+]
