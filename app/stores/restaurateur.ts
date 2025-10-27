@@ -28,7 +28,6 @@ export const useRestaurateurStore = defineStore('restaurateur', {
   },
   actions: {
     addRestaurateur(restaurateur: Omit<Restaurateur, 'id'>) {
-      // Vérifier si l'email existe déjà
       const emailExists = this.restaurateurs.find(
         r => r.email.toLowerCase() === restaurateur.email.toLowerCase()
       )
@@ -50,7 +49,6 @@ export const useRestaurateurStore = defineStore('restaurateur', {
         return { success: false, message: 'Restaurateur non trouvé' }
       }
 
-      // Vérifier si l'email existe déjà (sauf pour ce restaurateur)
       if (data.email) {
         const emailExists = this.restaurateurs.find(
           r => r.id !== id && r.email.toLowerCase() === data.email.toLowerCase()

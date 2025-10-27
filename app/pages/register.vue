@@ -39,9 +39,22 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import type { UserRole } from '../stores/user'
 
+definePageMeta({
+  middleware: ['guest']
+})
+
+const { t } = useI18n()
 const router = useRouter()
 const userStore = useUserStore()
 const toast = useToast()
+
+useHead({
+  title: t('seo.register.title'),
+  meta: [
+    { name: 'description', content: t('seo.register.description') },
+    { name: 'robots', content: 'noindex, nofollow' },
+  ],
+})
 
 const name = ref('')
 const email = ref('')
@@ -51,8 +64,8 @@ const role = ref<UserRole>('CLIENT')
 function onSubmit() {
   userStore.registerOrLogin({ name: name.value, email: email.value, password: password.value, role: role.value })
   toast.success({
-    title: 'Compte créé !',
-    message: `Bienvenue ${name.value} !`,
+    title: t('auth.registerSuccess'),
+    message: t('auth.registerWelcome', { name: name.value }),
     timeout: 2000,
   })
   if (role.value === 'CLIENT') {

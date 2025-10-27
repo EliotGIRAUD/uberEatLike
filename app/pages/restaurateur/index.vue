@@ -399,61 +399,46 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useUserStore } from '../../stores/user'
 import { useRestaurateurStore, type Restaurateur } from '../../stores/restaurateur'
 import { useFoodStore, type Food } from '../../stores/food'
 import { useOrderStore, type Order, type OrderStatus } from '../../stores/order'
 import { useToast } from '../../composables/useToast'
 
-const router = useRouter()
+definePageMeta({
+  middleware: ['restaurateur']
+})
+
 const userStore = useUserStore()
 const restaurateurStore = useRestaurateurStore()
 const foodStore = useFoodStore()
 const orderStore = useOrderStore()
 const toast = useToast()
 
-// Protection de la page
+useHead({
+  title: 'Dashboard Restaurateur - Grosmino\'s',
+  meta: [
+    { name: 'description', content: 'Gérez votre restaurant et vos plats.' },
+    { name: 'robots', content: 'noindex, nofollow' },
+  ],
+})
+
 onMounted(() => {
-  if (!userStore.isLoggedIn || !userStore.currentUser) {
-    toast.error({
-      title: 'Accès refusé',
-      message: 'Vous devez être connecté pour accéder à cette page',
-      timeout: 3000,
-    })
-    router.push('/login')
-    return
-  }
-
-  if (userStore.currentUser.role !== 'RESTAURATEUR') {
-    toast.error({
-      title: 'Accès refusé',
-      message: 'Cette page est réservée aux restaurateurs',
-      timeout: 3000,
-    })
-    router.push('/')
-    return
-  }
-
-  // Initialiser le formulaire de profil
   initProfileForm()
 })
 
 const activeTab = ref<'profile' | 'foods' | 'orders'>('profile')
 
-// Informations du restaurateur
 const restaurateurInfo = computed(() => {
   if (!userStore.currentUser?.restaurateurId) return null
   return restaurateurStore.getRestaurateurById(userStore.currentUser.restaurateurId)
 })
 
-// Mes plats
 const myFoods = computed(() => {
   if (!userStore.currentUser?.restaurateurId) return []
   return foodStore.getFoodsByRestaurant(userStore.currentUser.restaurateurId)
 })
 
-// Commandes du restaurant
 const restaurantOrders = computed(() => {
   if (!userStore.currentUser?.restaurateurId) return []
   const restaurantId = userStore.currentUser.restaurateurId
@@ -463,7 +448,6 @@ const restaurantOrders = computed(() => {
   })
 })
 
-// Formulaire profil
 const profileForm = reactive({
   nom: '',
   adresse: '',
@@ -502,7 +486,6 @@ function updateRestaurantInfo() {
   const result = restaurateurStore.updateRestaurateur(userStore.currentUser.restaurateurId, updateData)
 
   if (result.success) {
-    // Mettre à jour aussi l'utilisateur actuel
     if (userStore.currentUser) {
       userStore.currentUser.name = profileForm.nom
       userStore.currentUser.email = profileForm.email
@@ -526,7 +509,6 @@ function updateRestaurantInfo() {
   }
 }
 
-// Gestion des plats
 const showAddFoodModal = ref(false)
 const showEditFoodModal = ref(false)
 const showDeleteFoodModal = ref(false)
@@ -598,7 +580,6 @@ function submitFoodForm() {
   if (!userStore.currentUser?.restaurateurId) return
 
   if (showEditFoodModal.value && foodToEdit.value) {
-    // Mise à jour
     const result = foodStore.updateFood(foodToEdit.value.id, {
       name: foodForm.name,
       description: foodForm.description,
@@ -622,7 +603,6 @@ function submitFoodForm() {
       })
     }
   } else {
-    // Ajout
     const result = foodStore.addFood({
       restaurantId: userStore.currentUser.restaurateurId,
       name: foodForm.name,
@@ -649,7 +629,6 @@ function submitFoodForm() {
   }
 }
 
-// Gestion des commandes
 const showCancelOrderModal = ref(false)
 const showDeleteOrderModal = ref(false)
 const orderToCancel = ref<Order | null>(null)

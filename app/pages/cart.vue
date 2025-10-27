@@ -3,14 +3,14 @@
     <div class="max-w-4xl mx-auto">
       <div class="mb-8">
         <h1 class="text-5xl font-extrabold text-gray-900 mb-3">
-          Mon <span class="text-[#3AF24B]">Panier</span>
+          {{ t('cart.title', { highlight: t('cart.highlight') }) }}
         </h1>
-        <p class="text-lg text-gray-600">Finalisez votre commande et régalez-vous !</p>
+        <p class="text-lg text-gray-600">{{ t('cart.subtitle') }}</p>
       </div>
       <div v-if="cart.items.length === 0" class="bg-white rounded-2xl shadow-md p-12 text-center">
         <div class="text-gray-400 text-6xl mb-4">🛒</div>
-        <p class="text-gray-600 text-lg mb-4">Votre panier est vide</p>
-        <NuxtLink to="/restaurants" class="inline-block rounded-lg bg-[#3AF24B] text-black px-6 py-3 font-semibold hover:bg-black hover:text-white transition">Découvrir les restaurants</NuxtLink>
+        <p class="text-gray-600 text-lg mb-4">{{ t('cart.empty') }}</p>
+        <NuxtLink to="/restaurants" class="inline-block rounded-lg bg-[#3AF24B] text-black px-6 py-3 font-semibold hover:bg-black hover:text-white transition">{{ t('cart.discover') }}</NuxtLink>
       </div>
       <div v-else class="space-y-4">
         <div v-for="item in cart.items" :key="item.id" class="bg-white rounded-xl shadow-md p-5 flex items-center gap-4 hover:shadow-lg transition">
@@ -28,12 +28,12 @@
         </div>
         <div class="bg-white rounded-xl shadow-md p-6 flex justify-between items-center">
           <div>
-            <p class="text-gray-600 text-sm mb-1">Total</p>
+            <p class="text-gray-600 text-sm mb-1">{{ t('cart.total') }}</p>
             <p class="text-3xl font-bold text-gray-900">{{ cart.totalPrice.toFixed(2) }} €</p>
           </div>
           <div class="flex gap-3">
-            <button @click="clearCartWithConfirm" class="rounded-lg border-2 border-red-600 text-red-600 px-6 py-3 font-semibold hover:bg-red-50 transition">Vider le panier</button>
-            <button @click="placeOrder" class="rounded-lg bg-[#3AF24B] text-black px-8 py-3 font-semibold hover:bg-black hover:text-white transition shadow-md">Commander</button>
+            <button @click="clearCartWithConfirm" class="rounded-lg border-2 border-red-600 text-red-600 px-6 py-3 font-semibold hover:bg-red-50 transition">{{ t('cart.clear') }}</button>
+            <button @click="placeOrder" class="rounded-lg bg-[#3AF24B] text-black px-8 py-3 font-semibold hover:bg-black hover:text-white transition shadow-md">{{ t('cart.order') }}</button>
           </div>
         </div>
       </div>
@@ -46,22 +46,30 @@ import { useCartStore } from '../stores/cart'
 import { useUserStore } from '~/stores/user'
 import { useOrderStore } from '../stores/order'
 
+definePageMeta({
+  middleware: ['client']
+})
+
+const { t } = useI18n()
 const userStore = useUserStore()
 const router = useRouter()
-
-if (!userStore.isLoggedIn || !userStore.currentUser || userStore.currentUser.role !== 'CLIENT') {
-  router.push('/login')
-}
-
 const cart = useCartStore()
 const orderStore = useOrderStore()
 const toast = useToast()
 
+useHead({
+  title: t('seo.cart.title'),
+  meta: [
+    { name: 'description', content: t('seo.cart.description') },
+    { name: 'robots', content: 'noindex, nofollow' },
+  ],
+})
+
 function clearCartWithConfirm() {
   cart.clearCart()
   toast.warning({
-    title: 'Panier vidé',
-    message: 'Tous les articles ont été retirés',
+    title: t('cart.cleared'),
+    message: t('cart.clearedMessage'),
     timeout: 2000,
   })
 }
@@ -69,8 +77,8 @@ function clearCartWithConfirm() {
 function removeItemWithNotif(id: number) {
   cart.removeItem(id)
   toast.info({
-    title: 'Article retiré',
-    message: 'L\'article a été retiré du panier',
+    title: t('cart.itemRemoved'),
+    message: t('cart.itemRemovedMessage'),
     timeout: 2000,
   })
 }
@@ -78,8 +86,8 @@ function removeItemWithNotif(id: number) {
 function placeOrder() {
   if (!userStore.currentUser?.email) {
     toast.error({
-      title: 'Erreur',
-      message: 'Vous devez être connecté pour commander',
+      title: t('cart.error'),
+      message: t('cart.loginRequired'),
       timeout: 3000,
     })
     return
@@ -87,8 +95,8 @@ function placeOrder() {
 
   if (cart.items.length === 0) {
     toast.warning({
-      title: 'Panier vide',
-      message: 'Ajoutez des articles avant de commander',
+      title: t('cart.emptyWarning'),
+      message: t('cart.emptyWarningMessage'),
       timeout: 2000,
     })
     return
@@ -103,8 +111,8 @@ function placeOrder() {
   cart.clearCart()
 
   toast.success({
-    title: 'Commande passée !',
-    message: `Votre commande #${order.id} a été créée avec succès`,
+    title: t('cart.orderSuccess'),
+    message: t('cart.orderSuccessMessage', { id: order.id }),
     timeout: 3000,
   })
 

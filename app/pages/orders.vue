@@ -56,13 +56,20 @@ import { useOrderStore } from '../stores/order'
 import { useUserStore } from '../stores/user'
 import { computed } from 'vue'
 
+definePageMeta({
+  middleware: ['client']
+})
+
 const userStore = useUserStore()
-const router = useRouter()
 const orderStore = useOrderStore()
 
-if (!userStore.isLoggedIn || !userStore.currentUser || userStore.currentUser.role !== 'CLIENT') {
-  router.push('/login')
-}
+useHead({
+  title: 'Mes Commandes - Grosmino\'s',
+  meta: [
+    { name: 'description', content: 'Suivez l\'état de vos commandes en temps réel.' },
+    { name: 'robots', content: 'noindex, nofollow' },
+  ],
+})
 
 const myOrders = computed(() => {
   if (!userStore.currentUser?.email) return []

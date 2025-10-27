@@ -3,14 +3,14 @@
     <div class="max-w-7xl mx-auto">
       <div class="mb-10">
         <h1 class="text-5xl font-extrabold text-gray-900 mb-3 leading-tight">
-          Nos <span class="text-[#3AF24B]">Restaurants</span>
+          {{ t('restaurants.title', { highlight: t('restaurants.highlight') }) }}
         </h1>
-        <p class="text-lg text-gray-600 max-w-2xl mb-6">Découvrez une sélection exceptionnelle de restaurants partenaires. De la cuisine traditionnelle aux saveurs du monde, trouvez votre bonheur !</p>
+        <p class="text-lg text-gray-600 max-w-2xl mb-6">{{ t('restaurants.subtitle') }}</p>
         
         <!-- Barre de recherche -->
         <div class="relative max-w-2xl">
           <div class="relative">
-            <input v-model="searchQuery" type="text" placeholder="Rechercher un restaurant, une cuisine, une ville..." class="w-full rounded-xl border-2 border-gray-200 pl-12 pr-12 py-4 text-lg focus:outline-none focus:border-[#3AF24B] transition shadow-sm"/>
+            <input v-model="searchQuery" type="text" :placeholder="t('restaurants.search')" class="w-full rounded-xl border-2 border-gray-200 pl-12 pr-12 py-4 text-lg focus:outline-none focus:border-[#3AF24B] transition shadow-sm"/>
             <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
             </div>
             <button v-if="searchQuery" @click="searchQuery = ''" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
@@ -18,24 +18,24 @@
             </button>
           </div>
           <div v-if="searchQuery" class="mt-2 text-sm text-gray-600">
-            {{ filteredRestaurants.length }} restaurant{{ filteredRestaurants.length > 1 ? 's' : '' }} trouvé{{ filteredRestaurants.length > 1 ? 's' : '' }}
+            {{ t('restaurants.found', { count: filteredRestaurants.length }) }}
           </div>
         </div>
       </div>
       
       <div v-if="filteredRestaurants.length === 0 && !searchQuery" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
-        <p class="text-gray-500 text-lg mb-2">Aucun restaurant disponible pour le moment</p>
-        <p class="text-gray-400 text-sm">Revenez bientôt pour découvrir nos restaurants partenaires !</p>
+        <p class="text-gray-500 text-lg mb-2">{{ t('restaurants.noRestaurants') }}</p>
+        <p class="text-gray-400 text-sm">{{ t('restaurants.noRestaurantsHint') }}</p>
       </div>
       
       <div v-else-if="filteredRestaurants.length === 0 && searchQuery" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
-        <p class="text-gray-500 text-lg mb-2">Aucun résultat pour "{{ searchQuery }}"</p>
-        <p class="text-gray-400 text-sm mb-4">Essayez avec d'autres mots-clés</p>
+        <p class="text-gray-500 text-lg mb-2">{{ t('restaurants.noResults', { query: searchQuery }) }}</p>
+        <p class="text-gray-400 text-sm mb-4">{{ t('restaurants.noResultsHint') }}</p>
         <button 
           @click="searchQuery = ''"
           class="rounded-lg bg-[#3AF24B] text-black px-6 py-2 font-semibold hover:bg-black hover:text-white transition"
         >
-          Afficher tous les restaurants
+          {{ t('restaurants.showAll') }}
         </button>
       </div>
       
@@ -71,7 +71,7 @@
                 {{ r.cuisine }}
               </span>
               <span v-else class="text-xs text-gray-500">{{ r.ville }}</span>
-              <span class="text-sm font-semibold text-[#3AF24B]">Voir le menu →</span>
+              <span class="text-sm font-semibold text-[#3AF24B]">{{ t('restaurants.viewMenu') }}</span>
             </div>
           </div>
         </NuxtLink>
@@ -82,16 +82,25 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useUserStore } from '~/stores/user'
 import { useRestaurateurStore } from '~/stores/restaurateur'
 
-const userStore = useUserStore()
-const restaurateurStore = useRestaurateurStore()
-const router = useRouter()
+definePageMeta({
+  middleware: ['client']
+})
 
-if (!userStore.isLoggedIn || !userStore.currentUser || userStore.currentUser.role !== 'CLIENT') {
-  router.push('/login')
-}
+const { t } = useI18n()
+const restaurateurStore = useRestaurateurStore()
+
+useHead({
+  title: t('seo.restaurants.title'),
+  meta: [
+    { name: 'description', content: t('seo.restaurants.description') },
+    { property: 'og:title', content: t('seo.restaurants.title') },
+    { property: 'og:description', content: t('seo.restaurants.description') },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+  ],
+})
 
 type RestaurantJSON = {
   id: number
@@ -104,20 +113,15 @@ type RestaurantJSON = {
   imageUrl?: string
 }
 
-// État de la recherche
 const searchQuery = ref('')
 
-// Récupérer les restaurants du JSON
 const { data: jsonRestaurants } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
-  server: false,
   default: () => [],
 })
 
-// Combiner les restaurants JSON et les restaurateurs créés
 const allRestaurants = computed(() => {
   const restaurants: any[] = []
   
-  // Ajouter les restaurants du JSON
   if (jsonRestaurants.value) {
     restaurants.push(...jsonRestaurants.value.map(r => ({
       id: r.id,
@@ -132,7 +136,6 @@ const allRestaurants = computed(() => {
     })))
   }
   
-  // Ajouter les restaurateurs créés dans le back office
   restaurants.push(...restaurateurStore.restaurateurs.map(resto => ({
     id: resto.id,
     name: resto.nom,
@@ -145,7 +148,6 @@ const allRestaurants = computed(() => {
   return restaurants
 })
 
-// Filtrer les restaurants selon la recherche
 const filteredRestaurants = computed(() => {
   if (!searchQuery.value) {
     return allRestaurants.value
@@ -154,26 +156,10 @@ const filteredRestaurants = computed(() => {
   const query = searchQuery.value.toLowerCase().trim()
   
   return allRestaurants.value.filter(restaurant => {
-    // Rechercher dans le nom
-    if (restaurant.name.toLowerCase().includes(query)) {
-      return true
-    }
-    
-    // Rechercher dans l'adresse
-    if (restaurant.address.toLowerCase().includes(query)) {
-      return true
-    }
-    
-    // Rechercher dans la cuisine (si disponible)
-    if (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(query)) {
-      return true
-    }
-    
-    // Rechercher dans la ville (si disponible)
-    if (restaurant.ville && restaurant.ville.toLowerCase().includes(query)) {
-      return true
-    }
-    
+    if (restaurant.name.toLowerCase().includes(query)) return true
+    if (restaurant.address.toLowerCase().includes(query)) return true
+    if (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(query)) return true
+    if (restaurant.ville && restaurant.ville.toLowerCase().includes(query)) return true
     return false
   })
 })

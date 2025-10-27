@@ -234,47 +234,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive } from 'vue'
 import { useUserStore } from '../../stores/user'
 import { useRestaurateurStore, type Restaurateur } from '../../stores/restaurateur'
 import { useToast } from '../../composables/useToast'
 
-const router = useRouter()
+definePageMeta({
+  middleware: ['admin']
+})
+
 const userStore = useUserStore()
 const restaurateurStore = useRestaurateurStore()
 const toast = useToast()
 
-// Protection de la page - uniquement pour les admins
-onMounted(() => {
-  if (!userStore.isLoggedIn || !userStore.currentUser) {
-    toast.error({
-      title: 'Accès refusé',
-      message: 'Vous devez être connecté pour accéder à cette page',
-      timeout: 3000,
-    })
-    router.push('/login')
-    return
-  }
-
-  if (userStore.currentUser.role !== 'ADMIN') {
-    toast.error({
-      title: 'Accès refusé',
-      message: 'Cette page est réservée aux administrateurs',
-      timeout: 3000,
-    })
-    router.push('/')
-  }
+useHead({
+  title: 'Back Office Administrateur - Grosmino\'s',
+  meta: [
+    { name: 'description', content: 'Gestion des restaurateurs.' },
+    { name: 'robots', content: 'noindex, nofollow' },
+  ],
 })
 
-// États des modals
 const showAddModal = ref(false)
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 const restaurateurToDelete = ref<Restaurateur | null>(null)
 const restaurateurToEdit = ref<Restaurateur | null>(null)
 
-// Formulaire
 const form = reactive({
   nom: '',
   adresse: '',
@@ -341,7 +327,6 @@ function deleteRestaurateur() {
 
 function submitForm() {
   if (showEditModal.value && restaurateurToEdit.value) {
-    // Mise à jour
     const updateData: any = {
       nom: form.nom,
       adresse: form.adresse,
@@ -350,7 +335,6 @@ function submitForm() {
       email: form.email,
     }
     
-    // Ajouter le mot de passe seulement s'il est fourni
     if (form.password) {
       updateData.password = form.password
     }
@@ -372,7 +356,6 @@ function submitForm() {
       })
     }
   } else {
-    // Ajout
     const result = restaurateurStore.addRestaurateur({
       nom: form.nom,
       adresse: form.adresse,

@@ -109,20 +109,19 @@ import { useRouter } from 'vue-router'
 import { useUserStore, type UserRole } from '../stores/user'
 import { useToast } from '../composables/useToast'
 
-const router = useRouter()
+definePageMeta({
+  middleware: ['auth']
+})
+
 const userStore = useUserStore()
 const toast = useToast()
 
-// Rediriger si non connecté
-onMounted(() => {
-  if (!userStore.isLoggedIn || !userStore.currentUser) {
-    toast.error({
-      title: 'Accès refusé',
-      message: 'Vous devez être connecté pour accéder à cette page',
-      timeout: 3000,
-    })
-    router.push('/login')
-  }
+useHead({
+  title: 'Mon Profil - Grosmino\'s',
+  meta: [
+    { name: 'description', content: 'Gérez vos informations personnelles.' },
+    { name: 'robots', content: 'noindex, nofollow' },
+  ],
 })
 
 const form = reactive({
@@ -133,7 +132,6 @@ const form = reactive({
   confirmPassword: '',
 })
 
-// Initialiser le formulaire avec les données de l'utilisateur actuel
 function initForm() {
   if (userStore.currentUser) {
     form.name = userStore.currentUser.name
@@ -164,7 +162,6 @@ function getRoleLabel(role?: UserRole): string {
 }
 
 function onSubmit() {
-  // Valider les mots de passe si fournis
   if (form.newPassword || form.confirmPassword) {
     if (form.newPassword !== form.confirmPassword) {
       toast.error({
@@ -184,21 +181,18 @@ function onSubmit() {
     }
   }
 
-  // Préparer les données à mettre à jour
   const updateData: any = {
     name: form.name,
     email: form.email,
     role: form.role,
   }
 
-  // Ajouter le mot de passe si modifié
   if (form.newPassword) {
     updateData.password = form.newPassword
   } else if (userStore.currentUser) {
     updateData.password = userStore.currentUser.password
   }
 
-  // Mettre à jour le profil
   const success = userStore.updateProfile(updateData)
 
   if (success) {
@@ -207,7 +201,6 @@ function onSubmit() {
       message: 'Vos informations ont été enregistrées avec succès',
       timeout: 3000,
     })
-    // Réinitialiser les champs de mot de passe
     form.newPassword = ''
     form.confirmPassword = ''
   } else {
@@ -219,7 +212,6 @@ function onSubmit() {
   }
 }
 
-// Initialiser le formulaire au montage
 initForm()
 </script>
 

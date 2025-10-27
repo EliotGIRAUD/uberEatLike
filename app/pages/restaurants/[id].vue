@@ -3,7 +3,7 @@
     <div v-if="!restaurant" class="max-w-7xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
       <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center mt-6">
-        <p class="text-red-600 font-medium">Restaurant introuvable.</p>
+        <p class="text-red-600 font-medium">{{ t('restaurants.notFound') }}</p>
       </div>
     </div>
     <div v-else class="max-w-7xl mx-auto space-y-8">
@@ -41,12 +41,12 @@
       
       <section>
         <div class="mb-6">
-          <h2 class="text-3xl font-bold text-gray-900 mb-2">Notre <span class="text-[#3AF24B]">Menu</span></h2>
-          <p class="text-gray-600">Parcourez nos délicieux plats et ajoutez vos favoris au panier</p>
+          <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ t('restaurants.ourMenu', { highlight: t('restaurants.menuHighlight') }) }}</h2>
+          <p class="text-gray-600">{{ t('restaurants.menuSubtitle') }}</p>
         </div>
         <div v-if="foods.length === 0" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
-          <p class="text-gray-500 text-lg mb-2">Aucun plat disponible pour le moment</p>
-          <p class="text-gray-400 text-sm">Le restaurant n'a pas encore ajouté de plats à sa carte</p>
+          <p class="text-gray-500 text-lg mb-2">{{ t('restaurants.noFoods') }}</p>
+          <p class="text-gray-400 text-sm">{{ t('restaurants.noFoodsHint') }}</p>
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <FoodCard v-for="f in foods" :key="f.id" :food="f" />
@@ -60,19 +60,17 @@
 import { computed } from 'vue'
 import FoodCard from '~/components/FoodCard.vue'
 import BackButton from '~/components/BackButton.vue'
-import { useUserStore } from '~/stores/user'
 import { useRestaurateurStore } from '~/stores/restaurateur'
 import { useFoodStore } from '~/stores/food'
 
-const userStore = useUserStore()
+definePageMeta({
+  middleware: ['client']
+})
+
+const { t } = useI18n()
 const restaurateurStore = useRestaurateurStore()
 const foodStore = useFoodStore()
-const router = useRouter()
 const route = useRoute()
-
-if (!userStore.isLoggedIn || !userStore.currentUser || userStore.currentUser.role !== 'CLIENT') {
-  router.push('/login')
-}
 
 type RestaurantJSON = {
   id: number
@@ -95,32 +93,22 @@ type Food = {
   imageUrl?: string
 }
 
-// Récupérer l'ID du restaurant depuis l'URL
 const restaurantId = computed(() => route.params.id)
-
-// Vérifier si c'est un ID numérique (restaurant JSON) ou string (restaurateur créé)
 const isNumericId = computed(() => !isNaN(Number(restaurantId.value)))
 
-// Récupérer les restaurants du JSON
 const { data: jsonRestaurants } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
-  server: false,
   default: () => [],
 })
 
-// Récupérer les plats du JSON
 const { data: jsonFoods } = await useFetch<Food[]>('/food.json', {
-  server: false,
   default: () => [],
 })
 
-// Récupérer les infos du restaurant
 const restaurant = computed(() => {
   if (isNumericId.value) {
-    // Restaurant du JSON
     const jsonRestaurant = jsonRestaurants.value?.find(r => r.id === Number(restaurantId.value))
     return jsonRestaurant
   } else {
-    // Restaurateur créé via back office
     const restaurateurData = restaurateurStore.getRestaurateurById(restaurantId.value as string)
     if (restaurateurData) {
       return {
@@ -137,16 +125,38 @@ const restaurant = computed(() => {
   }
 })
 
-// Récupérer les plats du restaurant
 const foods = computed(() => {
   if (isNumericId.value) {
-    // Plats du JSON
     return jsonFoods.value?.filter(f => f.restaurantId === Number(restaurantId.value)) || []
   } else {
-    // Plats créés par le restaurateur
     return foodStore.getFoodsByRestaurant(restaurantId.value as string)
   }
 })
+
+useHead(() => ({
+  title: restaurant.value 
+    ? t('seo.restaurant.title', { name: restaurant.value.name })
+    : t('seo.restaurants.title'),
+  meta: [
+    { 
+      name: 'description', 
+      content: restaurant.value 
+        ? t('seo.restaurant.description', { 
+            name: restaurant.value.name, 
+            cuisine: restaurant.value.cuisine || 'Restaurant',
+            address: restaurant.value.address 
+          })
+        : t('seo.restaurants.description')
+    },
+    { 
+      property: 'og:title', 
+      content: restaurant.value 
+        ? t('seo.restaurant.title', { name: restaurant.value.name })
+        : t('seo.restaurants.title')
+    },
+    { property: 'og:type', content: 'restaurant' },
+  ],
+}))
 </script>
 
 

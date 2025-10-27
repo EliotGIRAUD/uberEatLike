@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "Grosmino's",
+    "title": "Grosmino's - Food Delivery"
+  },
+  "nav": {
+    "home": "Home",
+    "restaurants": "Restaurants",
+    "myOrders": "My Orders",
+    "cart": "Cart",
+    "backOffice": "Back Office",
+    "myRestaurant": "My Restaurant",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Sign Up"
+  },
+  "home": {
+    "welcome": "Welcome to Gros{brand}",
+    "subtitle": "Discover the best restaurants and order your favorite dishes",
+    "role": "Role"
+  },
+  "restaurants": {
+    "title": "Our {highlight}",
+    "highlight": "Restaurants",
+    "subtitle": "Discover an exceptional selection of partner restaurants. From traditional cuisine to world flavors, find your happiness!",
+    "search": "Search for a restaurant, cuisine, city...",
+    "found": "{count} restaurant found | {count} restaurants found",
+    "noResults": "No results for \"{query}\"",
+    "noResultsHint": "Try with other keywords",
+    "showAll": "Show all restaurants",
+    "noRestaurants": "No restaurants available at the moment",
+    "noRestaurantsHint": "Come back soon to discover our partner restaurants!",
+    "notFound": "Restaurant not found.",
+    "viewMenu": "View menu →",
+    "ourMenu": "Our {highlight}",
+    "menuHighlight": "Menu",
+    "menuSubtitle": "Browse our delicious dishes and add your favorites to cart",
+    "noFoods": "No dishes available at the moment",
+    "noFoodsHint": "The restaurant hasn't added any dishes to its menu yet"
+  },
+  "foods": {
+    "notFound": "Dish not found.",
+    "description": "Description",
+    "addToCart": "Add to cart"
+  },
+  "cart": {
+    "title": "My {highlight}",
+    "highlight": "Cart",
+    "subtitle": "Complete your order and enjoy!",
+    "empty": "Your cart is empty",
+    "discover": "Discover restaurants",
+    "total": "Total",
+    "clear": "Clear cart",
+    "order": "Order",
+    "cleared": "Cart cleared",
+    "clearedMessage": "All items have been removed",
+    "itemRemoved": "Item removed",
+    "itemRemovedMessage": "The item has been removed from the cart",
+    "itemAdded": "Added to cart!",
+    "itemAddedMessage": "{name} has been added to your cart",
+    "error": "Error",
+    "loginRequired": "You must be logged in to order",
+    "emptyWarning": "Empty cart",
+    "emptyWarningMessage": "Add items before ordering",
+    "orderSuccess": "Order placed!",
+    "orderSuccessMessage": "Your order #{id} has been successfully created"
+  },
+  "auth": {
+    "login": "Login",
+    "loginSubtitle": "Access your Gros{brand} account",
+    "register": "Sign Up",
+    "registerSubtitle": "Create your Gros{brand} account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "confirmPassword": "Confirm Password",
+    "role": "Role",
+    "client": "Client",
+    "restaurateur": "Restaurant Owner",
+    "noAccount": "No account yet?",
+    "hasAccount": "Already have an account?",
+    "loginSuccess": "Login successful!",
+    "loginWelcome": "Welcome {name}",
+    "loginError": "Login error",
+    "loginErrorMessage": "Incorrect email or password",
+    "registerSuccess": "Registration successful!",
+    "registerWelcome": "Welcome {name}",
+    "logoutSuccess": "Logout",
+    "logoutMessage": "You have been successfully logged out"
+  },
+  "footer": {
+    "copyright": "© {year} Gros{brand}"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "back": "Back",
+    "cuisine": "🍴",
+    "location": "📍"
+  },
+  "seo": {
+    "home": {
+      "title": "Grosmino's - Food Delivery",
+      "description": "Discover the best restaurants and order your favorite dishes online with Grosmino's. Fast and easy delivery."
+    },
+    "restaurants": {
+      "title": "Our Restaurants - Grosmino's",
+      "description": "Explore our selection of partner restaurants. French, Italian, Asian cuisine and more. Order now!"
+    },
+    "restaurant": {
+      "title": "{name} - Menu and Dishes - Grosmino's",
+      "description": "Discover the menu of {name}. {cuisine} - {address}. Order online now!"
+    },
+    "food": {
+      "title": "{name} - ${price} - Grosmino's",
+      "description": "{description}"
+    },
+    "cart": {
+      "title": "My Cart - Grosmino's",
+      "description": "Complete your order and enjoy your favorite dishes delivered to your door."
+    },
+    "login": {
+      "title": "Login - Grosmino's",
+      "description": "Log in to your Grosmino's account to order your favorite dishes."
+    },
+    "register": {
+      "title": "Sign Up - Grosmino's",
+      "description": "Create your Grosmino's account and start ordering now."
+    }
+  }
+}
+
