@@ -17,8 +17,8 @@ export default defineNuxtConfig({
   },
   i18n: {
     locales: [
-      { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr.json' },
-      { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' },
+      { code: 'fr', iso: 'fr-FR', name: 'Français' },
+      { code: 'en', iso: 'en-US', name: 'English' },
     ],
     defaultLocale: 'fr',
     strategy: 'no_prefix',
@@ -27,7 +27,6 @@ export default defineNuxtConfig({
       cookieKey: 'i18n_redirected',
       redirectOn: 'root',
     },
-    lazy: true,
-    langDir: 'locales/',
+    vueI18n: './i18n.config.ts',
   },
 })
