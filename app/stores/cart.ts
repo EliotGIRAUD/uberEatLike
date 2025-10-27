@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export interface CartItem {
   id: number
-  restaurantId: number
+  restaurantId: string | number
   name: string
   description: string
   price: number
@@ -23,7 +23,7 @@ export const useCartStore = defineStore('cart', {
     totalPrice: (state) => state.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
   },
   actions: {
-    addItem(food: { id: number; restaurantId: number; name: string; description: string; price: number; imageUrl?: string }) {
+    addItem(food: { id: number; restaurantId: string | number; name: string; description: string; price: number; imageUrl?: string }) {
       const existing = this.items.find(item => item.id === food.id)
       if (existing) {
         existing.quantity++

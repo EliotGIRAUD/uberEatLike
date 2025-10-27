@@ -32,7 +32,7 @@ import { useCartStore } from '../stores/cart'
 
 interface Food {
   id: number
-  restaurantId: number
+  restaurantId: string | number
   name: string
   description: string
   grosseDescription?: string

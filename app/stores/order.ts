@@ -47,6 +47,14 @@ export const useOrderStore = defineStore('order', {
         order.status = status
       }
     },
+    deleteOrder(orderId: number) {
+      const index = this.orders.findIndex(o => o.id === orderId)
+      if (index !== -1) {
+        this.orders.splice(index, 1)
+        return true
+      }
+      return false
+    },
   },
   persist: true,
 })

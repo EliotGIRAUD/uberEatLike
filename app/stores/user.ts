@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useRestaurateurStore } from './restaurateur'
 
 export type UserRole = 'ADMIN' | 'CLIENT' | 'RESTAURATEUR'
 
@@ -7,6 +8,7 @@ export interface AppUser {
   email: string
   password: string
   role: UserRole
+  restaurateurId?: string // ID du restaurateur si c'est un compte restaurateur
 }
 
 interface UserState {
@@ -35,12 +37,31 @@ export const useUserStore = defineStore('user', {
       this.isLoggedIn = true
     },
     login(payload: { email: string; password: string }) {
+      // D'abord chercher dans les utilisateurs normaux
       const found = this.users.find(u => u.email.toLowerCase() === payload.email.toLowerCase() && u.password === payload.password)
       if (found) {
         this.currentUser = { ...found }
         this.isLoggedIn = true
         return true
       }
+
+      // Si non trouvé, chercher dans les restaurateurs
+      const restaurateurStore = useRestaurateurStore()
+      const restaurateur = restaurateurStore.getRestaurateurByEmail(payload.email)
+      
+      if (restaurateur && restaurateur.password === payload.password) {
+        // Créer un utilisateur temporaire pour le restaurateur
+        this.currentUser = {
+          name: restaurateur.nom,
+          email: restaurateur.email,
+          password: restaurateur.password,
+          role: 'RESTAURATEUR',
+          restaurateurId: restaurateur.id,
+        }
+        this.isLoggedIn = true
+        return true
+      }
+
       return false
     },
     logout() {

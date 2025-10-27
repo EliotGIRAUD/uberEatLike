@@ -41,7 +41,12 @@ function onSubmit() {
       message: `Bienvenue ${userStore.currentUser?.name}`,
       timeout: 2000,
     })
-    if (userStore.currentUser?.role === 'CLIENT') {
+    // Redirection selon le rôle
+    if (userStore.currentUser?.role === 'ADMIN') {
+      router.push('/admin')
+    } else if (userStore.currentUser?.role === 'RESTAURATEUR') {
+      router.push('/restaurateur')
+    } else if (userStore.currentUser?.role === 'CLIENT') {
       router.push('/restaurants')
     } else {
       router.push('/')

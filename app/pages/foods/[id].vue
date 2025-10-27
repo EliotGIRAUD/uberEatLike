@@ -1,12 +1,21 @@
 <template>
   <div class="p-6">
-    <div v-if="pending" class="text-gray-500">Chargement...</div>
-    <div v-else-if="!food" class="text-red-600">Plat introuvable.</div>
+    <div v-if="!food" class="max-w-5xl mx-auto">
+      <BackButton fallbackHref="/restaurants" />
+      <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center mt-6">
+        <p class="text-red-600 font-medium">Plat introuvable.</p>
+      </div>
+    </div>
     <div v-else class="max-w-5xl mx-auto">
       <BackButton :fallbackHref="`/restaurants/${food.restaurantId}`" />
       
       <div class="bg-white rounded-2xl shadow-xl overflow-hidden mt-6">
-        <img v-if="food.imageUrl" :src="food.imageUrl" alt="" class="w-full h-80 object-cover" />
+        <div v-if="food.imageUrl" class="w-full h-80 bg-gradient-to-br from-[#3AF24B] to-emerald-400 overflow-hidden">
+          <img :src="food.imageUrl" alt="" class="w-full h-full object-cover" />
+        </div>
+        <div v-else class="w-full h-80 bg-gradient-to-br from-[#3AF24B] to-emerald-400 flex items-center justify-center text-white text-8xl">
+          🍽️
+        </div>
         <div class="p-8">
           <div class="mb-6">
             <h1 class="text-4xl font-bold text-gray-900 mb-3">{{ food.name }}</h1>
@@ -34,15 +43,18 @@ import { computed } from 'vue'
 import BackButton from '~/components/BackButton.vue'
 import { useCartStore } from '../../stores/cart'
 import { useUserStore } from '~/stores/user'
+import { useFoodStore, type Food } from '~/stores/food'
 
 const userStore = useUserStore()
+const foodStore = useFoodStore()
 const router = useRouter()
+const route = useRoute()
 
 if (!userStore.isLoggedIn || !userStore.currentUser || userStore.currentUser.role !== 'CLIENT') {
   router.push('/login')
 }
 
-type Food = {
+type FoodJSON = {
   id: number
   restaurantId: number
   name: string
@@ -52,15 +64,27 @@ type Food = {
   imageUrl?: string
 }
 
-const route = useRoute()
 const id = computed(() => Number(route.params.id))
 const cart = useCartStore()
 const toast = useToast()
 
-const { data, pending } = await useFetch<Food[]>('/food.json', { server: false, default: () => [] })
-const food = computed(() => (data.value || []).find(f => f.id === id.value))
+// Récupérer les plats du JSON
+const { data: jsonFoods } = await useFetch<FoodJSON[]>('/food.json', {
+  server: false,
+  default: () => [],
+})
 
-function addToCart(foodItem: Food) {
+// Récupérer le plat : d'abord depuis le store food (plats des restaurateurs), puis depuis le JSON
+const food = computed(() => {
+  // Chercher dans les plats créés par les restaurateurs
+  const restaurateurFood = foodStore.getFoodById(id.value)
+  if (restaurateurFood) return restaurateurFood
+  
+  // Sinon chercher dans les plats du JSON
+  return jsonFoods.value?.find(f => f.id === id.value)
+})
+
+function addToCart(foodItem: Food | FoodJSON) {
   cart.addItem(foodItem)
   toast.success({
     title: 'Ajouté au panier !',
