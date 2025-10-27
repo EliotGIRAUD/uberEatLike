@@ -49,7 +49,6 @@ import { useOrderStore } from '../stores/order'
 const userStore = useUserStore()
 const router = useRouter()
 
-// Vérification en dur : seuls les clients connectés peuvent accéder
 if (!userStore.isLoggedIn || !userStore.currentUser || userStore.currentUser.role !== 'CLIENT') {
   router.push('/login')
 }
@@ -95,17 +94,14 @@ function placeOrder() {
     return
   }
 
-  // Créer la commande
   const order = orderStore.createOrder(
     userStore.currentUser.email,
     cart.items,
     cart.totalPrice
   )
 
-  // Vider le panier
   cart.clearCart()
 
-  // Notification et redirection
   toast.success({
     title: 'Commande passée !',
     message: `Votre commande #${order.id} a été créée avec succès`,

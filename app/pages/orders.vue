@@ -60,7 +60,6 @@ const userStore = useUserStore()
 const router = useRouter()
 const orderStore = useOrderStore()
 
-// Vérification en dur : seuls les clients connectés peuvent accéder
 if (!userStore.isLoggedIn || !userStore.currentUser || userStore.currentUser.role !== 'CLIENT') {
   router.push('/login')
 }
