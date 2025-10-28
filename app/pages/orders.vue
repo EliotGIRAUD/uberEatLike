@@ -1,49 +1,49 @@
 <template>
-  <div class="min-h-[calc(100vh-8rem)] p-6">
+  <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6">
     <div class="max-w-5xl mx-auto">
-      <div class="mb-8">
-        <h1 class="text-5xl font-extrabold text-gray-900 mb-3">
+      <div class="mb-6 sm:mb-8">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-2 sm:mb-3">
           Mes <span class="text-[#3AF24B]">Commandes</span>
         </h1>
-        <p class="text-lg text-gray-600">Suivez l'état de vos commandes en temps réel</p>
+        <p class="text-base sm:text-lg text-gray-600">Suivez l'état de vos commandes en temps réel</p>
       </div>
       
-      <div v-if="myOrders.length === 0" class="bg-white rounded-2xl shadow-md p-12 text-center">
-        <div class="text-gray-400 text-6xl mb-4">📦</div>
-        <p class="text-gray-600 text-lg mb-4">Vous n'avez pas encore passé de commande</p>
+      <div v-if="myOrders.length === 0" class="bg-white rounded-2xl shadow-md p-8 sm:p-12 text-center">
+        <div class="text-gray-400 text-5xl sm:text-6xl mb-4">📦</div>
+        <p class="text-gray-600 text-base sm:text-lg mb-4">Vous n'avez pas encore passé de commande</p>
         <NuxtLink to="/restaurants" class="inline-block rounded-lg bg-[#3AF24B] text-black px-6 py-3 font-semibold hover:bg-black hover:text-white transition">
           Découvrir les restaurants
         </NuxtLink>
       </div>
 
       <div v-else class="space-y-4">
-        <div v-for="order in myOrders" :key="order.id" class="bg-white rounded-xl shadow-md p-6">
-          <div class="flex items-start justify-between mb-4">
+        <div v-for="order in myOrders" :key="order.id" class="bg-white rounded-xl shadow-md p-4 sm:p-6">
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between mb-4 gap-2 sm:gap-0">
             <div>
-              <h3 class="text-lg font-bold text-gray-900">Commande #{{ order.id }}</h3>
-              <p class="text-sm text-gray-600">{{ formatDate(order.createdAt) }}</p>
+              <h3 class="text-base sm:text-lg font-bold text-gray-900">Commande #{{ order.id }}</h3>
+              <p class="text-xs sm:text-sm text-gray-600">{{ formatDate(order.createdAt) }}</p>
             </div>
-            <span :class="statusClasses[order.status]" class="px-3 py-1 rounded-full text-sm font-semibold">
+            <span :class="statusClasses[order.status]" class="px-3 py-1 rounded-full text-xs sm:text-sm font-semibold w-fit">
               {{ statusLabels[order.status] }}
             </span>
           </div>
 
-          <div class="border-t pt-4 space-y-2">
-            <div v-for="item in order.items" :key="item.id" class="flex items-center justify-between text-sm">
-              <div class="flex items-center gap-3">
-                <img v-if="item.imageUrl" :src="item.imageUrl" alt="" class="w-12 h-12 object-cover rounded" />
-                <div>
-                  <p class="font-medium text-gray-900">{{ item.name }}</p>
+          <div class="border-t pt-4 space-y-3">
+            <div v-for="item in order.items" :key="item.id" class="flex items-start sm:items-center justify-between gap-2 text-xs sm:text-sm">
+              <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                <img v-if="item.imageUrl" :src="item.imageUrl" alt="" class="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded flex-shrink-0" />
+                <div class="min-w-0 flex-1">
+                  <p class="font-medium text-gray-900 truncate">{{ item.name }}</p>
                   <p class="text-gray-600">{{ item.price.toFixed(2) }} € × {{ item.quantity }}</p>
                 </div>
               </div>
-              <p class="font-semibold text-gray-900">{{ (item.price * item.quantity).toFixed(2) }} €</p>
+              <p class="font-semibold text-gray-900 flex-shrink-0">{{ (item.price * item.quantity).toFixed(2) }} €</p>
             </div>
           </div>
 
           <div class="border-t mt-4 pt-4 flex items-center justify-between">
-            <span class="text-gray-600 font-medium">Total</span>
-            <span class="text-2xl font-bold text-gray-900">{{ order.totalPrice.toFixed(2) }} €</span>
+            <span class="text-sm sm:text-base text-gray-600 font-medium">Total</span>
+            <span class="text-xl sm:text-2xl font-bold text-gray-900">{{ order.totalPrice.toFixed(2) }} €</span>
           </div>
         </div>
       </div>
