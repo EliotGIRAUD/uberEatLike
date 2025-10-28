@@ -15,7 +15,7 @@
       <div v-else class="space-y-4">
         <div v-for="item in cart.items" :key="item.id" class="bg-white rounded-xl shadow-md p-4 sm:p-5 hover:shadow-lg transition">
           <div class="flex items-start gap-3 sm:gap-4">
-            <img v-if="item.imageUrl" :src="item.imageUrl" alt="" class="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-lg flex-shrink-0" />
+            <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.name" class="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-lg flex-shrink-0" />
             <div class="flex-1 min-w-0">
               <h3 class="font-semibold text-base sm:text-lg text-gray-900 truncate">{{ item.name }}</h3>
               <p class="text-gray-600 font-medium text-sm sm:text-base">{{ item.price.toFixed(2) }} €</p>

@@ -31,7 +31,7 @@
           <div class="border-t pt-4 space-y-3">
             <div v-for="item in order.items" :key="item.id" class="flex items-start sm:items-center justify-between gap-2 text-xs sm:text-sm">
               <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                <img v-if="item.imageUrl" :src="item.imageUrl" alt="" class="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded flex-shrink-0" />
+                <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.name" class="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded flex-shrink-0" />
                 <div class="min-w-0 flex-1">
                   <p class="font-medium text-gray-900 truncate">{{ item.name }}</p>
                   <p class="text-gray-600">{{ item.price.toFixed(2) }} € × {{ item.quantity }}</p>
