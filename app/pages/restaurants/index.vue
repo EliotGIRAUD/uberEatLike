@@ -84,10 +84,6 @@
 import { computed, ref } from 'vue'
 import { useRestaurateurStore } from '~/stores/restaurateur'
 
-definePageMeta({
-  middleware: ['client']
-})
-
 const { t } = useI18n()
 const restaurateurStore = useRestaurateurStore()
 

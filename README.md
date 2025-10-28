@@ -94,6 +94,13 @@ npm run preview
 
 # Générer le site statique
 npm run generate
+
+# Lancer les tests unitaires
+npm test
+
+# Lancer les tests en mode watch
+npm run test:watch
+
 ```
 
 ### Comptes de test
@@ -167,6 +174,16 @@ Toutes les pages publiques sont rendues côté serveur pour :
 - Temps de chargement initial réduit
 - Performance optimale
 
+**Pages en SSR :**
+- `/restaurants` - Liste des restaurants
+- `/restaurants/[id]` - Détail d'un restaurant
+- `/foods/[id]` - Détail d'un plat avec SEO produit
+
+**Pages en CSR (Client-Side) :**
+- `/cart` - Panier (nécessite authentification)
+- `/orders` - Commandes (nécessite authentification)
+- `/profile` - Profil utilisateur (nécessite authentification)
+
 ### Internationalisation (i18n)
 
 Support multilingue avec changement dynamique :
@@ -174,6 +191,22 @@ Support multilingue avec changement dynamique :
 **Langues supportées :**    
 - 🇫🇷 Français (par défaut)
 - 🇬🇧 English
+
+### Tests automatisés
+
+Le projet dispose d'une suite de tests unitaires complète :
+
+**Coverage des tests :**
+- 47 tests passent avec succès
+- Store `cart` : 20 tests (addItem, removeItem, updateQuantity, clearCart, getters)
+- Store `user` : 22 tests (login, logout, register, updateProfile)
+- Store `restaurateur` : 5 tests (addRestaurateur)
+
+**Commandes de test :**
+```bash
+npm test              # Lancer tous les tests
+npm run test:watch    # Mode watch pour développement
+```
 
 ## Roadmap
 
@@ -183,9 +216,9 @@ Support multilingue avec changement dynamique :
 - Système de commandes
 - Internationalisation FR/EN
 - SSR et SEO optimisés
+- Tests unitaires (Vitest) 47 tests
 
 ### Prochaines étapes (v1.1)
-- Tests unitaires (Vitest)
 - Tests E2E (Playwright)
 - PWA avec mode offline
 - Optimisation des images (WebP/AVIF)

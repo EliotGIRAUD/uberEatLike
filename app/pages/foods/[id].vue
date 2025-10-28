@@ -44,10 +44,6 @@ import BackButton from '~/components/BackButton.vue'
 import { useCartStore } from '../../stores/cart'
 import { useFoodStore, type Food } from '~/stores/food'
 
-definePageMeta({
-  middleware: ['client']
-})
-
 const { t } = useI18n()
 const foodStore = useFoodStore()
 const route = useRoute()

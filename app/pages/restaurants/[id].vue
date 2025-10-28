@@ -63,10 +63,6 @@ import BackButton from '~/components/BackButton.vue'
 import { useRestaurateurStore } from '~/stores/restaurateur'
 import { useFoodStore } from '~/stores/food'
 
-definePageMeta({
-  middleware: ['client']
-})
-
 const { t } = useI18n()
 const restaurateurStore = useRestaurateurStore()
 const foodStore = useFoodStore()
