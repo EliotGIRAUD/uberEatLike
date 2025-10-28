@@ -15,6 +15,28 @@ Grosmino's est une plateforme complète de commande et livraison de repas en lig
 - Design moderne et responsive avec Tailwind CSS
 - TypeScript strict pour une qualité de code optimale
 
+## 🚀 Déploiement
+
+L'application est **déployée en production sur Vercel** avec déploiement automatique.
+
+### Déploiement automatique
+
+Chaque push sur la branche `master` déclenche automatiquement :
+- Build de l'application
+- Tests unitaires (47 tests)
+- Déploiement sur Vercel
+- Mise à jour instantanée de la production
+
+**Lien de production** : [À ajouter après déploiement]
+
+### Configuration Vercel
+
+Le projet est configuré pour :
+- Build automatique avec `npm run build`
+- Preview deployments pour chaque PR
+- Rollback instantané en cas de problème
+- SSL/HTTPS automatique
+
 ## Fonctionnalités
 
 ### Pour les Clients
@@ -148,7 +170,6 @@ L'administrateur a un accès complet pour gérer tous les restaurateurs de la pl
 ### Stores Pinia
 
 | Store | Responsabilité |
-|-------|----------------|
 | `user.ts` | Authentification et gestion des utilisateurs |
 | `cart.ts` | Panier d'achat avec getters (totalItems, totalPrice) |
 | `order.ts` | Gestion des commandes |
@@ -158,7 +179,6 @@ L'administrateur a un accès complet pour gérer tous les restaurateurs de la pl
 ### Middleware
 
 | Middleware | Fonction |
-|------------|----------|
 | `auth.ts` | Vérifie l'authentification |
 | `guest.ts` | Redirige les utilisateurs connectés |
 | `client.ts` | Réservé aux clients |
@@ -217,12 +237,12 @@ npm run test:watch    # Mode watch pour développement
 - Internationalisation FR/EN
 - SSR et SEO optimisés
 - Tests unitaires (Vitest) 47 tests
+- Déploiement continu sur Vercel (déploiement automatique sur push master)
 
 ### Prochaines étapes (v1.1)
 - Tests E2E (Playwright)
 - PWA avec mode offline
 - Optimisation des images (WebP/AVIF)
-- CI/CD avec GitHub Actions
 
 ### Futures fonctionnalités (v2.0)
 - Paiement en ligne
