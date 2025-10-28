@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SplashScreen />
+    <LazySplashScreen />
     <NuxtLayout>
       <NuxtPage :transition="{
         name: 'page',
@@ -11,5 +11,4 @@
 </template>
 
 <script setup lang="ts">
-import SplashScreen from '~/components/SplashScreen.vue'
 </script>

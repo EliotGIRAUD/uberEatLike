@@ -22,7 +22,7 @@
             <NuxtLink to="/profile" class="rounded border-2 border-black px-3 py-1 hover:border-[#3AF24B] transition">{{ user.currentUser.name }}</NuxtLink>
             <button @click="logout" class="rounded bg-black text-white px-3 py-1 hover:bg-[#3AF24B] hover:text-black transition">{{ $t('nav.logout') }}</button>
           </template>
-          <LanguageSwitcher />
+          <LazyLanguageSwitcher />
         </nav>
 
         <!-- Menu Mobile -->
@@ -53,7 +53,7 @@
               <button @click="logout; menuOpen = false" class="rounded bg-black text-white px-4 py-2 hover:bg-[#3AF24B] hover:text-black transition">{{ $t('nav.logout') }}</button>
             </template>
             <div class="flex justify-center mt-2">
-              <LanguageSwitcher />
+              <LazyLanguageSwitcher />
             </div>
           </nav>
         </div>
@@ -63,7 +63,7 @@
       <slot />
     </main>
     <footer class="border-t text-center text-xs text-gray-500 py-4 px-4">{{ $t('footer.copyright', { year, brand: 'mino\'s' }) }}</footer>
-    <ToastContainer />
+    <LazyToastContainer />
   </div>
 </template>
 
@@ -71,7 +71,6 @@
 import { ref } from 'vue'
 import { useUserStore } from '../stores/user'
 import { useCartStore } from '../stores/cart'
-import LanguageSwitcher from '~/components/LanguageSwitcher.vue'
 
 const { t } = useI18n()
 const user = useUserStore()

@@ -68,7 +68,7 @@
           <p class="text-gray-400 text-sm">{{ t('restaurants.noFoodsHint') }}</p>
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <FoodCard v-for="f in foods" :key="f.id" :food="f" />
+          <LazyFoodCard v-for="f in foods" :key="f.id" :food="f" />
         </div>
       </section>
     </div>
@@ -77,7 +77,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import FoodCard from '~/components/FoodCard.vue'
 import BackButton from '~/components/BackButton.vue'
 import { useRestaurateurStore } from '~/stores/restaurateur'
 import { useFoodStore } from '~/stores/food'
