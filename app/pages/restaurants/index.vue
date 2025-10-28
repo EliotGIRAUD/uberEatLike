@@ -23,7 +23,21 @@
         </div>
       </div>
       
-      <div v-if="filteredRestaurants.length === 0 && !searchQuery" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
+      <div v-if="fetchError" class="bg-red-50 border-2 border-red-200 rounded-xl p-8 sm:p-12 text-center">
+        <div class="text-red-400 text-5xl sm:text-6xl mb-4">⚠️</div>
+        <p class="text-red-600 text-lg font-semibold mb-2">Erreur de chargement</p>
+        <p class="text-red-500 text-sm mb-4">Impossible de charger les restaurants. Vérifiez votre connexion.</p>
+        <button @click="() => window.location.reload()" class="rounded-lg bg-red-600 text-white px-6 py-3 font-semibold hover:bg-red-700 transition">
+          Réessayer
+        </button>
+      </div>
+
+      <div v-else-if="pending" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-[#3AF24B] mb-4"></div>
+        <p class="text-gray-600 text-lg">Chargement des temples du gras...</p>
+      </div>
+
+      <div v-else-if="filteredRestaurants.length === 0 && !searchQuery" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
         <p class="text-gray-500 text-lg mb-2">{{ t('restaurants.noRestaurants') }}</p>
         <p class="text-gray-400 text-sm">{{ t('restaurants.noRestaurantsHint') }}</p>
       </div>
@@ -111,8 +125,11 @@ type RestaurantJSON = {
 
 const searchQuery = ref('')
 
-const { data: jsonRestaurants } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
+const { data: jsonRestaurants, error: fetchError, pending } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
   default: () => [],
+  onResponseError({ response }) {
+    console.error('Erreur de chargement des restaurants:', response.status)
+  }
 })
 
 const allRestaurants = computed(() => {

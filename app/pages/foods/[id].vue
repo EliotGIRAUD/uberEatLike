@@ -1,6 +1,26 @@
 <template>
   <div class="p-6">
-    <div v-if="!food" class="max-w-5xl mx-auto">
+    <div v-if="fetchError" class="max-w-5xl mx-auto">
+      <BackButton fallbackHref="/restaurants" />
+      <div class="bg-red-50 border-2 border-red-200 rounded-xl p-8 sm:p-12 text-center mt-6">
+        <div class="text-red-400 text-5xl sm:text-6xl mb-4">⚠️</div>
+        <p class="text-red-600 text-lg font-semibold mb-2">Erreur de chargement</p>
+        <p class="text-red-500 text-sm mb-4">Impossible de charger le plat. Vérifiez votre connexion.</p>
+        <button @click="() => window.location.reload()" class="rounded-lg bg-red-600 text-white px-6 py-3 font-semibold hover:bg-red-700 transition">
+          Réessayer
+        </button>
+      </div>
+    </div>
+
+    <div v-else-if="pending" class="max-w-5xl mx-auto">
+      <BackButton fallbackHref="/restaurants" />
+      <div class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center mt-6">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-[#3AF24B] mb-4"></div>
+        <p class="text-gray-600 text-lg">Chargement de la bombe calorique...</p>
+      </div>
+    </div>
+
+    <div v-else-if="!food" class="max-w-5xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
       <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center mt-6">
         <p class="text-red-600 font-medium">{{ t('foods.notFound') }}</p>
@@ -62,8 +82,11 @@ const id = computed(() => Number(route.params.id))
 const cart = useCartStore()
 const toast = useToast()
 
-const { data: jsonFoods } = await useFetch<FoodJSON[]>('/food.json', {
+const { data: jsonFoods, error: fetchError, pending } = await useFetch<FoodJSON[]>('/food.json', {
   default: () => [],
+  onResponseError({ response }) {
+    console.error('Erreur de chargement du plat:', response.status)
+  }
 })
 
 const food = computed(() => {

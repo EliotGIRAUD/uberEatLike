@@ -1,6 +1,26 @@
 <template>
   <div class="p-6">
-    <div v-if="!restaurant" class="max-w-7xl mx-auto">
+    <div v-if="restaurantError || foodsError" class="max-w-7xl mx-auto">
+      <BackButton fallbackHref="/restaurants" />
+      <div class="bg-red-50 border-2 border-red-200 rounded-xl p-8 sm:p-12 text-center mt-6">
+        <div class="text-red-400 text-5xl sm:text-6xl mb-4">⚠️</div>
+        <p class="text-red-600 text-lg font-semibold mb-2">Erreur de chargement</p>
+        <p class="text-red-500 text-sm mb-4">Impossible de charger les données. Vérifiez votre connexion.</p>
+        <button @click="() => window.location.reload()" class="rounded-lg bg-red-600 text-white px-6 py-3 font-semibold hover:bg-red-700 transition">
+          Réessayer
+        </button>
+      </div>
+    </div>
+
+    <div v-else-if="restaurantPending || foodsPending" class="max-w-7xl mx-auto">
+      <BackButton fallbackHref="/restaurants" />
+      <div class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center mt-6">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-[#3AF24B] mb-4"></div>
+        <p class="text-gray-600 text-lg">Chargement du temple calorique...</p>
+      </div>
+    </div>
+
+    <div v-else-if="!restaurant" class="max-w-7xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
       <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center mt-6">
         <p class="text-red-600 font-medium">{{ t('restaurants.notFound') }}</p>
@@ -92,12 +112,18 @@ type Food = {
 const restaurantId = computed(() => route.params.id)
 const isNumericId = computed(() => !isNaN(Number(restaurantId.value)))
 
-const { data: jsonRestaurants } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
+const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
   default: () => [],
+  onResponseError({ response }) {
+    console.error('Erreur de chargement du restaurant:', response.status)
+  }
 })
 
-const { data: jsonFoods } = await useFetch<Food[]>('/food.json', {
+const { data: jsonFoods, error: foodsError, pending: foodsPending } = await useFetch<Food[]>('/food.json', {
   default: () => [],
+  onResponseError({ response }) {
+    console.error('Erreur de chargement des plats:', response.status)
+  }
 })
 
 const restaurant = computed(() => {
