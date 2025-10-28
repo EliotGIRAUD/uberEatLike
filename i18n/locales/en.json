@@ -3,6 +3,9 @@
     "name": "Grosmino's",
     "title": "Grosmino's - Food Delivery"
   },
+  "splash": {
+    "tagline": "Food Delivery at Home"
+  },
   "nav": {
     "home": "Home",
     "restaurants": "Restaurants",

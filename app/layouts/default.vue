@@ -2,7 +2,10 @@
   <div class="min-h-dvh flex flex-col bg-[#F0FFF0]">
     <header class="border-b bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 sticky top-0 z-50">
       <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <NuxtLink to="/" class="font-bold text-xl">Gros<span class="text-[#3AF24B]">mino's</span></NuxtLink>
+        <NuxtLink to="/" class="flex items-center gap-2 font-bold text-xl hover:opacity-80 transition">
+          <img src="/icon-192.png" alt="Grosmino's" class="w-8 h-8" />
+          <span>Gros<span class="text-[#3AF24B]">mino's</span></span>
+        </NuxtLink>
         
         <!-- Menu Desktop -->
         <nav class="hidden lg:flex items-center gap-4 text-sm">

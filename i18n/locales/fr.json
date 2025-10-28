@@ -3,6 +3,9 @@
     "name": "Grosmino's",
     "title": "Grosmino's - Livraison de repas à domicile"
   },
+  "splash": {
+    "tagline": "Livraison de repas à domicile"
+  },
   "nav": {
     "home": "Accueil",
     "restaurants": "Restaurants",
