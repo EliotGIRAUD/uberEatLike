@@ -306,10 +306,10 @@ describe('useCartStore', () => {
 
   describe('state persistence', () => {
     it('devrait avoir la configuration persist activée', () => {
-      // Vérification que le store est configuré pour persister
+      // Vérifi que le store persiste les trucs
       const store = useCartStore()
       
-      // On vérifie qu'on peut ajouter des items
+      // On vérifie qu'on peut ajouter des trucs
       store.addItem({ id: 1, restaurantId: 'r1', name: 'Test', description: 'Test', price: 10 })
       
       expect(store.items).toHaveLength(1)

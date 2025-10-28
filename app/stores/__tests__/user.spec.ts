@@ -382,7 +382,7 @@ describe('useUserStore', () => {
       expect(store.users).toHaveLength(2)
     })
 
-    it('devrait préserver les données utilisateur après déconnexion', () => {
+    it('devrait garder les données utilisateur après déconnexion', () => {
       const store = useUserStore()
 
       store.registerOrLogin({
@@ -400,7 +400,7 @@ describe('useUserStore', () => {
   })
 
   describe('edge cases', () => {
-    it('devrait gérer les emails vides gracieusement', () => {
+    it('devrait gérer les emails vides ez', () => {
       const store = useUserStore()
 
       const loginSuccess = store.login({
@@ -411,7 +411,7 @@ describe('useUserStore', () => {
       expect(loginSuccess).toBe(false)
     })
 
-    it('devrait gérer les mots de passe vides gracieusement', () => {
+    it('devrait gérer les mots de passe vides ez', () => {
       const store = useUserStore()
 
       store.registerOrLogin({
