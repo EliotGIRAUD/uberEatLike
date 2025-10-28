@@ -17,17 +17,22 @@ Grosmino's est une plateforme complète de commande et livraison de repas en lig
 
 ## 🚀 Déploiement
 
-L'application est **déployée en production sur Vercel** avec déploiement automatique.
+L'application est déployée en production sur Vercel avec déploiement automatique.
 
-### Déploiement automatique
+### CI/CD - Tests Automatisés
 
-Chaque push sur la branche `master` déclenche automatiquement :
-- Build de l'application
-- Tests unitaires (47 tests)
-- Déploiement sur Vercel
-- Mise à jour instantanée de la production
+GitHub Actions exécute automatiquement à chaque push/PR :
+- Tests unitaires (Vitest) : 47 tests
+- Tests E2E (Playwright) : 10 tests
+- Upload des rapports en cas d'échec
+- Déploiement automatique sur Vercel (si tous les tests passent)
 
-**Lien de production** : [À ajouter après déploiement]
+Pipeline de déploiement :
+1. Tests unitaires + Tests E2E (parallèles)
+2. Si tous passent → Déploiement production Vercel
+3. Si un test échoue → Pas de déploiement
+
+Lien de production : https://grosminos.vercel.app
 
 ### Configuration Vercel
 
@@ -145,7 +150,7 @@ Pour tester l'application, vous pouvez créer des comptes ou utiliser les rôles
 ### Client
 Le client peut naviguer parmi les restaurants, consulter les menus, ajouter des plats au panier et passer des commandes.
 
-**Pages accessibles :**
+Pages accessibles :
 - `/restaurants` - Liste des restaurants
 - `/restaurants/[id]` - Détail d'un restaurant
 - `/foods/[id]` - Détail d'un plat
@@ -156,7 +161,7 @@ Le client peut naviguer parmi les restaurants, consulter les menus, ajouter des 
 ### Restaurateur
 Le restaurateur gère son établissement, ses plats et consulte ses commandes.
 
-**Pages accessibles :**
+Pages accessibles :
 - `/restaurateur` - Dashboard
   - Gestion du profil du restaurant
   - CRUD des plats
@@ -165,7 +170,7 @@ Le restaurateur gère son établissement, ses plats et consulte ses commandes.
 ### Administrateur
 L'administrateur a un accès complet pour gérer tous les restaurateurs de la plateforme.
 
-**Pages accessibles :**
+Pages accessibles :
 - `/admin` - Back office
   - Gestion des restaurateurs (CRUD)
   - Statistiques globales
@@ -199,12 +204,12 @@ Toutes les pages publiques sont rendues côté serveur pour :
 - Temps de chargement initial réduit
 - Performance optimale
 
-**Pages en SSR :**
+Pages en SSR :
 - `/restaurants` - Liste des restaurants
 - `/restaurants/[id]` - Détail d'un restaurant
 - `/foods/[id]` - Détail d'un plat avec SEO produit
 
-**Pages en CSR (Client-Side) :**
+Pages en CSR (Client-Side) :
 - `/cart` - Panier (nécessite authentification)
 - `/orders` - Commandes (nécessite authentification)
 - `/profile` - Profil utilisateur (nécessite authentification)
@@ -213,7 +218,7 @@ Toutes les pages publiques sont rendues côté serveur pour :
 
 Support multilingue avec changement dynamique :
 
-**Langues supportées :**    
+Langues supportées :    
 - 🇫🇷 Français (par défaut)
 - 🇬🇧 English
 
@@ -223,13 +228,13 @@ Le projet dispose d'une suite de tests complète couvrant les tests unitaires et
 
 #### Tests unitaires (Vitest)
 
-**Coverage :**
+Coverage :
 - 47 tests unitaires passent avec succès
 - Store `cart` : 20 tests (addItem, removeItem, updateQuantity, clearCart, getters)
 - Store `user` : 22 tests (login, logout, register, updateProfile)
 - Store `restaurateur` : 5 tests (addRestaurateur)
 
-**Commandes :**
+Commandes :
 ```bash
 npm test              # Lancer les tests unitaires
 npm run test:watch    # Mode watch pour développement
@@ -237,13 +242,13 @@ npm run test:watch    # Mode watch pour développement
 
 #### Tests End-to-End (Playwright)
 
-**Coverage :**
+Coverage :
 - Tests de navigation et routing
 - Tests d'authentification (login/register)
 - Tests du parcours restaurant → plat
 - Tests du panier (ajout/suppression d'articles)
 
-**Commandes :**
+Commandes :
 ```bash
 npm run test:e2e          # Lancer les tests E2E
 npm run test:e2e:ui       # Interface graphique Playwright
@@ -251,7 +256,7 @@ npm run test:e2e:headed   # Tests avec navigateur visible
 npm run test:e2e:report   # Voir le rapport des tests
 ```
 
-**Configuration :**
+Configuration :
 - Navigateur : Chromium
 - Mode headless par défaut
 - Screenshots automatiques en cas d'échec
