@@ -94,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRestaurateurStore } from '~/stores/restaurateur'
 
 const { t } = useI18n()
@@ -124,10 +124,18 @@ type RestaurantJSON = {
 
 const searchQuery = ref('')
 
-const { data: jsonRestaurants, error: fetchError, pending } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
+const { data: jsonRestaurants, error: fetchError, pending, refresh } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
   default: () => [],
+  key: 'restaurants-list',
   onResponseError({ response }) {
     console.error('Erreur de chargement des restaurants:', response.status)
+  }
+})
+
+// Forcer le rechargement au montage du composant
+onMounted(() => {
+  if (!jsonRestaurants.value || jsonRestaurants.value.length === 0) {
+    refresh()
   }
 })
 

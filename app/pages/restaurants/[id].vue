@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import FoodCard from '~/components/FoodCard.vue'
 import BackButton from '~/components/BackButton.vue'
 import { useRestaurateurStore } from '~/stores/restaurateur'
@@ -111,17 +111,29 @@ type Food = {
 const restaurantId = computed(() => route.params.id)
 const isNumericId = computed(() => !isNaN(Number(restaurantId.value)))
 
-const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
+const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending, refresh: refreshRestaurants } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
   default: () => [],
+  key: 'restaurant-detail-restaurants',
   onResponseError({ response }) {
     console.error('Erreur de chargement du restaurant:', response.status)
   }
 })
 
-const { data: jsonFoods, error: foodsError, pending: foodsPending } = await useFetch<Food[]>('/food.json', {
+const { data: jsonFoods, error: foodsError, pending: foodsPending, refresh: refreshFoods } = await useFetch<Food[]>('/food.json', {
   default: () => [],
+  key: 'restaurant-detail-foods',
   onResponseError({ response }) {
     console.error('Erreur de chargement des plats:', response.status)
+  }
+})
+
+// Forcer le rechargement au montage du composant
+onMounted(() => {
+  if (!jsonRestaurants.value || jsonRestaurants.value.length === 0) {
+    refreshRestaurants()
+  }
+  if (!jsonFoods.value || jsonFoods.value.length === 0) {
+    refreshFoods()
   }
 })
 

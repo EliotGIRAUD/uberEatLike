@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import BackButton from '~/components/BackButton.vue'
 import { useCartStore } from '../../stores/cart'
 import { useFoodStore, type Food } from '~/stores/food'
@@ -81,10 +81,18 @@ const id = computed(() => Number(route.params.id))
 const cart = useCartStore()
 const toast = useToast()
 
-const { data: jsonFoods, error: fetchError, pending } = await useFetch<FoodJSON[]>('/food.json', {
+const { data: jsonFoods, error: fetchError, pending, refresh } = await useFetch<FoodJSON[]>('/food.json', {
   default: () => [],
+  key: 'food-detail',
   onResponseError({ response }) {
     console.error('Erreur de chargement du plat:', response.status)
+  }
+})
+
+// Forcer le rechargement au montage du composant
+onMounted(() => {
+  if (!jsonFoods.value || jsonFoods.value.length === 0) {
+    refresh()
   }
 })
 
