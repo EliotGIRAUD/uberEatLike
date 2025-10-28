@@ -36,6 +36,13 @@ Le projet est configuré pour :
 - Preview deployments pour chaque PR
 - Rollback instantané en cas de problème
 - SSL/HTTPS automatique
+- **Speed Insights** : Monitoring des performances en temps réel (Core Web Vitals)
+
+### Monitoring des performances
+
+L'application utilise Vercel Speed Insights
+
+Ces métriques sont visibles dans le dashboard Vercel après déploiement.
 
 ## Fonctionnalités
 
@@ -69,6 +76,9 @@ Le projet est configuré pour :
 ### State Management & Data
 - Pinia - Store Vue.js moderne
 - @pinia-plugin-persistedstate - Persistance du state
+
+### Monitoring & Analytics
+- @vercel/speed-insights - Monitoring des performances en temps réel
 
 ### Internationalisation
 - @nuxtjs/i18n - Support multilingue (FR/EN)
@@ -238,6 +248,7 @@ npm run test:watch    # Mode watch pour développement
 - SSR et SEO optimisés
 - Tests unitaires (Vitest) 47 tests
 - Déploiement continu sur Vercel (déploiement automatique sur push master)
+- Monitoring des performances avec Vercel Speed Insights
 
 ### Prochaines étapes (v1.1)
 - Tests E2E (Playwright)
