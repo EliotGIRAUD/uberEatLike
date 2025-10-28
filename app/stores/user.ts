@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useRestaurateurStore } from './restaurateur'
 
 export type UserRole = 'ADMIN' | 'CLIENT' | 'RESTAURATEUR'
 
@@ -7,6 +8,7 @@ export interface AppUser {
   email: string
   password: string
   role: UserRole
+  restaurateurId?: string 
 }
 
 interface UserState {
@@ -41,6 +43,22 @@ export const useUserStore = defineStore('user', {
         this.isLoggedIn = true
         return true
       }
+
+      const restaurateurStore = useRestaurateurStore()
+      const restaurateur = restaurateurStore.getRestaurateurByEmail(payload.email)
+      
+      if (restaurateur && restaurateur.password === payload.password) {
+        this.currentUser = {
+          name: restaurateur.nom,
+          email: restaurateur.email,
+          password: restaurateur.password,
+          role: 'RESTAURATEUR',
+          restaurateurId: restaurateur.id,
+        }
+        this.isLoggedIn = true
+        return true
+      }
+
       return false
     },
     logout() {
@@ -50,17 +68,14 @@ export const useUserStore = defineStore('user', {
     updateProfile(payload: Partial<AppUser>) {
       if (!this.currentUser) return false
       
-      // Vérifier si l'email est déjà utilisé par un autre utilisateur
       if (payload.email && payload.email !== this.currentUser.email) {
         const emailExists = this.users.find(u => u.email.toLowerCase() === (payload.email as string).toLowerCase())
         if (emailExists) return false
       }
       
-      // Mettre à jour l'utilisateur actuel
       const oldEmail = this.currentUser.email
       this.currentUser = { ...this.currentUser, ...payload }
       
-      // Mettre à jour dans la liste des utilisateurs
       const userIndex = this.users.findIndex(u => u.email.toLowerCase() === oldEmail.toLowerCase())
       if (userIndex !== -1) {
         this.users[userIndex] = { ...this.currentUser }

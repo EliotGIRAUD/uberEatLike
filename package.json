@@ -7,9 +7,17 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^10.1.2",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
     "@pinia/nuxt": "^0.11.2",
     "@tailwindcss/vite": "^4.1.14",
@@ -20,5 +28,13 @@
     "tailwindcss": "^4.1.14",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@nuxt/test-utils": "^3.20.1",
+    "@playwright/test": "^1.56.1",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^20.0.8",
+    "playwright-core": "^1.56.1",
+    "vitest": "^4.0.4"
   }
 }

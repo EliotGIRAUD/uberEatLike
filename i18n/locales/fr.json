@@ -1,0 +1,137 @@
+{
+  "app": {
+    "name": "Grosmino's",
+    "title": "Grosmino's - Livraison de repas à domicile"
+  },
+  "splash": {
+    "tagline": "Livraison de repas à domicile"
+  },
+  "nav": {
+    "home": "Accueil",
+    "restaurants": "Restaurants",
+    "myOrders": "Mes commandes",
+    "cart": "Panier",
+    "backOffice": "Back Office",
+    "myRestaurant": "Mon Restaurant",
+    "profile": "Profil",
+    "logout": "Déconnexion",
+    "login": "Se connecter",
+    "register": "Créer un compte"
+  },
+  "home": {
+    "welcome": "Bienvenue sur Gros{brand}",
+    "subtitle": "Découvrez les meilleurs restaurants et commandez vos plats préférés",
+    "role": "Rôle"
+  },
+  "restaurants": {
+    "title": "Nos {highlight}",
+    "highlight": "Restaurants",
+    "subtitle": "Découvrez une sélection exceptionnelle de restaurants partenaires. De la cuisine traditionnelle aux saveurs du monde, trouvez votre bonheur !",
+    "search": "Rechercher un restaurant, une cuisine, une ville...",
+    "found": "{count} restaurant trouvé | {count} restaurants trouvés",
+    "noResults": "Aucun résultat pour \"{query}\"",
+    "noResultsHint": "Essayez avec d'autres mots-clés",
+    "showAll": "Afficher tous les restaurants",
+    "noRestaurants": "Aucun restaurant disponible pour le moment",
+    "noRestaurantsHint": "Revenez bientôt pour découvrir nos restaurants partenaires !",
+    "notFound": "Restaurant introuvable.",
+    "viewMenu": "Voir le menu →",
+    "ourMenu": "Notre {highlight}",
+    "menuHighlight": "Menu",
+    "menuSubtitle": "Parcourez nos délicieux plats et ajoutez vos favoris au panier",
+    "noFoods": "Aucun plat disponible pour le moment",
+    "noFoodsHint": "Le restaurant n'a pas encore ajouté de plats à sa carte"
+  },
+  "foods": {
+    "notFound": "Plat introuvable.",
+    "description": "Description",
+    "addToCart": "Ajouter au panier"
+  },
+  "cart": {
+    "title": "Mon {highlight}",
+    "highlight": "Panier",
+    "subtitle": "Finalisez votre commande et régalez-vous !",
+    "empty": "Votre panier est vide",
+    "discover": "Découvrir les restaurants",
+    "total": "Total",
+    "clear": "Vider le panier",
+    "order": "Commander",
+    "cleared": "Panier vidé",
+    "clearedMessage": "Tous les articles ont été retirés",
+    "itemRemoved": "Article retiré",
+    "itemRemovedMessage": "L'article a été retiré du panier",
+    "itemAdded": "Ajouté au panier !",
+    "itemAddedMessage": "{name} a été ajouté à votre panier",
+    "error": "Erreur",
+    "loginRequired": "Vous devez être connecté pour commander",
+    "emptyWarning": "Panier vide",
+    "emptyWarningMessage": "Ajoutez des articles avant de commander",
+    "orderSuccess": "Commande passée !",
+    "orderSuccessMessage": "Votre commande #{id} a été créée avec succès"
+  },
+  "auth": {
+    "login": "Connexion",
+    "loginSubtitle": "Accédez à votre compte Gros{brand}",
+    "register": "Inscription",
+    "registerSubtitle": "Créez votre compte Gros{brand}",
+    "email": "Email",
+    "password": "Mot de passe",
+    "name": "Nom",
+    "confirmPassword": "Confirmer le mot de passe",
+    "role": "Rôle",
+    "client": "Client",
+    "restaurateur": "Restaurateur",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Déjà un compte ?",
+    "loginSuccess": "Connexion réussie !",
+    "loginWelcome": "Bienvenue {name}",
+    "loginError": "Erreur de connexion",
+    "loginErrorMessage": "Email ou mot de passe incorrect",
+    "registerSuccess": "Inscription réussie !",
+    "registerWelcome": "Bienvenue {name}",
+    "logoutSuccess": "Déconnexion",
+    "logoutMessage": "Vous avez été déconnecté avec succès"
+  },
+  "footer": {
+    "copyright": "© {year} Gros{brand}"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "back": "Retour",
+    "cuisine": "🍴",
+    "location": "📍",
+    "switchLanguage": "Changer de langue"
+  },
+  "seo": {
+    "home": {
+      "title": "Grosmino's - Livraison de repas à domicile",
+      "description": "Découvrez les meilleurs restaurants et commandez vos plats préférés en ligne avec Grosmino's. Livraison rapide et simple."
+    },
+    "restaurants": {
+      "title": "Nos Restaurants - Grosmino's",
+      "description": "Explorez notre sélection de restaurants partenaires. Cuisine française, italienne, asiatique et plus encore. Commandez maintenant !"
+    },
+    "restaurant": {
+      "title": "{name} - Menu et Plats - Grosmino's",
+      "description": "Découvrez le menu de {name}. {cuisine} - {address}. Commandez en ligne maintenant !"
+    },
+    "food": {
+      "title": "{name} - {price}€ - Grosmino's",
+      "description": "{description}"
+    },
+    "cart": {
+      "title": "Mon Panier - Grosmino's",
+      "description": "Finalisez votre commande et profitez de vos plats préférés livrés à domicile."
+    },
+    "login": {
+      "title": "Connexion - Grosmino's",
+      "description": "Connectez-vous à votre compte Grosmino's pour commander vos plats préférés."
+    },
+    "register": {
+      "title": "Inscription - Grosmino's",
+      "description": "Créez votre compte Grosmino's et commencez à commander dès maintenant."
+    }
+  }
+}
+
