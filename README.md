@@ -36,13 +36,7 @@ Le projet est configuré pour :
 - Preview deployments pour chaque PR
 - Rollback instantané en cas de problème
 - SSL/HTTPS automatique
-- **Speed Insights** : Monitoring des performances en temps réel (Core Web Vitals)
-
-### Monitoring des performances
-
-L'application utilise Vercel Speed Insights
-
-Ces métriques sont visibles dans le dashboard Vercel après déploiement.
+- Edge Functions pour des performances optimales
 
 ## Fonctionnalités
 
@@ -77,8 +71,9 @@ Ces métriques sont visibles dans le dashboard Vercel après déploiement.
 - Pinia - Store Vue.js moderne
 - @pinia-plugin-persistedstate - Persistance du state
 
-### Monitoring & Analytics
-- @vercel/speed-insights - Monitoring des performances en temps réel
+### Testing
+- Vitest - Tests unitaires des stores
+- Playwright - Tests End-to-End (E2E)
 
 ### Internationalisation
 - @nuxtjs/i18n - Support multilingue (FR/EN)
@@ -224,19 +219,43 @@ Support multilingue avec changement dynamique :
 
 ### Tests automatisés
 
-Le projet dispose d'une suite de tests unitaires complète :
+Le projet dispose d'une suite de tests complète couvrant les tests unitaires et E2E :
 
-**Coverage des tests :**
-- 47 tests passent avec succès
+#### Tests unitaires (Vitest)
+
+**Coverage :**
+- 47 tests unitaires passent avec succès
 - Store `cart` : 20 tests (addItem, removeItem, updateQuantity, clearCart, getters)
 - Store `user` : 22 tests (login, logout, register, updateProfile)
 - Store `restaurateur` : 5 tests (addRestaurateur)
 
-**Commandes de test :**
+**Commandes :**
 ```bash
-npm test              # Lancer tous les tests
+npm test              # Lancer les tests unitaires
 npm run test:watch    # Mode watch pour développement
 ```
+
+#### Tests End-to-End (Playwright)
+
+**Coverage :**
+- Tests de navigation et routing
+- Tests d'authentification (login/register)
+- Tests du parcours restaurant → plat
+- Tests du panier (ajout/suppression d'articles)
+
+**Commandes :**
+```bash
+npm run test:e2e          # Lancer les tests E2E
+npm run test:e2e:ui       # Interface graphique Playwright
+npm run test:e2e:headed   # Tests avec navigateur visible
+npm run test:e2e:report   # Voir le rapport des tests
+```
+
+**Configuration :**
+- Navigateur : Chromium
+- Mode headless par défaut
+- Screenshots automatiques en cas d'échec
+- Rapport HTML détaillé
 
 ## Roadmap
 
@@ -246,14 +265,15 @@ npm run test:watch    # Mode watch pour développement
 - Système de commandes
 - Internationalisation FR/EN
 - SSR et SEO optimisés
-- Tests unitaires (Vitest) 47 tests
+- Tests unitaires (Vitest) : 47 tests
+- Tests E2E (Playwright) : Navigation, Auth, Cart
 - Déploiement continu sur Vercel (déploiement automatique sur push master)
-- Monitoring des performances avec Vercel Speed Insights
+- Gestion d'erreurs réseau avec retry
 
 ### Prochaines étapes (v1.1)
-- Tests E2E (Playwright)
 - PWA avec mode offline
 - Optimisation des images (WebP/AVIF)
+- Tests E2E supplémentaires (commandes, profil)
 
 ### Futures fonctionnalités (v2.0)
 - Paiement en ligne

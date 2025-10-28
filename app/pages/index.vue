@@ -15,7 +15,7 @@
           </div>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <NuxtLink to="/restaurants" class="rounded-lg bg-[#3AF24B] text-black px-6 py-3 font-semibold hover:bg-black hover:text-white transition text-center">{{ t('nav.restaurants') }}</NuxtLink>
-            <button @click="logout" class="rounded-lg bg-[#3AF24B] text-black px-6 py-3 font-semibold hover:bg-black hover:text-white transition">{{ t('nav.logout') }}</button>
+            <button @click="logout" class="rounded-lg px-6 py-3 font-semibold bg-black text-white hover:bg-[#3AF24B] hover:text-black transition">{{ t('nav.logout') }}</button>
           </div>
         </div>
       </div>

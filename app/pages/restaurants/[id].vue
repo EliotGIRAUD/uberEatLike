@@ -3,7 +3,6 @@
     <div v-if="restaurantError || foodsError" class="max-w-7xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
       <div class="bg-red-50 border-2 border-red-200 rounded-xl p-8 sm:p-12 text-center mt-6">
-        <div class="text-red-400 text-5xl sm:text-6xl mb-4">⚠️</div>
         <p class="text-red-600 text-lg font-semibold mb-2">Erreur de chargement</p>
         <p class="text-red-500 text-sm mb-4">Impossible de charger les données. Vérifiez votre connexion.</p>
         <button @click="() => window.location.reload()" class="rounded-lg bg-red-600 text-white px-6 py-3 font-semibold hover:bg-red-700 transition">
