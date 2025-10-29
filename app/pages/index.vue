@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6 bg-[#F0FFF0]">
+  <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6 bg-[#F0FFF0] flex items-center justify-center">
     <ClientOnly>
       <div v-if="user.isLoggedIn && user.currentUser" class="w-full max-w-6xl mx-auto py-8">
         <!-- En-tête avec message de bienvenue -->
