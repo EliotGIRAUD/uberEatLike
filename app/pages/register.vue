@@ -2,25 +2,25 @@
   <div class="min-h-dvh flex items-center justify-center p-4">
     <form @submit.prevent="onSubmit" class="w-full max-w-md space-y-6 bg-white p-8 rounded-2xl shadow-xl">
       <div class="text-center">
-        <h1 class="text-3xl font-bold text-gray-900">Créer un compte</h1>
-        <p class="mt-2 text-sm text-gray-600">Rejoignez Gros<span class="text-[#3AF24B]">mino's</span> dès maintenant</p>
+        <h1 class="text-3xl font-bold text-gray-900">{{ t('auth.register') }}</h1>
+        <p class="mt-2 text-sm text-gray-600">{{ t('auth.registerSubtitle', { brand: "mino's" }) }}</p>
       </div>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Nom</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">{{ t('auth.name') }}</label>
           <input v-model="name" type="text" required class="w-full rounded-lg border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-[#3AF24B] transition" placeholder="Votre nom" />
         </div>
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">{{ t('auth.email') }}</label>
           <input v-model="email" type="email" required class="w-full rounded-lg border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-[#3AF24B] transition" placeholder="votre@email.com" />
         </div>
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Mot de passe</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">{{ t('auth.password') }}</label>
           <input v-model="password" type="password" required class="w-full rounded-lg border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-[#3AF24B] transition" placeholder="••••••••" />
         </div>
       </div>
-      <button type="submit" class="w-full rounded-lg bg-[#3AF24B] text-black py-3 font-semibold hover:bg-black hover:text-white transition shadow-md">Créer le compte</button>
-      <p class="text-center text-sm text-gray-600">Vous avez déjà un compte ? <NuxtLink class="font-semibold text-[#3AF24B] hover:underline" to="/login">Se connecter</NuxtLink></p>
+      <button type="submit" class="w-full rounded-lg bg-[#3AF24B] text-black py-3 font-semibold hover:bg-black hover:text-white transition shadow-md">{{ t('nav.register') }}</button>
+      <p class="text-center text-sm text-gray-600">{{ t('auth.hasAccount') }} <NuxtLink class="font-semibold text-[#3AF24B] hover:underline" to="/login">{{ t('nav.login') }}</NuxtLink></p>
     </form>
   </div>
 </template>

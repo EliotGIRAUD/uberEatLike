@@ -3,16 +3,16 @@
     <div class="max-w-5xl mx-auto">
       <div class="mb-6 sm:mb-8">
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-2 sm:mb-3">
-          Mes <span class="text-[#3AF24B]">Commandes</span>
+          {{ t('orders.title', { highlight: '' }) }}<span class="text-[#3AF24B]">{{ t('orders.highlight') }}</span>
         </h1>
-        <p class="text-base sm:text-lg text-gray-600">Suivez l'état de vos commandes en temps réel</p>
+        <p class="text-base sm:text-lg text-gray-600">{{ t('orders.subtitle') }}</p>
       </div>
       
       <div v-if="myOrders.length === 0" class="bg-white rounded-2xl shadow-md p-8 sm:p-12 text-center">
         <div class="text-gray-400 text-5xl sm:text-6xl mb-4">📦</div>
-        <p class="text-gray-600 text-base sm:text-lg mb-4">Vous n'avez pas encore passé de commande</p>
+        <p class="text-gray-600 text-base sm:text-lg mb-4">{{ t('orders.empty') }}</p>
         <NuxtLink to="/restaurants" class="inline-block rounded-lg bg-[#3AF24B] text-black px-6 py-3 font-semibold hover:bg-black hover:text-white transition">
-          Découvrir les restaurants
+          {{ t('orders.discover') }}
         </NuxtLink>
       </div>
 
@@ -20,11 +20,11 @@
         <div v-for="order in myOrders" :key="order.id" class="bg-white rounded-xl shadow-md p-4 sm:p-6">
           <div class="flex flex-col sm:flex-row sm:items-start justify-between mb-4 gap-2 sm:gap-0">
             <div>
-              <h3 class="text-base sm:text-lg font-bold text-gray-900">Commande #{{ order.id }}</h3>
+              <h3 class="text-base sm:text-lg font-bold text-gray-900">{{ t('orders.orderNumber', { id: order.id }) }}</h3>
               <p class="text-xs sm:text-sm text-gray-600">{{ formatDate(order.createdAt) }}</p>
             </div>
             <span :class="statusClasses[order.status]" class="px-3 py-1 rounded-full text-xs sm:text-sm font-semibold w-fit">
-              {{ statusLabels[order.status] }}
+              {{ t(`orders.status.${order.status}`) }}
             </span>
           </div>
 
@@ -42,7 +42,7 @@
           </div>
 
           <div class="border-t mt-4 pt-4 flex items-center justify-between">
-            <span class="text-sm sm:text-base text-gray-600 font-medium">Total</span>
+            <span class="text-sm sm:text-base text-gray-600 font-medium">{{ t('orders.total') }}</span>
             <span class="text-xl sm:text-2xl font-bold text-gray-900">{{ order.totalPrice.toFixed(2) }} €</span>
           </div>
         </div>
@@ -60,13 +60,14 @@ definePageMeta({
   middleware: ['client']
 })
 
+const { t } = useI18n()
 const userStore = useUserStore()
 const orderStore = useOrderStore()
 
 useHead({
-  title: 'Mes Commandes - Grosmino\'s',
+  title: t('seo.orders.title'),
   meta: [
-    { name: 'description', content: 'Suivez l\'état de vos commandes en temps réel.' },
+    { name: 'description', content: t('seo.orders.description') },
     { name: 'robots', content: 'noindex, nofollow' },
   ],
 })
@@ -77,14 +78,6 @@ const myOrders = computed(() => {
     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
 })
-
-const statusLabels = {
-  pending: 'En attente',
-  confirmed: 'Confirmée',
-  preparing: 'En préparation',
-  delivered: 'Livrée',
-  cancelled: 'Annulée',
-}
 
 const statusClasses = {
   pending: 'bg-yellow-100 text-yellow-800',

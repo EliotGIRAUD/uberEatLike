@@ -80,6 +80,52 @@
     "orderSuccess": "Commande passée !",
     "orderSuccessMessage": "Votre commande #{id} a été créée avec succès"
   },
+  "orders": {
+    "title": "Mes {highlight}",
+    "highlight": "Commandes",
+    "subtitle": "Suivez l'état de vos commandes en temps réel",
+    "empty": "Vous n'avez pas encore passé de commande",
+    "discover": "Découvrir les restaurants",
+    "orderNumber": "Commande #{id}",
+    "total": "Total",
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmée",
+      "preparing": "En préparation",
+      "delivered": "Livrée",
+      "cancelled": "Annulée"
+    }
+  },
+  "profile": {
+    "title": "Mon profil",
+    "subtitle": "Gérez vos informations personnelles",
+    "fullName": "Nom complet",
+    "fullNamePlaceholder": "Votre nom complet",
+    "changePassword": "Modifier le mot de passe",
+    "changePasswordHint": "Laissez vide si vous ne souhaitez pas changer votre mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "save": "Enregistrer les modifications",
+    "cancel": "Annuler",
+    "accountInfo": "Informations du compte",
+    "status": "Status",
+    "statusConnected": "Connecté",
+    "statusDisconnected": "Déconnecté",
+    "currentRole": "Rôle actuel",
+    "roles": {
+      "CLIENT": "Client",
+      "RESTAURATEUR": "Restaurateur",
+      "ADMIN": "Administrateur"
+    },
+    "cancelled": "Annulé",
+    "cancelledMessage": "Les modifications ont été annulées",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 3 caractères",
+    "updateSuccess": "Profil mis à jour",
+    "updateSuccessMessage": "Vos informations ont été enregistrées avec succès",
+    "updateError": "Erreur",
+    "emailTaken": "Cet email est déjà utilisé par un autre utilisateur"
+  },
   "auth": {
     "login": "Connexion",
     "loginSubtitle": "Accédez à votre compte Gros{brand}",
@@ -142,6 +188,14 @@
     "register": {
       "title": "Inscription - Grosmino's",
       "description": "Créez votre compte Grosmino's et commencez à commander dès maintenant."
+    },
+    "orders": {
+      "title": "Mes Commandes - Grosmino's",
+      "description": "Suivez l'état de vos commandes en temps réel."
+    },
+    "profile": {
+      "title": "Mon Profil - Grosmino's",
+      "description": "Gérez vos informations personnelles."
     }
   }
 }

@@ -80,6 +80,52 @@
     "orderSuccess": "Order placed!",
     "orderSuccessMessage": "Your order #{id} has been successfully created"
   },
+  "orders": {
+    "title": "My {highlight}",
+    "highlight": "Orders",
+    "subtitle": "Track the status of your orders in real time",
+    "empty": "You haven't placed any orders yet",
+    "discover": "Discover restaurants",
+    "orderNumber": "Order #{id}",
+    "total": "Total",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your personal information",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "Your full name",
+    "changePassword": "Change password",
+    "changePasswordHint": "Leave blank if you don't want to change your password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "save": "Save changes",
+    "cancel": "Cancel",
+    "accountInfo": "Account information",
+    "status": "Status",
+    "statusConnected": "Connected",
+    "statusDisconnected": "Disconnected",
+    "currentRole": "Current role",
+    "roles": {
+      "CLIENT": "Client",
+      "RESTAURATEUR": "Restaurant Owner",
+      "ADMIN": "Administrator"
+    },
+    "cancelled": "Cancelled",
+    "cancelledMessage": "Changes have been cancelled",
+    "passwordMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 3 characters long",
+    "updateSuccess": "Profile updated",
+    "updateSuccessMessage": "Your information has been successfully saved",
+    "updateError": "Error",
+    "emailTaken": "This email is already used by another user"
+  },
   "auth": {
     "login": "Login",
     "loginSubtitle": "Access your Gros{brand} account",
@@ -142,6 +188,14 @@
     "register": {
       "title": "Sign Up - Grosmino's",
       "description": "Create your Grosmino's account and start ordering now."
+    },
+    "orders": {
+      "title": "My Orders - Grosmino's",
+      "description": "Track the status of your orders in real time."
+    },
+    "profile": {
+      "title": "My Profile - Grosmino's",
+      "description": "Manage your personal information."
     }
   }
 }

@@ -3,8 +3,8 @@
     <div class="w-full max-w-2xl space-y-6 bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-xl">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Mon profil</h1>
-          <p class="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">Gérez vos informations personnelles</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ t('profile.title') }}</h1>
+          <p class="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">{{ t('profile.subtitle') }}</p>
         </div>
         <BackButton />
       </div>
@@ -12,18 +12,18 @@
       <form @submit.prevent="onSubmit" class="space-y-4 sm:space-y-6">
         <div class="grid grid-cols-1 gap-4">
           <div>
-            <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Nom complet</label>
+            <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">{{ t('profile.fullName') }}</label>
             <input 
               v-model="form.name" 
               type="text" 
               required 
               class="w-full rounded-lg border-2 border-gray-200 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base focus:outline-none focus:border-[#3AF24B] transition" 
-              placeholder="Votre nom complet" 
+              :placeholder="t('profile.fullNamePlaceholder')" 
             />
           </div>
 
           <div>
-            <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Email</label>
+            <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">{{ t('auth.email') }}</label>
             <input 
               v-model="form.email" 
               type="email" 
@@ -34,26 +34,26 @@
           </div>
 
           <div>
-            <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Rôle</label>
+            <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">{{ t('auth.role') }}</label>
             <select 
               v-model="form.role" 
               required 
               class="w-full rounded-lg border-2 border-gray-200 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base focus:outline-none focus:border-[#3AF24B] transition bg-white"
             >
-              <option value="CLIENT">Client</option>
-              <option value="RESTAURATEUR">Restaurateur</option>
-              <option value="ADMIN">Administrateur</option>
+              <option value="CLIENT">{{ t('profile.roles.CLIENT') }}</option>
+              <option value="RESTAURATEUR">{{ t('profile.roles.RESTAURATEUR') }}</option>
+              <option value="ADMIN">{{ t('profile.roles.ADMIN') }}</option>
             </select>
           </div>
         </div>
 
         <div class="border-t pt-4 sm:pt-6">
-          <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-4">Modifier le mot de passe</h3>
-          <p class="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">Laissez vide si vous ne souhaitez pas changer votre mot de passe</p>
+          <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-4">{{ t('profile.changePassword') }}</h3>
+          <p class="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">{{ t('profile.changePasswordHint') }}</p>
           
           <div class="space-y-4">
             <div>
-              <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Nouveau mot de passe</label>
+              <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">{{ t('profile.newPassword') }}</label>
               <input 
                 v-model="form.newPassword" 
                 type="password" 
@@ -62,7 +62,7 @@
               />
             </div>
             <div>
-              <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Confirmer le mot de passe</label>
+              <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">{{ t('profile.confirmPassword') }}</label>
               <input 
                 v-model="form.confirmPassword" 
                 type="password" 
@@ -78,24 +78,24 @@
             type="submit" 
             class="flex-1 rounded-lg bg-black text-white py-2.5 sm:py-3 text-sm sm:text-base font-semibold hover:bg-[#3AF24B] hover:text-black transition shadow-md"
           >
-            Enregistrer les modifications
+            {{ t('profile.save') }}
           </button>
           <button 
             type="button" 
             @click="resetForm"
             class="rounded-lg border-2 border-gray-200 text-gray-700 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold hover:border-gray-400 transition"
           >
-            Annuler
+            {{ t('profile.cancel') }}
           </button>
         </div>
       </form>
 
       <div class="border-t pt-4 sm:pt-6">
         <div class="bg-gray-50 p-3 sm:p-4 rounded-lg">
-          <h3 class="text-xs sm:text-sm font-semibold text-gray-700 mb-2">Informations du compte</h3>
+          <h3 class="text-xs sm:text-sm font-semibold text-gray-700 mb-2">{{ t('profile.accountInfo') }}</h3>
           <div class="text-xs sm:text-sm text-gray-600 space-y-1">
-            <p><span class="font-medium">Status:</span> {{ userStore.isLoggedIn ? 'Connecté' : 'Déconnecté' }}</p>
-            <p><span class="font-medium">Rôle actuel:</span> {{ getRoleLabel(userStore.currentUser?.role) }}</p>
+            <p><span class="font-medium">{{ t('profile.status') }}:</span> {{ userStore.isLoggedIn ? t('profile.statusConnected') : t('profile.statusDisconnected') }}</p>
+            <p><span class="font-medium">{{ t('profile.currentRole') }}:</span> {{ getRoleLabel(userStore.currentUser?.role) }}</p>
           </div>
         </div>
       </div>
@@ -113,13 +113,14 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const { t } = useI18n()
 const userStore = useUserStore()
 const toast = useToast()
 
 useHead({
-  title: 'Mon Profil - Grosmino\'s',
+  title: t('seo.profile.title'),
   meta: [
-    { name: 'description', content: 'Gérez vos informations personnelles.' },
+    { name: 'description', content: t('seo.profile.description') },
     { name: 'robots', content: 'noindex, nofollow' },
   ],
 })
@@ -145,36 +146,31 @@ function initForm() {
 function resetForm() {
   initForm()
   toast.info({
-    title: 'Annulé',
-    message: 'Les modifications ont été annulées',
+    title: t('profile.cancelled'),
+    message: t('profile.cancelledMessage'),
     timeout: 2000,
   })
 }
 
 function getRoleLabel(role?: UserRole): string {
   if (!role) return ''
-  const labels: Record<UserRole, string> = {
-    CLIENT: 'Client',
-    RESTAURATEUR: 'Restaurateur',
-    ADMIN: 'Administrateur',
-  }
-  return labels[role] || role
+  return t(`profile.roles.${role}`)
 }
 
 function onSubmit() {
   if (form.newPassword || form.confirmPassword) {
     if (form.newPassword !== form.confirmPassword) {
       toast.error({
-        title: 'Erreur',
-        message: 'Les mots de passe ne correspondent pas',
+        title: t('profile.updateError'),
+        message: t('profile.passwordMismatch'),
         timeout: 3000,
       })
       return
     }
     if (form.newPassword.length < 3) {
       toast.error({
-        title: 'Erreur',
-        message: 'Le mot de passe doit contenir au moins 3 caractères',
+        title: t('profile.updateError'),
+        message: t('profile.passwordTooShort'),
         timeout: 3000,
       })
       return
@@ -197,16 +193,16 @@ function onSubmit() {
 
   if (success) {
     toast.success({
-      title: 'Profil mis à jour',
-      message: 'Vos informations ont été enregistrées avec succès',
+      title: t('profile.updateSuccess'),
+      message: t('profile.updateSuccessMessage'),
       timeout: 3000,
     })
     form.newPassword = ''
     form.confirmPassword = ''
   } else {
     toast.error({
-      title: 'Erreur',
-      message: 'Cet email est déjà utilisé par un autre utilisateur',
+      title: t('profile.updateError'),
+      message: t('profile.emailTaken'),
       timeout: 3000,
     })
   }
