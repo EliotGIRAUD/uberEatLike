@@ -7,7 +7,6 @@
         </h1>
         <p class="text-lg text-gray-600 max-w-2xl mb-6">{{ t('restaurants.subtitle') }}</p>
         
-        <!-- Barre de recherche -->
         <div class="relative max-w-2xl">
           <div class="relative">
             <input v-model="searchQuery" type="text" :placeholder="t('restaurants.search')" class="w-full rounded-xl border-2 border-gray-200 pl-12 pr-12 py-4 text-lg focus:outline-none focus:border-[#3AF24B] transition shadow-sm"/>

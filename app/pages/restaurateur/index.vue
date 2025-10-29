@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-dvh p-6">
     <div class="max-w-7xl mx-auto">
-      <!-- En-tête -->
       <div class="bg-white p-6 rounded-2xl shadow-lg mb-6">
         <div class="flex items-center justify-between">
           <div>
@@ -37,7 +36,6 @@
         </div>
       </div>
 
-      <!-- Section Profil du Restaurant -->
       <div v-if="activeTab === 'profile'" class="bg-white rounded-2xl shadow-lg p-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-6">Informations du Restaurant</h2>
         <form @submit.prevent="updateRestaurantInfo" class="space-y-4">
@@ -111,7 +109,6 @@
         </form>
       </div>
 
-      <!-- Section Plats -->
       <div v-if="activeTab === 'foods'">
         <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
           <div class="flex items-center justify-between mb-6">
@@ -159,7 +156,6 @@
         </div>
       </div>
 
-      <!-- Section Commandes -->
       <div v-if="activeTab === 'orders'" class="bg-white rounded-2xl shadow-lg overflow-hidden">
         <div class="p-6 border-b">
           <h2 class="text-2xl font-bold text-gray-900">Commandes du Restaurant ({{ restaurantOrders.length }})</h2>
@@ -245,7 +241,6 @@
       </div>
     </div>
 
-    <!-- Modal Ajout/Modification Plat -->
     <div v-if="showAddFoodModal || showEditFoodModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" @click.self="closeFoodModals">
       <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div class="p-6 border-b sticky top-0 bg-white">
@@ -323,7 +318,6 @@
       </div>
     </div>
 
-    <!-- Modal Confirmation Suppression Plat -->
     <div v-if="showDeleteFoodModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" @click.self="showDeleteFoodModal = false">
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Confirmer la suppression</h2>
@@ -347,7 +341,6 @@
       </div>
     </div>
 
-    <!-- Modal Confirmation Annulation Commande -->
     <div v-if="showCancelOrderModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" @click.self="showCancelOrderModal = false">
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Confirmer l'annulation</h2>
@@ -371,7 +364,6 @@
       </div>
     </div>
 
-    <!-- Modal Confirmation Suppression Commande -->
     <div v-if="showDeleteOrderModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" @click.self="showDeleteOrderModal = false">
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Confirmer la suppression</h2>

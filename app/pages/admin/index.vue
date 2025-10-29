@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-dvh p-6">
     <div class="max-w-7xl mx-auto">
-      <!-- En-tête -->
       <div class="bg-white p-6 rounded-2xl shadow-lg mb-6">
         <div class="flex items-center justify-between">
           <div>
@@ -17,7 +16,6 @@
         </div>
       </div>
 
-      <!-- Statistiques -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div class="bg-white p-6 rounded-2xl shadow-lg">
           <div class="flex items-center justify-between">
@@ -52,7 +50,6 @@
         </div>
       </div>
 
-      <!-- Liste des restaurateurs -->
       <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
         <div class="p-6 border-b">
           <h2 class="text-xl font-bold text-gray-900">Liste des restaurateurs</h2>
@@ -110,7 +107,6 @@
       </div>
     </div>
 
-    <!-- Modal d'ajout/modification -->
     <div v-if="showAddModal || showEditModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" @click.self="closeModals">
       <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div class="p-6 border-b sticky top-0 bg-white">
@@ -207,7 +203,6 @@
       </div>
     </div>
 
-    <!-- Modal de confirmation de suppression -->
     <div v-if="showDeleteModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" @click.self="showDeleteModal = false">
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Confirmer la suppression</h2>
