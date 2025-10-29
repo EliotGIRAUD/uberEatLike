@@ -27,7 +27,7 @@
           </div>
 
           <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <NuxtLink to="/restaurants" class="bg-gradient-to-br from-[#3AF24B] to-emerald-400 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 group">
+            <NuxtLink to="/restaurants" class="bg-gradient-to-br from-[#3AF24B] to-emerald-400 hover:from-black hover:to-gray-800 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 group">
               <div class="text-white">
                 <h3 class="text-2xl font-bold mb-2">{{ t('nav.restaurants') }}</h3>
                 <p class="text-white/80 text-sm mb-4">{{ t('home.restaurantsDesc') || 'Découvrez nos restaurants partenaires' }}</p>
@@ -38,7 +38,7 @@
               </div>
             </NuxtLink>
 
-            <NuxtLink to="/orders" class="bg-gradient-to-br from-black to-gray-800 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 group">
+            <NuxtLink to="/orders" class="bg-gradient-to-br from-black to-gray-800 hover:from-[#3AF24B] hover:to-emerald-400 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 group">
               <div class="text-white">
                 <h3 class="text-2xl font-bold mb-2">{{ t('nav.orders') || 'Mes commandes' }}</h3>
                 <p class="text-white/80 text-sm mb-4">{{ t('home.ordersDesc') || 'Suivez vos commandes en cours' }}</p>
@@ -49,7 +49,7 @@
               </div>
             </NuxtLink>
 
-            <NuxtLink to="/cart" class="bg-gradient-to-br from-black to-gray-800 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 group">
+            <NuxtLink to="/cart" class="bg-gradient-to-br from-black to-gray-800 hover:from-[#3AF24B] hover:to-emerald-400 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 group">
               <div class="text-white">
                 <h3 class="text-2xl font-bold mb-2">{{ t('nav.cart') || 'Mon panier' }}</h3>
                 <p class="text-white/80 text-sm mb-4">{{ t('home.cartDesc') || 'Finalisez votre commande' }}</p>
@@ -60,7 +60,7 @@
               </div>
             </NuxtLink>
 
-            <NuxtLink to="/profile" class="bg-gradient-to-br from-[#3AF24B] to-emerald-400 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 group">
+            <NuxtLink to="/profile" class="bg-gradient-to-br from-[#3AF24B] to-emerald-400 hover:from-black hover:to-gray-800 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 group">
               <div class="text-white">
                 <h3 class="text-2xl font-bold mb-2">{{ t('nav.profile') || 'Mon profil' }}</h3>
                 <p class="text-white/80 text-sm mb-4">{{ t('home.profileDesc') || 'Gérez vos informations' }}</p>
