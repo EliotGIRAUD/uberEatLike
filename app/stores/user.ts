@@ -24,6 +24,23 @@ export const useUserStore = defineStore('user', {
     isLoggedIn: false,
   }),
   actions: {
+    async initDefaultAdmin() {
+      try {
+        const response = await fetch('/admin.json')
+        if (response.ok) {
+          const adminData: AppUser = await response.json()
+          const adminIndex = this.users.findIndex(u => u.email.toLowerCase() === adminData.email.toLowerCase())
+          if (adminIndex !== -1) {
+            // Mettre à jour l'admin existant avec les nouvelles données
+            this.users[adminIndex] = { ...adminData }
+          } else {
+            this.users.push(adminData)
+          }
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement de l\'admin par défaut:', error)
+      }
+    },
     registerOrLogin(payload: AppUser) {
       const existing = this.users.find(u => u.email.toLowerCase() === payload.email.toLowerCase())
       if (!existing) {

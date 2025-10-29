@@ -18,14 +18,6 @@
           <label class="block text-sm font-semibold text-gray-700 mb-1">Mot de passe</label>
           <input v-model="password" type="password" required class="w-full rounded-lg border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-[#3AF24B] transition" placeholder="••••••••" />
         </div>
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1">Rôle</label>
-          <select v-model="role" required class="w-full rounded-lg border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-[#3AF24B] transition bg-white">
-            <option value="CLIENT">Client</option>
-            <option value="RESTAURATEUR">Restaurateur</option>
-            <option value="ADMIN">Admin</option>
-          </select>
-        </div>
       </div>
       <button type="submit" class="w-full rounded-lg bg-[#3AF24B] text-black py-3 font-semibold hover:bg-black hover:text-white transition shadow-md">Créer le compte</button>
       <p class="text-center text-sm text-gray-600">Vous avez déjà un compte ? <NuxtLink class="font-semibold text-[#3AF24B] hover:underline" to="/login">Se connecter</NuxtLink></p>
@@ -59,6 +51,8 @@ useHead({
 const name = ref('')
 const email = ref('')
 const password = ref('')
+// Le rôle est fixé à CLIENT pour l'inscription publique
+// Seul l'admin peut créer des comptes RESTAURATEUR via le back office
 const role = ref<UserRole>('CLIENT')
 
 function onSubmit() {
@@ -68,11 +62,8 @@ function onSubmit() {
     message: t('auth.registerWelcome', { name: name.value }),
     timeout: 2000,
   })
-  if (role.value === 'CLIENT') {
-    router.push('/restaurants')
-  } else {
-    router.push('/')
-  }
+  // Redirection vers la page des restaurants après inscription
+  router.push('/restaurants')
 }
 </script>
 

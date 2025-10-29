@@ -290,13 +290,57 @@
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1">URL de l'image</label>
-            <input 
-              v-model="foodForm.imageUrl" 
-              type="text" 
-              class="w-full rounded-lg border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-[#3AF24B] transition" 
-              placeholder="/images/foods/common.jpg"
-            />
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Image du plat</label>
+            
+            <!-- Preview de l'image -->
+            <div v-if="foodForm.imageUrl || imagePreview" class="mb-4 relative inline-block">
+              <img 
+                :src="imagePreview || foodForm.imageUrl" 
+                alt="Aperçu" 
+                class="w-48 h-32 object-cover rounded-lg border-2 border-gray-200"
+              />
+              <button 
+                type="button"
+                @click="clearImage"
+                class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-700 transition"
+              >
+                ×
+              </button>
+            </div>
+
+            <!-- Choix entre fichier et URL -->
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Importer un fichier</label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  @change="handleImageUpload"
+                  ref="fileInput"
+                  class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#3AF24B] file:text-black hover:file:bg-black hover:file:text-white file:transition file:cursor-pointer"
+                />
+              </div>
+              
+              <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-xs">
+                  <span class="px-2 bg-white text-gray-500">ou</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">URL de l'image</label>
+                <input 
+                  v-model="foodForm.imageUrl" 
+                  type="text" 
+                  @input="clearFileInput"
+                  class="w-full rounded-lg border-2 border-gray-200 px-4 py-3 focus:outline-none focus:border-[#3AF24B] transition text-sm" 
+                  placeholder="/images/foods/common.jpg"
+                />
+              </div>
+            </div>
           </div>
 
           <div class="flex gap-4 pt-4">
@@ -417,16 +461,22 @@ useHead({
 
 onMounted(() => {
   initProfileForm()
+  setTimeout(() => {
+    forceUpdate.value++
+  }, 100)
 })
 
 const activeTab = ref<'profile' | 'foods' | 'orders'>('profile')
+const forceUpdate = ref(0)
 
 const restaurateurInfo = computed(() => {
+  forceUpdate.value
   if (!userStore.currentUser?.restaurateurId) return null
   return restaurateurStore.getRestaurateurById(userStore.currentUser.restaurateurId)
 })
 
 const myFoods = computed(() => {
+  forceUpdate.value
   if (!userStore.currentUser?.restaurateurId) return []
   return foodStore.getFoodsByRestaurant(userStore.currentUser.restaurateurId)
 })
@@ -506,6 +556,8 @@ const showEditFoodModal = ref(false)
 const showDeleteFoodModal = ref(false)
 const foodToEdit = ref<Food | null>(null)
 const foodToDelete = ref<Food | null>(null)
+const fileInput = ref<HTMLInputElement | null>(null)
+const imagePreview = ref<string>('')
 
 const foodForm = reactive({
   name: '',
@@ -521,6 +573,69 @@ function resetFoodForm() {
   foodForm.grosseDescription = ''
   foodForm.price = 0
   foodForm.imageUrl = ''
+  imagePreview.value = ''
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
+}
+
+function handleImageUpload(event: Event) {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  
+  if (!file) return
+  
+  // Vérifier que c'est bien une image
+  if (!file.type.startsWith('image/')) {
+    toast.error({
+      title: 'Erreur',
+      message: 'Veuillez sélectionner un fichier image',
+      timeout: 3000,
+    })
+    return
+  }
+  
+  // Vérifier la taille du fichier (max 5MB)
+  const maxSize = 5 * 1024 * 1024 // 5MB
+  if (file.size > maxSize) {
+    toast.error({
+      title: 'Erreur',
+      message: 'L\'image ne doit pas dépasser 5 Mo',
+      timeout: 3000,
+    })
+    return
+  }
+  
+  // Convertir l'image en base64
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const result = e.target?.result as string
+    imagePreview.value = result
+    foodForm.imageUrl = result
+  }
+  reader.onerror = () => {
+    toast.error({
+      title: 'Erreur',
+      message: 'Erreur lors de la lecture du fichier',
+      timeout: 3000,
+    })
+  }
+  reader.readAsDataURL(file)
+}
+
+function clearImage() {
+  foodForm.imageUrl = ''
+  imagePreview.value = ''
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
+}
+
+function clearFileInput() {
+  imagePreview.value = ''
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
 }
 
 function closeFoodModals() {
@@ -537,6 +652,10 @@ function editFood(food: Food) {
   foodForm.grosseDescription = food.grosseDescription || ''
   foodForm.price = food.price
   foodForm.imageUrl = food.imageUrl || ''
+  imagePreview.value = '' // On utilise directement imageUrl pour l'édition
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
   showEditFoodModal.value = true
 }
 
