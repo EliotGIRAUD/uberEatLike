@@ -10,6 +10,7 @@
     "home": "Accueil",
     "restaurants": "Restaurants",
     "myOrders": "Mes commandes",
+    "orders": "Mes commandes",
     "cart": "Panier",
     "backOffice": "Back Office",
     "myRestaurant": "Mon Restaurant",
@@ -21,7 +22,17 @@
   "home": {
     "welcome": "Bienvenue sur Gros{brand}",
     "subtitle": "Découvrez les meilleurs restaurants et commandez vos plats préférés",
-    "role": "Rôle"
+    "role": "Rôle",
+    "welcomeBack": "Bon retour",
+    "dashboardSubtitle": "Votre tableau de bord personnel",
+    "restaurantsDesc": "Découvrez nos restaurants partenaires",
+    "ordersDesc": "Suivez vos commandes en cours",
+    "cartDesc": "Finalisez votre commande",
+    "profileDesc": "Gérez vos informations",
+    "explore": "Explorer",
+    "view": "Voir",
+    "open": "Ouvrir",
+    "manage": "Gérer"
   },
   "restaurants": {
     "title": "Nos {highlight}",
