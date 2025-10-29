@@ -64,7 +64,7 @@ const userStore = useUserStore()
 const orderStore = useOrderStore()
 
 useHead({
-  title: 'Mes Commandes - Grosmino\'s',
+  title: 'Mes Commando's - Grosmino\'s',
   meta: [
     { name: 'description', content: 'Suivez l\'état de vos commandes en temps réel.' },
     { name: 'robots', content: 'noindex, nofollow' },

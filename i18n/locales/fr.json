@@ -1,94 +1,94 @@
 {
   "app": {
     "name": "Grosmino's",
-    "title": "Grosmino's - Livraison de repas à domicile"
+    "title": "Grosmino's - Livraison de repas à domicilo's"
   },
   "splash": {
     "tagline": "Livraison de repas à domicile"
   },
   "nav": {
-    "home": "Accueil",
-    "restaurants": "Restaurants",
-    "myOrders": "Mes commandes",
-    "orders": "Mes commandes",
-    "cart": "Panier",
-    "backOffice": "Back Office",
-    "myRestaurant": "Mon Restaurant",
-    "profile": "Profil",
-    "logout": "Déconnexion",
-    "login": "Se connecter",
-    "register": "Créer un compte"
+    "home": "Accueilo's",
+    "restaurants": "Restauranto's",
+    "myOrders": "Mes commando's",
+    "orders": "Mes commando's",
+    "cart": "Panio's",
+    "backOffice": "Back Officeo's",
+    "myRestaurant": "Mon Restauranto's",
+    "profile": "Profilo's",
+    "logout": "Déconnexio's",
+    "login": "Se connecto's",
+    "register": "Créer un compto's"
   },
   "home": {
     "welcome": "Bienvenue sur Gros{brand}",
     "subtitle": "Découvrez les meilleurs restaurants et commandez vos plats préférés",
     "role": "Rôle",
     "welcomeBack": "Bon retour",
-    "dashboardSubtitle": "Votre tableau de bord personnel",
-    "restaurantsDesc": "Découvrez nos restaurants partenaires",
-    "ordersDesc": "Suivez vos commandes en cours",
-    "cartDesc": "Finalisez votre commande",
+    "dashboardSubtitle": "Votre tableau de bordo's personnel",
+    "restaurantsDesc": "Découvrez nos restauranto's partenaires",
+    "ordersDesc": "Suivez vos commando's en cours",
+    "cartDesc": "Finalisez votre commando's",
     "profileDesc": "Gérez vos informations",
     "explore": "Explorer",
-    "view": "Voir",
-    "open": "Ouvrir",
-    "manage": "Gérer"
+    "view": "Voiro's",
+    "open": "Ouvriro's",
+    "manage": "Géro's"
   },
   "restaurants": {
     "title": "Nos {highlight}",
-    "highlight": "Restaurants",
-    "subtitle": "Découvrez une sélection exceptionnelle de restaurants partenaires. De la cuisine traditionnelle aux saveurs du monde, trouvez votre bonheur !",
-    "search": "Rechercher un restaurant, une cuisine, une ville...",
-    "found": "{count} restaurant trouvé | {count} restaurants trouvés",
+    "highlight": "Restauranto's",
+    "subtitle": "Découvrez une sélection exceptionnelle de restauranto's partenaires. De la cuisine traditionnelle aux saveurs du mondo's, trouvez votre bonheur !",
+    "search": "Rechercher un restauranto's, une cuisine, une ville...",
+    "found": "{count} restauranto's trouvé | {count} restauranto's trouvés",
     "noResults": "Aucun résultat pour \"{query}\"",
     "noResultsHint": "Essayez avec d'autres mots-clés",
-    "showAll": "Afficher tous les restaurants",
-    "noRestaurants": "Aucun restaurant disponible pour le moment",
-    "noRestaurantsHint": "Revenez bientôt pour découvrir nos restaurants partenaires !",
-    "notFound": "Restaurant introuvable.",
-    "viewMenu": "Voir le menu →",
+    "showAll": "Afficher tous les restauranto's",
+    "noRestaurants": "Aucun restauranto's disponible pour le moment",
+    "noRestaurantsHint": "Revenez bientô's pour découvrir nos restauranto's partenaires !",
+    "notFound": "Restauranto's introuvable.",
+    "viewMenu": "Voiro's le menu →",
     "ourMenu": "Notre {highlight}",
-    "menuHighlight": "Menu",
-    "menuSubtitle": "Parcourez nos délicieux plats et ajoutez vos favoris au panier",
-    "noFoods": "Aucun plat disponible pour le moment",
-    "noFoodsHint": "Le restaurant n'a pas encore ajouté de plats à sa carte"
+    "menuHighlight": "Menuo's",
+    "menuSubtitle": "Parcourez nos délicieux plato's et ajoutez vos favoris au panio's",
+    "noFoods": "Aucun plato's disponible pour le moment",
+    "noFoodsHint": "Le restauranto's n'a pas encore ajouté de plato's à sa carte"
   },
   "foods": {
-    "notFound": "Plat introuvable.",
-    "description": "Description",
-    "addToCart": "Ajouter au panier"
+    "notFound": "Plato's introuvable.",
+    "description": "Descriptio's",
+    "addToCart": "Ajouter au panio's"
   },
   "cart": {
     "title": "Mon {highlight}",
-    "highlight": "Panier",
+    "highlight": "Panio's",
     "subtitle": "Finalisez votre commande et régalez-vous !",
-    "empty": "Votre panier est vide",
-    "discover": "Découvrir les restaurants",
+    "empty": "Votre panio's est vide",
+    "discover": "Découvrir les restauranto's",
     "total": "Total",
-    "clear": "Vider le panier",
+    "clear": "Vider le panio's",
     "order": "Commander",
-    "cleared": "Panier vidé",
-    "clearedMessage": "Tous les articles ont été retirés",
-    "itemRemoved": "Article retiré",
-    "itemRemovedMessage": "L'article a été retiré du panier",
-    "itemAdded": "Ajouté au panier !",
-    "itemAddedMessage": "{name} a été ajouté à votre panier",
+    "cleared": "Panio's vido's",
+    "clearedMessage": "Tous les articles ont été retiréo's",
+    "itemRemoved": "Article retiro's",
+    "itemRemovedMessage": "L'article a été retiré du panio's",
+    "itemAdded": "Ajouté au panio's !",
+    "itemAddedMessage": "{name} a été ajouté à votre panio's",
     "error": "Erreur",
     "loginRequired": "Vous devez être connecté pour commander",
-    "emptyWarning": "Panier vide",
-    "emptyWarningMessage": "Ajoutez des articles avant de commander",
-    "orderSuccess": "Commande passée !",
-    "orderSuccessMessage": "Votre commande #{id} a été créée avec succès"
+    "emptyWarning": "Panio's vide",
+    "emptyWarningMessage": "Ajoutez des articles avant de commando's",
+    "orderSuccess": "Commando's passo's !",
+    "orderSuccessMessage": "Votre commando's #{id} a été crééo's avec succo's"
   },
   "auth": {
-    "login": "Connexion",
-    "loginSubtitle": "Accédez à votre compte Gros{brand}",
-    "register": "Inscription",
-    "registerSubtitle": "Créez votre compte Gros{brand}",
+    "login": "Connexio's",
+    "loginSubtitle": "Accédez à votre compto's Gros{brand}",
+    "register": "Inscriptio's",
+    "registerSubtitle": "Créez votre compto's Gros{brand}",
     "email": "Email",
-    "password": "Mot de passe",
+    "password": "Mot de passo's",
     "name": "Nom",
-    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPassword": "Confirmer le mot de passo's",
     "role": "Rôle",
     "client": "Client",
     "restaurateur": "Restaurateur",
@@ -117,31 +117,31 @@
   "seo": {
     "home": {
       "title": "Grosmino's - Livraison de repas à domicile",
-      "description": "Découvrez les meilleurs restaurants et commandez vos plats préférés en ligne avec Grosmino's. Livraison rapide et simple."
+      "description": "Découvrez les meilleurs restauranto's et commandez vos plato's préférés en ligne avec Grosmino's. Livraison rapide et simple."
     },
     "restaurants": {
-      "title": "Nos Restaurants - Grosmino's",
-      "description": "Explorez notre sélection de restaurants partenaires. Cuisine française, italienne, asiatique et plus encore. Commandez maintenant !"
+      "title": "Nos Restauranto's - Grosmino's",
+      "description": "Explorez notre sélection de restauranto's partenaires. Cuisine française, italienne, asiatique et plus encore. Commandez maintenant !"
     },
     "restaurant": {
-      "title": "{name} - Menu et Plats - Grosmino's",
-      "description": "Découvrez le menu de {name}. {cuisine} - {address}. Commandez en ligne maintenant !"
+      "title": "{name} - Menuo's et Plato's - Grosmino's",
+      "description": "Découvrez le menuo's de {name}. {cuisine} - {address}. Commandez en ligne maintenant !"
     },
     "food": {
-      "title": "{name} - {price}€ - Grosmino's",
+      "title": "{name} - {price}€ - Grosmino'so's",
       "description": "{description}"
     },
     "cart": {
-      "title": "Mon Panier - Grosmino's",
-      "description": "Finalisez votre commande et profitez de vos plats préférés livrés à domicile."
+      "title": "Mon Panio's - Grosmino'so's",
+      "description": "Finalisez votre commando's et profitez de vos plato's préférés livrés à domicile."
     },
     "login": {
-      "title": "Connexion - Grosmino's",
-      "description": "Connectez-vous à votre compte Grosmino's pour commander vos plats préférés."
+      "title": "Connexio's - Grosmino's",
+      "description": "Connectez-vous à votre compto's Grosmino's pour commando's vos plato's préférés."
     },
     "register": {
-      "title": "Inscription - Grosmino's",
-      "description": "Créez votre compte Grosmino's et commencez à commander dès maintenant."
+      "title": "Inscriptio's - Grosmino's",
+      "description": "Créez votre compto's Grosmino's et commencez à commando's dès maintenant."
     }
   }
 }
