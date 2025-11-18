@@ -29,8 +29,6 @@ export default defineNuxtConfig({
               './app/stores/food.ts',
               './app/stores/restaurateur.ts',
             ],
-            // Separate i18n into its own dedicated chunk
-            'i18n': ['@nuxtjs/i18n'],
           },
         },
       },
