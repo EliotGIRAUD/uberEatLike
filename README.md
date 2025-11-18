@@ -133,6 +133,11 @@ npm test
 # Lancer les tests en mode watch
 npm run test:watch
 
+# Analyser le bundle
+npm run analyze
+
+# Optimiser les images (convertir en WebP/AVIF)
+npm run optimize:images
 ```
 
 ### Comptes de test
@@ -196,6 +201,69 @@ Pages accessibles :
 | `restaurateur.ts` | Réservé aux restaurateurs |
 
 ## Fonctionnalités avancées
+
+### Progressive Web App (PWA)
+
+L'application est une PWA complète installable sur mobile et desktop :
+
+**Service Worker** :
+- Navigation offline basique
+- Mise en cache automatique des ressources
+- Stratégie Network-First avec fallback Cache
+- Mise à jour automatique du Service Worker
+
+**Manifest** :
+- Icônes 192x192 et 512x512
+- Thème personnalisé (#3AF24B)
+- Raccourcis vers Restaurants et Panier
+- Mode standalone
+
+Installation :
+```bash
+# Le Service Worker s'enregistre automatiquement
+# Visitez l'app et cliquez sur "Installer" dans le navigateur
+```
+
+### Optimisation des Images
+
+Le projet utilise des images optimisées pour des performances maximales :
+
+**Formats supportés** :
+- AVIF (meilleure compression)
+- WebP
+- PNG/JPG (fallback pour anciens navigateurs)
+
+**Composant OptimizedImage** :
+```vue
+<OptimizedImage
+  src="/images/food.jpg"
+  webpSrc="/images/food.webp"
+  avifSrc="/images/food.avif"
+  alt="Plat délicieux"
+  loading="lazy"
+/>
+```
+
+**Générer les images optimisées** :
+```bash
+# Convertir toutes les images PNG/JPG en WebP et AVIF
+npm run optimize:images
+```
+
+### Lazy Loading & Code Splitting
+
+**Optimisations du bundle** :
+- Lazy loading automatique des composants (préfixe `Lazy`)
+- Code splitting des pages automatique par Nuxt
+- Séparation manuelle des chunks (stores, i18n)
+
+**Analyse du bundle** :
+```bash
+# Construire et analyser le bundle
+npm run analyze
+
+# Voir la documentation complète : BUNDLE_OPTIMIZATION.md
+```
 
 ### Server-Side Rendering (SSR)
 
@@ -274,18 +342,20 @@ Configuration :
 - Tests E2E (Playwright) : Navigation, Auth, Cart
 - Déploiement continu sur Vercel (déploiement automatique sur push master)
 - Gestion d'erreurs réseau avec retry
+- PWA avec Service Worker 
+- Images optimisées
+- Lazy loading
+- Bundle optimisé
 
 ### Prochaines étapes (v1.1)
-- PWA avec mode offline
-- Optimisation des images (WebP/AVIF)
-- Tests E2E supplémentaires (commandes, profil)
+- Tests E2E supplémentaires (commandes complètes, profil utilisateur)
+- Score Lighthouse accessibilité ≥ 90
 
 ### Futures fonctionnalités (v2.0)
 - Paiement en ligne
 - Suivi en temps réel des livraisons
 - Système de notation et avis
 - Notifications push
-- API REST/GraphQL
 
 ## Auteur
 

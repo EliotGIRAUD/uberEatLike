@@ -51,8 +51,6 @@ useHead({
 const name = ref('')
 const email = ref('')
 const password = ref('')
-// Le rôle est fixé à CLIENT pour l'inscription publique
-// Seul l'admin peut créer des comptes RESTAURATEUR via le back office
 const role = ref<UserRole>('CLIENT')
 
 function onSubmit() {
@@ -62,8 +60,7 @@ function onSubmit() {
     message: t('auth.registerWelcome', { name: name.value }),
     timeout: 2000,
   })
-  // Redirection vers la page des restaurants après inscription
-  router.push('/restaurants')
+  router.push('/')
 }
 </script>
 

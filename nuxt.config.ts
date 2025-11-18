@@ -1,6 +1,5 @@
 import tailwindcss from "@tailwindcss/vite";
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -19,9 +18,26 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'stores': [
+              './app/stores/cart.ts',
+              './app/stores/user.ts',
+              './app/stores/order.ts',
+              './app/stores/food.ts',
+              './app/stores/restaurateur.ts',
+            ],
+            // Separate i18n into its own dedicated chunk
+            'i18n': ['@nuxtjs/i18n'],
+          },
+        },
+      },
+      chunkSizeWarningLimit: 1000,
+    },
   },
   
-  // Optimisations SEO
   app: {
     head: {
       htmlAttrs: {

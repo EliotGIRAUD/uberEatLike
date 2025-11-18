@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import BackButton from '~/components/BackButton.vue'
 import { useRestaurateurStore } from '~/stores/restaurateur'
 import { useFoodStore } from '~/stores/food'
@@ -110,30 +110,13 @@ type Food = {
 const restaurantId = computed(() => route.params.id)
 const isNumericId = computed(() => !isNaN(Number(restaurantId.value)))
 
-const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending, refresh: refreshRestaurants } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
-  default: () => [],
-  key: 'restaurant-detail-restaurants',
-  onResponseError({ response }) {
-    console.error('Erreur de chargement du restaurant:', response.status)
-  }
+// Utiliser useFetch avec les API routes pour le SSR
+const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending } = await useFetch<RestaurantJSON[]>('/api/restaurants', {
+  default: () => []
 })
 
-const { data: jsonFoods, error: foodsError, pending: foodsPending, refresh: refreshFoods } = await useFetch<Food[]>('/food.json', {
-  default: () => [],
-  key: 'restaurant-detail-foods',
-  onResponseError({ response }) {
-    console.error('Erreur de chargement des plats:', response.status)
-  }
-})
-
-// Forcer le rechargement au montage du composant
-onMounted(() => {
-  if (!jsonRestaurants.value || jsonRestaurants.value.length === 0) {
-    refreshRestaurants()
-  }
-  if (!jsonFoods.value || jsonFoods.value.length === 0) {
-    refreshFoods()
-  }
+const { data: jsonFoods, error: foodsError, pending: foodsPending } = await useFetch<Food[]>('/api/foods', {
+  default: () => []
 })
 
 const restaurant = computed(() => {

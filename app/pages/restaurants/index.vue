@@ -2,22 +2,24 @@
   <div class="min-h-[calc(100vh-8rem)] p-6">
     <div class="max-w-7xl mx-auto">
       <div class="mb-10">
-        <h1 class="text-5xl font-extrabold text-gray-900 mb-3 leading-tight">
-          {{ t('restaurants.title', { highlight: t('restaurants.highlight') }) }}
-        </h1>
-        <p class="text-lg text-gray-600 max-w-2xl mb-6">{{ t('restaurants.subtitle') }}</p>
-        
-        <div class="relative max-w-2xl">
-          <div class="relative">
-            <input v-model="searchQuery" type="text" :placeholder="t('restaurants.search')" class="w-full rounded-xl border-2 border-gray-200 pl-12 pr-12 py-4 text-lg focus:outline-none focus:border-[#3AF24B] transition shadow-sm"/>
-            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
-            </div>
-            <button v-if="searchQuery" @click="searchQuery = ''" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
-              <span class="text-xl">✕</span>
-            </button>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+          <div>
+            <h1 class="text-5xl font-extrabold text-gray-900 mb-3 leading-tight">
+              {{ t('restaurants.title', { highlight: t('restaurants.highlight') }) }}
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mb-6 md:mb-0">{{ t('restaurants.subtitle') }}</p>
           </div>
-          <div v-if="searchQuery" class="mt-2 text-sm text-gray-600">
-            {{ t('restaurants.found', { count: filteredRestaurants.length }) }}
+          <div class="w-full max-w-2xl">
+            <div class="relative">
+              <input v-model="searchQuery" type="text" :placeholder="t('restaurants.search')" class="w-full rounded-xl border-2 border-gray-200 pl-12 pr-12 py-4 text-lg focus:outline-none focus:border-[#3AF24B] transition shadow-sm"/>
+              <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></div>
+              <button v-if="searchQuery" @click="searchQuery = ''" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                <span class="text-xl">✕</span>
+              </button>
+            </div>
+            <div v-if="searchQuery" class="mt-2 text-sm text-gray-600">
+              {{ t('restaurants.found', { count: filteredRestaurants.length }) }}
+            </div>
           </div>
         </div>
       </div>
@@ -93,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import { useRestaurateurStore } from '~/stores/restaurateur'
 
 const { t } = useI18n()
@@ -123,19 +125,9 @@ type RestaurantJSON = {
 
 const searchQuery = ref('')
 
-const { data: jsonRestaurants, error: fetchError, pending, refresh } = await useFetch<RestaurantJSON[]>('/restaurant.json', {
-  default: () => [],
-  key: 'restaurants-list',
-  onResponseError({ response }) {
-    console.error('Erreur de chargement des restaurants:', response.status)
-  }
-})
-
-// Forcer le rechargement au montage du composant
-onMounted(() => {
-  if (!jsonRestaurants.value || jsonRestaurants.value.length === 0) {
-    refresh()
-  }
+// Utiliser useFetch avec l'API route pour le SSR
+const { data: jsonRestaurants, error: fetchError, pending } = await useFetch<RestaurantJSON[]>('/api/restaurants', {
+  default: () => []
 })
 
 const allRestaurants = computed(() => {

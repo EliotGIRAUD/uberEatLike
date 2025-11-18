@@ -55,15 +55,7 @@ function onSubmit() {
       timeout: 2000,
     })
     
-    if (userStore.currentUser?.role === 'ADMIN') {
-      router.push('/admin')
-    } else if (userStore.currentUser?.role === 'RESTAURATEUR') {
-      router.push('/restaurateur')
-    } else if (userStore.currentUser?.role === 'CLIENT') {
-      router.push('/restaurants')
-    } else {
-      router.push('/')
-    }
+    router.push('/')
   } else {
     toast.error({
       title: t('auth.loginError'),
