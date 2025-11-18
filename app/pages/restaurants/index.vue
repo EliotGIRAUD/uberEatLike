@@ -1,91 +1,114 @@
 <template>
-  <div class="min-h-[calc(100vh-8rem)] p-6">
+  <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6 bg-[#F0FFF0]">
     <div class="max-w-7xl mx-auto">
-      <div class="mb-10">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-          <div>
-            <h1 class="text-5xl font-extrabold text-gray-900 mb-3 leading-tight">
+      <div class="mb-8">
+        <div class="flex flex-col gap-6">
+          <div class="text-center md:text-left">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3">
               {{ t('restaurants.title', { highlight: t('restaurants.highlight') }) }}
             </h1>
-            <p class="text-lg text-gray-600 max-w-2xl mb-6 md:mb-0">{{ t('restaurants.subtitle') }}</p>
+            <p class="text-lg text-gray-600">{{ t('restaurants.subtitle') }}</p>
           </div>
-          <div class="w-full max-w-2xl">
-            <div class="relative">
-              <input v-model="searchQuery" type="text" :placeholder="t('restaurants.search')" class="w-full rounded-xl border-2 border-gray-200 pl-12 pr-12 py-4 text-lg focus:outline-none focus:border-[#3AF24B] transition shadow-sm"/>
-              <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></div>
-              <button v-if="searchQuery" @click="searchQuery = ''" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
-                <span class="text-xl">✕</span>
-              </button>
-            </div>
-            <div v-if="searchQuery" class="mt-2 text-sm text-gray-600">
-              {{ t('restaurants.found', { count: filteredRestaurants.length }) }}
+          
+          <div class="w-full">
+            <div class="bg-white rounded-2xl shadow-xl p-4">
+              <div class="relative">
+                <input 
+                  v-model="searchQuery" 
+                  type="text" 
+                  :placeholder="t('restaurants.search')" 
+                  class="w-full rounded-xl border-2 border-gray-200 pl-12 pr-12 py-4 text-lg focus:outline-none focus:border-[#3AF24B] focus:ring-2 focus:ring-[#3AF24B]/20 transition-all"
+                />
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></div>
+                <button 
+                  v-if="searchQuery" 
+                  @click="searchQuery = ''" 
+                  class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <span class="text-xl">✕</span>
+                </button>
+              </div>
+              <div v-if="searchQuery" class="mt-3 text-sm font-semibold text-gray-600 pl-2">
+                {{ t('restaurants.found', { count: filteredRestaurants.length }) }}
+              </div>
             </div>
           </div>
         </div>
       </div>
       
-      <div v-if="fetchError" class="bg-red-50 border-2 border-red-200 rounded-xl p-8 sm:p-12 text-center">
-        <p class="text-red-600 text-lg font-semibold mb-2">Erreur de chargement</p>
-        <p class="text-red-500 text-sm mb-4">Impossible de charger les restaurants. Vérifiez votre connexion.</p>
-        <button @click="() => window.location.reload()" class="rounded-lg bg-red-600 text-white px-6 py-3 font-semibold hover:bg-red-700 transition">
+      <div v-if="fetchError" class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 text-center">
+        <p class="text-red-600 text-xl font-bold mb-2">Erreur de chargement</p>
+        <p class="text-gray-600 mb-6">Impossible de charger les restaurants. Vérifiez votre connexion.</p>
+        <button 
+          @click="() => window.location.reload()" 
+          class="rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 font-bold hover:from-red-700 hover:to-red-800 transition-all hover:scale-105 shadow-lg"
+        >
           Réessayer
         </button>
       </div>
 
-      <div v-else-if="pending" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-[#3AF24B] mb-4"></div>
-        <p class="text-gray-600 text-lg">Chargement des temples du gras...</p>
+      <div v-else-if="pending" class="bg-white rounded-2xl shadow-xl p-12 text-center">
+        <div class="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-[#3AF24B] mb-6"></div>
+        <p class="text-gray-900 text-xl font-bold">Chargement des temples du gras...</p>
+        <p class="text-gray-500 mt-2">Préparation du festin</p>
       </div>
 
-      <div v-else-if="filteredRestaurants.length === 0 && !searchQuery" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
-        <p class="text-gray-500 text-lg mb-2">{{ t('restaurants.noRestaurants') }}</p>
-        <p class="text-gray-400 text-sm">{{ t('restaurants.noRestaurantsHint') }}</p>
+      <div v-else-if="filteredRestaurants.length === 0 && !searchQuery" class="bg-white rounded-2xl shadow-xl p-12 text-center">
+        <p class="text-gray-900 text-xl font-bold mb-2">{{ t('restaurants.noRestaurants') }}</p>
+        <p class="text-gray-500">{{ t('restaurants.noRestaurantsHint') }}</p>
       </div>
       
-      <div v-else-if="filteredRestaurants.length === 0 && searchQuery" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
-        <p class="text-gray-500 text-lg mb-2">{{ t('restaurants.noResults', { query: searchQuery }) }}</p>
-        <p class="text-gray-400 text-sm mb-4">{{ t('restaurants.noResultsHint') }}</p>
+      <div v-else-if="filteredRestaurants.length === 0 && searchQuery" class="bg-white rounded-2xl shadow-xl p-12 text-center">
+        <p class="text-gray-900 text-xl font-bold mb-2">{{ t('restaurants.noResults', { query: searchQuery }) }}</p>
+        <p class="text-gray-500 mb-6">{{ t('restaurants.noResultsHint') }}</p>
         <button 
           @click="searchQuery = ''"
-          class="rounded-lg bg-[#3AF24B] text-black px-6 py-2 font-semibold hover:bg-black hover:text-white transition"
+          class="rounded-xl bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-8 py-4 font-bold hover:from-black hover:to-gray-800 hover:text-white transition-all duration-300 hover:scale-105 shadow-lg"
         >
           {{ t('restaurants.showAll') }}
         </button>
       </div>
       
+      <!-- Liste des restaurants -->
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <NuxtLink 
           v-for="r in filteredRestaurants" 
           :key="r.id" 
           :to="`/restaurants/${r.id}`"
-          class="block bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow overflow-hidden group"
+          class="block bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden group"
         >
+          <!-- Image -->
           <div class="aspect-video bg-gradient-to-br from-[#3AF24B] to-emerald-400 relative overflow-hidden">
             <img 
               v-if="r.imageUrl" 
               :src="r.imageUrl" 
               :alt="r.name"
-              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             />
-            <div v-else class="w-full h-full flex items-center justify-center text-white text-6xl">
-              🏪
+            <div v-else class="w-full h-full flex items-center justify-center text-white text-4xl font-bold">
+              Restaurant
+            </div>
+            <!-- Badge flottant -->
+            <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold">
+              {{ r.cuisine || r.ville }}
             </div>
           </div>
-          <div class="p-5">
+          
+          <!-- Contenu -->
+          <div class="p-6">
             <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#3AF24B] transition-colors">
               {{ r.name }}
             </h3>
-            <p class="text-sm text-gray-600 mb-3 flex items-center gap-1">
-              <span>📍</span>
-              {{ r.address }}
-            </p>
-            <div class="flex items-center justify-between">
-              <span v-if="r.cuisine" class="inline-flex items-center gap-1 bg-[#3AF24B]/20 text-[#3AF24B] px-2 py-1 rounded-full text-xs font-bold">
-                <span>🍴</span>
+              <p class="text-sm text-gray-600 mb-4 line-clamp-1">
+                {{ r.address }}
+              </p>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+              <span v-if="r.cuisine" class="inline-flex items-center gap-1 bg-[#3AF24B]/20 text-[#3AF24B] px-3 py-1 rounded-full text-xs font-bold">
                 {{ r.cuisine }}
               </span>
-              <span v-else class="text-xs text-gray-500">{{ r.ville }}</span>
-              <span class="text-sm font-semibold text-[#3AF24B]">{{ t('restaurants.viewMenu') }}</span>
+              <span class="text-sm font-bold text-[#3AF24B] group-hover:translate-x-1 transition-transform">
+                {{ t('restaurants.viewMenu') }} →
+              </span>
             </div>
           </div>
         </NuxtLink>
@@ -127,7 +150,7 @@ const searchQuery = ref('')
 
 const { data: jsonRestaurants, error: fetchError, pending } = await useAsyncData(
   'restaurants-list',
-  () => $fetch<RestaurantJSON[]>('/restaurant.json'),
+  () => $fetch<RestaurantJSON[]>('/api/restaurants'),
   { default: () => [] }
 )
 

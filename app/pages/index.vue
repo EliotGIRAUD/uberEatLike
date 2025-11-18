@@ -2,7 +2,6 @@
   <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6 bg-[#F0FFF0] flex items-center justify-center">
     <ClientOnly>
       <div v-if="user.isLoggedIn && user.currentUser" class="w-full max-w-6xl mx-auto py-8">
-        <!-- En-tête avec message de bienvenue -->
         <div class="mb-8 text-center">
           <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-3">
             {{ t('home.welcomeBack') || 'Bienvenue' }} <span class="text-[#3AF24B]">{{ user.currentUser.name }}</span> ! 👋

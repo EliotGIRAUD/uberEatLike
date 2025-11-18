@@ -20,7 +20,6 @@
         @click="addToCart" 
         class="mt-4 w-full rounded-lg bg-[#3AF24B] text-black py-2.5 font-bold hover:bg-black hover:text-white transition-all duration-200 flex items-center justify-center gap-2 shadow-md"
       >
-        <span>🛒</span>
         <span>Ajouter</span>
       </button>
     </div>

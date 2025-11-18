@@ -1,11 +1,14 @@
 <template>
-  <div class="p-6">
+  <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6 bg-[#F0FFF0]">
     <div v-if="restaurantError || foodsError" class="max-w-7xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
-      <div class="bg-red-50 border-2 border-red-200 rounded-xl p-8 sm:p-12 text-center mt-6">
-        <p class="text-red-600 text-lg font-semibold mb-2">Erreur de chargement</p>
-        <p class="text-red-500 text-sm mb-4">Impossible de charger les données. Vérifiez votre connexion.</p>
-        <button @click="() => window.location.reload()" class="rounded-lg bg-red-600 text-white px-6 py-3 font-semibold hover:bg-red-700 transition">
+      <div class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 text-center mt-6">
+        <p class="text-red-600 text-xl font-bold mb-2">Erreur de chargement</p>
+        <p class="text-gray-600 mb-6">Impossible de charger les données. Vérifiez votre connexion.</p>
+        <button 
+          @click="() => window.location.reload()" 
+          class="rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 font-bold hover:from-red-700 hover:to-red-800 transition-all hover:scale-105 shadow-lg"
+        >
           Réessayer
         </button>
       </div>
@@ -13,45 +16,50 @@
 
     <div v-else-if="restaurantPending || foodsPending" class="max-w-7xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center mt-6">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-[#3AF24B] mb-4"></div>
-        <p class="text-gray-600 text-lg">Chargement du temple calorique...</p>
+      <div class="bg-white rounded-2xl shadow-xl p-12 text-center mt-6">
+        <div class="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-[#3AF24B] mb-6"></div>
+        <p class="text-gray-900 text-xl font-bold">Chargement du temple calorique...</p>
+        <p class="text-gray-500 mt-2">Préparation du festin</p>
       </div>
     </div>
 
     <div v-else-if="!restaurant" class="max-w-7xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
-      <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center mt-6">
-        <p class="text-red-600 font-medium">{{ t('restaurants.notFound') }}</p>
+      <div class="bg-white rounded-2xl shadow-xl p-8 text-center mt-6">
+        <p class="text-red-600 text-lg font-bold">{{ t('restaurants.notFound') }}</p>
       </div>
     </div>
+
     <div v-else class="max-w-7xl mx-auto space-y-8">
       <BackButton fallbackHref="/restaurants" />
       
-      <header class="bg-white rounded-2xl shadow-lg p-8">
-        <div class="flex items-start gap-6">
-          <div v-if="restaurant.imageUrl" class="w-32 h-32 rounded-xl shadow-md flex-shrink-0 overflow-hidden">
+      <header class="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+        <div class="flex flex-col sm:flex-row items-start gap-6">
+          <div v-if="restaurant.imageUrl" class="w-full sm:w-40 h-40 rounded-xl shadow-md flex-shrink-0 overflow-hidden">
             <img :src="restaurant.imageUrl" :alt="restaurant.name" class="w-full h-full object-cover" />
           </div>
-          <div v-else class="w-32 h-32 bg-gradient-to-br from-[#3AF24B] to-emerald-400 rounded-xl shadow-md flex-shrink-0 flex items-center justify-center text-white text-5xl">
-            🏪
+          <div v-else class="w-full sm:w-40 h-40 bg-gradient-to-br from-[#3AF24B] to-emerald-400 rounded-xl shadow-md flex-shrink-0 flex items-center justify-center text-white text-2xl font-bold">
+            Restaurant
           </div>
+          
           <div class="flex-1">
-            <h1 class="text-4xl font-bold text-gray-900 mb-3">{{ restaurant.name }}</h1>
-            <div class="flex flex-wrap items-center gap-3 mb-3">
-              <span class="inline-flex items-center gap-1 bg-[#3AF24B] text-black px-3 py-1 rounded-full text-sm font-bold">
-                <span>🍴</span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">{{ restaurant.name }}</h1>
+            
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <span class="inline-flex items-center gap-1 bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-4 py-2 rounded-full text-sm font-bold shadow-md">
                 {{ restaurant.cuisine || 'Restaurant' }}
               </span>
-              <span v-if="restaurant.rating" class="inline-flex items-center gap-1 text-yellow-600 text-sm font-semibold">
-                <span>⭐</span>
+              <span v-if="restaurant.rating" class="inline-flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-4 py-2 rounded-full text-sm font-bold shadow-md">
                 {{ restaurant.rating }}/5
               </span>
-              <span v-if="restaurant.priceRange" class="text-gray-600 text-sm font-medium">{{ restaurant.priceRange }}</span>
+              <span v-if="restaurant.priceRange" class="inline-flex items-center bg-gradient-to-r from-black to-gray-800 text-white px-4 py-2 rounded-full text-sm font-bold shadow-md">
+                {{ restaurant.priceRange }}
+              </span>
             </div>
-            <p v-if="restaurant.description" class="text-gray-700 mb-2">{{ restaurant.description }}</p>
-            <p class="text-gray-500 text-sm flex items-center gap-1">
-              <span>📍</span>
+            
+            <p v-if="restaurant.description" class="text-gray-700 mb-3 leading-relaxed">{{ restaurant.description }}</p>
+            
+            <p class="text-gray-600 text-sm font-medium">
               {{ restaurant.address }}
             </p>
           </div>
@@ -60,14 +68,18 @@
       
       <section>
         <div class="mb-6">
-          <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ t('restaurants.ourMenu', { highlight: t('restaurants.menuHighlight') }) }}</h2>
-          <p class="text-gray-600">{{ t('restaurants.menuSubtitle') }}</p>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
+            {{ t('restaurants.ourMenu', { highlight: t('restaurants.menuHighlight') }) }}
+          </h2>
+          <p class="text-lg text-gray-600">{{ t('restaurants.menuSubtitle') }}</p>
         </div>
-        <div v-if="foods.length === 0" class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
-          <p class="text-gray-500 text-lg mb-2">{{ t('restaurants.noFoods') }}</p>
-          <p class="text-gray-400 text-sm">{{ t('restaurants.noFoodsHint') }}</p>
+        
+        <div v-if="foods.length === 0" class="bg-white rounded-2xl shadow-xl p-12 text-center">
+          <p class="text-gray-900 text-xl font-bold mb-2">{{ t('restaurants.noFoods') }}</p>
+          <p class="text-gray-500">{{ t('restaurants.noFoodsHint') }}</p>
         </div>
-        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <LazyFoodCard v-for="f in foods" :key="f.id" :food="f" />
         </div>
       </section>
@@ -112,13 +124,13 @@ const isNumericId = computed(() => !isNaN(Number(restaurantId.value)))
 
 const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending } = await useAsyncData(
   'restaurant-detail-restaurants',
-  () => $fetch<RestaurantJSON[]>('/restaurant.json'),
+  () => $fetch<RestaurantJSON[]>('/api/restaurants'),
   { default: () => [] }
 )
 
 const { data: jsonFoods, error: foodsError, pending: foodsPending } = await useAsyncData(
   'restaurant-detail-foods',
-  () => $fetch<Food[]>('/food.json'),
+  () => $fetch<Food[]>('/api/foods'),
   { default: () => [] }
 )
 

@@ -1,11 +1,14 @@
 <template>
-  <div class="p-6">
+  <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6 bg-[#F0FFF0]">
     <div v-if="fetchError" class="max-w-5xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
-      <div class="bg-red-50 border-2 border-red-200 rounded-xl p-8 sm:p-12 text-center mt-6">
-        <p class="text-red-600 text-lg font-semibold mb-2">Erreur de chargement</p>
-        <p class="text-red-500 text-sm mb-4">Impossible de charger le plat. Vérifiez votre connexion.</p>
-        <button @click="() => window.location.reload()" class="rounded-lg bg-red-600 text-white px-6 py-3 font-semibold hover:bg-red-700 transition">
+      <div class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 text-center mt-6">
+        <p class="text-red-600 text-xl font-bold mb-2">Erreur de chargement</p>
+        <p class="text-gray-600 mb-6">Impossible de charger le plat. Vérifiez votre connexion.</p>
+        <button 
+          @click="() => window.location.reload()" 
+          class="rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 font-bold hover:from-red-700 hover:to-red-800 transition-all hover:scale-105 shadow-lg"
+        >
           Réessayer
         </button>
       </div>
@@ -13,42 +16,48 @@
 
     <div v-else-if="pending" class="max-w-5xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center mt-6">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-[#3AF24B] mb-4"></div>
-        <p class="text-gray-600 text-lg">Chargement de la bombe calorique...</p>
+      <div class="bg-white rounded-2xl shadow-xl p-12 text-center mt-6">
+        <div class="inline-block animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-[#3AF24B] mb-6"></div>
+        <p class="text-gray-900 text-xl font-bold">Chargement de la bombe calorique...</p>
+        <p class="text-gray-500 mt-2">Préparation du festin</p>
       </div>
     </div>
 
     <div v-else-if="!food" class="max-w-5xl mx-auto">
       <BackButton fallbackHref="/restaurants" />
-      <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center mt-6">
-        <p class="text-red-600 font-medium">{{ t('foods.notFound') }}</p>
+      <div class="bg-white rounded-2xl shadow-xl p-8 text-center mt-6">
+        <p class="text-red-600 text-lg font-bold">{{ t('foods.notFound') }}</p>
       </div>
     </div>
+    
     <div v-else class="max-w-5xl mx-auto">
       <BackButton :fallbackHref="`/restaurants/${food.restaurantId}`" />
       
       <article class="bg-white rounded-2xl shadow-xl overflow-hidden mt-6">
-        <div v-if="food.imageUrl" class="w-full h-80 bg-gradient-to-br from-[#3AF24B] to-emerald-400 overflow-hidden">
+        <div v-if="food.imageUrl" class="w-full h-80 sm:h-96 bg-gradient-to-br from-[#3AF24B] to-emerald-400 overflow-hidden">
           <img :src="food.imageUrl" :alt="food.name" class="w-full h-full object-cover" />
         </div>
-        <div v-else class="w-full h-80 bg-gradient-to-br from-[#3AF24B] to-emerald-400 flex items-center justify-center text-white text-8xl">
-          🍽️
+        <div v-else class="w-full h-80 sm:h-96 bg-gradient-to-br from-[#3AF24B] to-emerald-400 flex items-center justify-center text-white text-4xl font-bold">
+          Plat
         </div>
-        <div class="p-8">
+        
+        <div class="p-6 sm:p-8">
           <header class="mb-6">
-            <h1 class="text-4xl font-bold text-gray-900 mb-3">{{ food.name }}</h1>
-            <p class="text-3xl font-bold text-[#3AF24B]">{{ food.price.toFixed(2) }} €</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">{{ food.name }}</h1>
+            <p class="text-3xl sm:text-4xl font-extrabold text-[#3AF24B]">{{ food.price.toFixed(2) }} €</p>
           </header>
           
-          <section class="mb-6">
-            <h2 class="text-lg font-semibold text-gray-900 mb-2">{{ t('foods.description') }}</h2>
-            <p class="text-gray-700 leading-relaxed whitespace-pre-line">{{ food.grosseDescription || food.description }}</p>
+          <section class="mb-8">
+            <h2 class="text-xl font-bold text-gray-900 mb-3">{{ t('foods.description') }}</h2>
+            <p class="text-gray-700 text-lg leading-relaxed whitespace-pre-line">{{ food.grosseDescription || food.description }}</p>
           </section>
+          
           <div class="flex gap-3">
-            <button @click="addToCart(food)" class="flex-1 rounded-lg bg-[#3AF24B] text-black py-4 font-bold hover:bg-black hover:text-white transition-all duration-200 flex items-center justify-center gap-2 shadow-lg text-lg">
-              <span>🛒</span>
-              <span>{{ t('foods.addToCart') }}</span>
+            <button 
+              @click="addToCart(food)" 
+              class="flex-1 rounded-xl bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black py-4 px-6 font-bold hover:from-black hover:to-gray-800 hover:text-white transition-all duration-300 hover:scale-105 shadow-xl text-lg"
+            >
+              {{ t('foods.addToCart') }}
             </button>
           </div>
         </div>
@@ -81,10 +90,9 @@ const id = computed(() => Number(route.params.id))
 const cart = useCartStore()
 const toast = useToast()
 
-// Charger le JSON directement depuis /public
 const { data: jsonFoods, error: fetchError, pending } = await useAsyncData(
   'food-detail',
-  () => $fetch<FoodJSON[]>('/food.json'),
+  () => $fetch<FoodJSON[]>('/api/foods'),
   { default: () => [] }
 )
 

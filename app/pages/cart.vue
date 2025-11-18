@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6">
+  <div class="min-h-[calc(100vh-8rem)] p-4 sm:p-6 bg-[#F0FFF0]">
     <div class="max-w-4xl mx-auto">
       <div class="mb-6 sm:mb-8">
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-2 sm:mb-3">
@@ -7,51 +7,70 @@
         </h1>
         <p class="text-base sm:text-lg text-gray-600">{{ t('cart.subtitle') }}</p>
       </div>
-      <div v-if="cart.items.length === 0" class="bg-white rounded-2xl shadow-md p-8 sm:p-12 text-center">
-        <div class="text-gray-400 text-5xl sm:text-6xl mb-4">🛒</div>
-        <p class="text-gray-600 text-base sm:text-lg mb-4">{{ t('cart.empty') }}</p>
-        <NuxtLink to="/restaurants" class="inline-block rounded-lg bg-[#3AF24B] text-black px-6 py-3 font-semibold hover:bg-black hover:text-white transition">{{ t('cart.discover') }}</NuxtLink>
+      
+      <div v-if="cart.items.length === 0" class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 text-center">
+        <p class="text-gray-900 text-xl sm:text-2xl font-bold mb-2">{{ t('cart.empty') }}</p>
+        <p class="text-gray-600 text-sm sm:text-base mb-6">{{ t('cart.emptyHint') }}</p>
+        <NuxtLink 
+          to="/restaurants" 
+          class="inline-block rounded-xl bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-8 py-4 font-bold hover:from-black hover:to-gray-800 hover:text-white transition-all duration-300 hover:scale-105 shadow-lg"
+        >
+          {{ t('cart.discover') }}
+        </NuxtLink>
       </div>
+      
       <div v-else class="space-y-4">
-        <div v-for="item in cart.items" :key="item.id" class="bg-white rounded-xl shadow-md p-4 sm:p-5 hover:shadow-lg transition">
+        <div v-for="item in cart.items" :key="item.id" class="bg-white rounded-2xl shadow-xl p-4 sm:p-6 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
           <div class="flex items-start gap-3 sm:gap-4">
-            <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.name" class="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-lg flex-shrink-0" />
+            <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.name" class="w-20 h-20 sm:w-28 sm:h-28 object-cover rounded-xl flex-shrink-0 shadow-md" />
+            <div v-else class="w-20 h-20 sm:w-28 sm:h-28 bg-gradient-to-br from-[#3AF24B] to-emerald-400 rounded-xl flex-shrink-0 shadow-md flex items-center justify-center text-white text-xl font-bold">
+              Plat
+            </div>
+            
             <div class="flex-1 min-w-0">
-              <h3 class="font-semibold text-base sm:text-lg text-gray-900 truncate">{{ item.name }}</h3>
-              <p class="text-gray-600 font-medium text-sm sm:text-base">{{ item.price.toFixed(2) }} €</p>
+              <h3 class="font-bold text-base sm:text-xl text-gray-900 truncate mb-1">{{ item.name }}</h3>
+              <p class="text-[#3AF24B] font-extrabold text-lg sm:text-xl">{{ item.price.toFixed(2) }} €</p>
               
-              <!-- Contrôles mobile -->
               <div class="flex items-center justify-between mt-3 sm:hidden">
                 <div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1.5">
-                  <button @click="cart.updateQuantity(item.id, item.quantity - 1)" class="w-8 h-8 rounded-lg bg-white hover:bg-gray-200 flex items-center justify-center font-semibold transition text-sm">−</button>
-                  <span class="w-8 text-center font-semibold text-sm">{{ item.quantity }}</span>
-                  <button @click="cart.updateQuantity(item.id, item.quantity + 1)" class="w-8 h-8 rounded-lg bg-white hover:bg-gray-200 flex items-center justify-center font-semibold transition text-sm">+</button>
+                  <button @click="cart.updateQuantity(item.id, item.quantity - 1)" class="w-9 h-9 rounded-lg bg-white hover:bg-[#3AF24B] hover:text-black flex items-center justify-center font-bold transition-all text-sm shadow-sm">−</button>
+                  <span class="w-9 text-center font-bold text-sm">{{ item.quantity }}</span>
+                  <button @click="cart.updateQuantity(item.id, item.quantity + 1)" class="w-9 h-9 rounded-lg bg-white hover:bg-[#3AF24B] hover:text-black flex items-center justify-center font-bold transition-all text-sm shadow-sm">+</button>
                 </div>
-                <button @click="removeItemWithNotif(item.id)" class="text-red-600 hover:text-red-800 font-medium transition text-xl">✕</button>
+                <button @click="removeItemWithNotif(item.id)" class="w-9 h-9 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white font-bold transition-all shadow-sm">✕</button>
               </div>
             </div>
             
-            <!-- Contrôles desktop -->
             <div class="hidden sm:flex items-center gap-3">
-              <div class="flex items-center gap-3 bg-gray-100 rounded-lg p-2">
-                <button @click="cart.updateQuantity(item.id, item.quantity - 1)" class="w-8 h-8 rounded-lg bg-white hover:bg-gray-200 flex items-center justify-center font-semibold transition">−</button>
-                <span class="w-10 text-center font-semibold">{{ item.quantity }}</span>
-                <button @click="cart.updateQuantity(item.id, item.quantity + 1)" class="w-8 h-8 rounded-lg bg-white hover:bg-gray-200 flex items-center justify-center font-semibold transition">+</button>
+              <div class="flex items-center gap-3 bg-gray-100 rounded-xl p-2">
+                <button @click="cart.updateQuantity(item.id, item.quantity - 1)" class="w-10 h-10 rounded-lg bg-white hover:bg-[#3AF24B] hover:text-black flex items-center justify-center font-bold transition-all shadow-sm">−</button>
+                <span class="w-12 text-center font-bold text-lg">{{ item.quantity }}</span>
+                <button @click="cart.updateQuantity(item.id, item.quantity + 1)" class="w-10 h-10 rounded-lg bg-white hover:bg-[#3AF24B] hover:text-black flex items-center justify-center font-bold transition-all shadow-sm">+</button>
               </div>
-              <button @click="removeItemWithNotif(item.id)" class="text-red-600 hover:text-red-800 font-medium transition text-xl">✕</button>
+              <button @click="removeItemWithNotif(item.id)" class="w-10 h-10 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white font-bold transition-all shadow-sm">✕</button>
             </div>
           </div>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-4 sm:p-6">
-          <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+        <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+          <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 sm:gap-6">
             <div>
-              <p class="text-gray-600 text-xs sm:text-sm mb-1">{{ t('cart.total') }}</p>
-              <p class="text-2xl sm:text-3xl font-bold text-gray-900">{{ cart.totalPrice.toFixed(2) }} €</p>
+              <p class="text-gray-600 text-sm sm:text-base mb-1">{{ t('cart.total') }}</p>
+              <p class="text-3xl sm:text-4xl font-extrabold text-gray-900">{{ cart.totalPrice.toFixed(2) }} €</p>
             </div>
-            <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
-              <button @click="clearCartWithConfirm" class="rounded-lg border-2 border-red-600 text-red-600 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold hover:bg-red-50 transition">{{ t('cart.clear') }}</button>
-              <button @click="placeOrder" class="rounded-lg bg-[#3AF24B] text-black px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base font-semibold hover:bg-black hover:text-white transition shadow-md">{{ t('cart.order') }}</button>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button 
+                @click="clearCartWithConfirm" 
+                class="rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-4 font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                {{ t('cart.clear') }}
+              </button>
+              <button 
+                @click="placeOrder" 
+                class="rounded-xl bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-8 py-4 font-bold hover:from-black hover:to-gray-800 hover:text-white transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                {{ t('cart.order') }}
+              </button>
             </div>
           </div>
         </div>
