@@ -81,10 +81,12 @@ const id = computed(() => Number(route.params.id))
 const cart = useCartStore()
 const toast = useToast()
 
-// Utiliser useFetch avec l'API route pour le SSR
-const { data: jsonFoods, error: fetchError, pending } = await useFetch<FoodJSON[]>('/api/foods', {
-  default: () => []
-})
+// Charger le JSON directement depuis /public
+const { data: jsonFoods, error: fetchError, pending } = await useAsyncData(
+  'food-detail',
+  () => $fetch<FoodJSON[]>('/food.json'),
+  { default: () => [] }
+)
 
 const food = computed(() => {
   const restaurateurFood = foodStore.getFoodById(id.value)

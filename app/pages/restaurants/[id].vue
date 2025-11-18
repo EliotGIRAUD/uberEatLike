@@ -110,14 +110,17 @@ type Food = {
 const restaurantId = computed(() => route.params.id)
 const isNumericId = computed(() => !isNaN(Number(restaurantId.value)))
 
-// Utiliser useFetch avec les API routes pour le SSR
-const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending } = await useFetch<RestaurantJSON[]>('/api/restaurants', {
-  default: () => []
-})
+const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending } = await useAsyncData(
+  'restaurant-detail-restaurants',
+  () => $fetch<RestaurantJSON[]>('/restaurant.json'),
+  { default: () => [] }
+)
 
-const { data: jsonFoods, error: foodsError, pending: foodsPending } = await useFetch<Food[]>('/api/foods', {
-  default: () => []
-})
+const { data: jsonFoods, error: foodsError, pending: foodsPending } = await useAsyncData(
+  'restaurant-detail-foods',
+  () => $fetch<Food[]>('/food.json'),
+  { default: () => [] }
+)
 
 const restaurant = computed(() => {
   if (isNumericId.value) {

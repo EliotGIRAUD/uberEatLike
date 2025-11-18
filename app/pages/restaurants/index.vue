@@ -125,10 +125,11 @@ type RestaurantJSON = {
 
 const searchQuery = ref('')
 
-// Utiliser useFetch avec l'API route pour le SSR
-const { data: jsonRestaurants, error: fetchError, pending } = await useFetch<RestaurantJSON[]>('/api/restaurants', {
-  default: () => []
-})
+const { data: jsonRestaurants, error: fetchError, pending } = await useAsyncData(
+  'restaurants-list',
+  () => $fetch<RestaurantJSON[]>('/restaurant.json'),
+  { default: () => [] }
+)
 
 const allRestaurants = computed(() => {
   const restaurants: any[] = []
