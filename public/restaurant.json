@@ -48,5 +48,155 @@
     "priceRange": "€€",
     "description": "La meilleure cuisine chinoise traditionnelle du quartier",
     "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 6,
+    "name": "Bombay Palace",
+    "address": "28 rue du Faubourg Saint-Denis, 75010 Paris",
+    "cuisine": "Indienne",
+    "rating": 4.5,
+    "priceRange": "€€",
+    "description": "Saveurs authentiques de l'Inde du Nord, épices et tandoori",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 7,
+    "name": "Thai Orchid",
+    "address": "56 rue de Belleville, 75020 Paris",
+    "cuisine": "Thaïlandaise",
+    "rating": 4.6,
+    "priceRange": "€€",
+    "description": "Cuisine thaïlandaise raffinée, curry et pad thai maison",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 8,
+    "name": "Le Burger Gourmet",
+    "address": "34 boulevard Saint-Germain, 75005 Paris",
+    "cuisine": "Américaine",
+    "rating": 4.4,
+    "priceRange": "€€",
+    "description": "Burgers artisanaux avec viande locale et pain maison",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 9,
+    "name": "Pho Vietnam",
+    "address": "18 rue au Maire, 75003 Paris",
+    "cuisine": "Vietnamienne",
+    "rating": 4.3,
+    "priceRange": "€",
+    "description": "Soupes pho authentiques et rouleaux de printemps frais",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 10,
+    "name": "El Toro Loco",
+    "address": "42 rue Oberkampf, 75011 Paris",
+    "cuisine": "Mexicaine",
+    "rating": 4.5,
+    "priceRange": "€€",
+    "description": "Tacos, burritos et guacamole préparés minute",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 11,
+    "name": "Le Cèdre du Liban",
+    "address": "67 rue de Charonne, 75011 Paris",
+    "cuisine": "Libanaise",
+    "rating": 4.7,
+    "priceRange": "€€",
+    "description": "Mezze généreux et grillades parfumées aux épices orientales",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 12,
+    "name": "Athènes Taverna",
+    "address": "25 rue de la Roquette, 75011 Paris",
+    "cuisine": "Grecque",
+    "rating": 4.4,
+    "priceRange": "€€",
+    "description": "Moussaka, souvlaki et mezze dans une ambiance conviviale",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 13,
+    "name": "Seoul Kitchen",
+    "address": "89 rue Sainte-Anne, 75002 Paris",
+    "cuisine": "Coréenne",
+    "rating": 4.6,
+    "priceRange": "€€€",
+    "description": "BBQ coréen et bibimbap dans un décor moderne",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 14,
+    "name": "La Bodega Española",
+    "address": "31 rue de Lappe, 75011 Paris",
+    "cuisine": "Espagnole",
+    "rating": 4.5,
+    "priceRange": "€€",
+    "description": "Tapas variées et paella valencienne authentique",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 15,
+    "name": "Green Garden",
+    "address": "54 rue des Archives, 75003 Paris",
+    "cuisine": "Végétarienne",
+    "rating": 4.8,
+    "priceRange": "€€",
+    "description": "Cuisine végétarienne créative et bio",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 16,
+    "name": "Le Comptoir Breton",
+    "address": "12 rue Montorgueil, 75001 Paris",
+    "cuisine": "Crêperie",
+    "rating": 4.3,
+    "priceRange": "€",
+    "description": "Galettes et crêpes bretonnes traditionnelles, cidre artisanal",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 17,
+    "name": "Sakura Ramen",
+    "address": "73 rue Saint-Denis, 75001 Paris",
+    "cuisine": "Japonaise",
+    "rating": 4.7,
+    "priceRange": "€€",
+    "description": "Ramen authentiques et gyoza faits maison",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 18,
+    "name": "Brasa do Brasil",
+    "address": "48 rue du Faubourg Poissonnière, 75010 Paris",
+    "cuisine": "Brésilienne",
+    "rating": 4.4,
+    "priceRange": "€€€",
+    "description": "Rodizio de viandes grillées et feijoada traditionnelle",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 19,
+    "name": "Le Refuge Alpin",
+    "address": "92 rue de Rivoli, 75004 Paris",
+    "cuisine": "Savoyarde",
+    "rating": 4.5,
+    "priceRange": "€€€",
+    "description": "Raclette, fondue et tartiflette dans un décor montagnard",
+    "imageUrl": "/images/restaurants/common.png"
+  },
+  {
+    "id": 20,
+    "name": "Istanbul Kebab House",
+    "address": "36 rue de Belleville, 75020 Paris",
+    "cuisine": "Turque",
+    "rating": 4.2,
+    "priceRange": "€",
+    "description": "Kebabs authentiques et pide turques",
+    "imageUrl": "/images/restaurants/common.png"
   }
 ]

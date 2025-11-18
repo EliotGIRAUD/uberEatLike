@@ -10,7 +10,6 @@
       
       <div v-if="cart.items.length === 0" class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 text-center">
         <p class="text-gray-900 text-xl sm:text-2xl font-bold mb-2">{{ t('cart.empty') }}</p>
-        <p class="text-gray-600 text-sm sm:text-base mb-6">{{ t('cart.emptyHint') }}</p>
         <NuxtLink 
           to="/restaurants" 
           class="inline-block rounded-xl bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-8 py-4 font-bold hover:from-black hover:to-gray-800 hover:text-white transition-all duration-300 hover:scale-105 shadow-lg"
