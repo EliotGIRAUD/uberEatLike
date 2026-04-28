@@ -12,7 +12,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const food = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza Margherita',
         description: 'Pizza classique',
@@ -33,7 +33,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const food = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza Margherita',
         description: 'Pizza classique',
@@ -51,7 +51,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const pizza = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza',
         description: 'Pizza classique',
@@ -59,7 +59,7 @@ describe('useCartStore', () => {
       }
 
       const burger = {
-        id: 2,
+        id: '2',
         restaurantId: 'resto-1',
         name: 'Burger',
         description: 'Burger classique',
@@ -70,8 +70,8 @@ describe('useCartStore', () => {
       store.addItem(burger)
 
       expect(store.items).toHaveLength(2)
-      expect(store.items[0]?.id).toBe(1)
-      expect(store.items[1]?.id).toBe(2)
+      expect(store.items[0]?.id).toBe('1')
+      expect(store.items[1]?.id).toBe('2')
     })
   })
 
@@ -80,7 +80,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const food = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza',
         description: 'Pizza classique',
@@ -90,7 +90,7 @@ describe('useCartStore', () => {
       store.addItem(food)
       expect(store.items).toHaveLength(1)
 
-      store.removeItem(1)
+      store.removeItem('1')
       expect(store.items).toHaveLength(0)
     })
 
@@ -98,7 +98,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const food = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza',
         description: 'Pizza classique',
@@ -106,7 +106,7 @@ describe('useCartStore', () => {
       }
 
       store.addItem(food)
-      store.removeItem(999) // ID inexistant
+      store.removeItem('999') // ID inexistant
 
       expect(store.items).toHaveLength(1)
     })
@@ -114,16 +114,16 @@ describe('useCartStore', () => {
     it('devrait supprimer uniquement l\'item spécifié', () => {
       const store = useCartStore()
 
-      const pizza = { id: 1, restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
-      const burger = { id: 2, restaurantId: 'resto-1', name: 'Burger', description: 'Burger', price: 10.00 }
+      const pizza = { id: '1', restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
+      const burger = { id: '2', restaurantId: 'resto-1', name: 'Burger', description: 'Burger', price: 10.00 }
 
       store.addItem(pizza)
       store.addItem(burger)
 
-      store.removeItem(1)
+      store.removeItem('1')
 
       expect(store.items).toHaveLength(1)
-      expect(store.items[0]?.id).toBe(2)
+      expect(store.items[0]?.id).toBe('2')
     })
   })
 
@@ -132,7 +132,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const food = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza',
         description: 'Pizza classique',
@@ -140,7 +140,7 @@ describe('useCartStore', () => {
       }
 
       store.addItem(food)
-      store.updateQuantity(1, 5)
+      store.updateQuantity('1', 5)
 
       expect(store.items[0]?.quantity).toBe(5)
     })
@@ -149,7 +149,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const food = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza',
         description: 'Pizza classique',
@@ -157,7 +157,7 @@ describe('useCartStore', () => {
       }
 
       store.addItem(food)
-      store.updateQuantity(1, 0)
+      store.updateQuantity('1', 0)
 
       expect(store.items).toHaveLength(0)
     })
@@ -166,7 +166,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const food = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza',
         description: 'Pizza classique',
@@ -174,7 +174,7 @@ describe('useCartStore', () => {
       }
 
       store.addItem(food)
-      store.updateQuantity(1, -1)
+      store.updateQuantity('1', -1)
 
       expect(store.items).toHaveLength(0)
     })
@@ -183,7 +183,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
 
       const food = {
-        id: 1,
+        id: '1',
         restaurantId: 'resto-1',
         name: 'Pizza',
         description: 'Pizza classique',
@@ -191,7 +191,7 @@ describe('useCartStore', () => {
       }
 
       store.addItem(food)
-      store.updateQuantity(999, 10)
+      store.updateQuantity('999', 10)
 
       expect(store.items).toHaveLength(1)
       expect(store.items[0]?.quantity).toBe(1)
@@ -202,8 +202,8 @@ describe('useCartStore', () => {
     it('devrait vider complètement le panier', () => {
       const store = useCartStore()
 
-      const pizza = { id: 1, restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
-      const burger = { id: 2, restaurantId: 'resto-1', name: 'Burger', description: 'Burger', price: 10.00 }
+      const pizza = { id: '1', restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
+      const burger = { id: '2', restaurantId: 'resto-1', name: 'Burger', description: 'Burger', price: 10.00 }
 
       store.addItem(pizza)
       store.addItem(burger)
@@ -234,8 +234,8 @@ describe('useCartStore', () => {
       it('devrait calculer le nombre total d\'items', () => {
         const store = useCartStore()
 
-        const pizza = { id: 1, restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
-        const burger = { id: 2, restaurantId: 'resto-1', name: 'Burger', description: 'Burger', price: 10.00 }
+        const pizza = { id: '1', restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
+        const burger = { id: '2', restaurantId: 'resto-1', name: 'Burger', description: 'Burger', price: 10.00 }
 
         store.addItem(pizza)
         store.addItem(pizza)
@@ -247,12 +247,12 @@ describe('useCartStore', () => {
       it('devrait mettre à jour le total après modification', () => {
         const store = useCartStore()
 
-        const food = { id: 1, restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
+        const food = { id: '1', restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
 
         store.addItem(food)
         expect(store.totalItems).toBe(1)
 
-        store.updateQuantity(1, 10)
+        store.updateQuantity('1', 10)
         expect(store.totalItems).toBe(10)
       })
     })
@@ -267,8 +267,8 @@ describe('useCartStore', () => {
       it('devrait calculer le prix total correct', () => {
         const store = useCartStore()
 
-        const pizza = { id: 1, restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
-        const burger = { id: 2, restaurantId: 'resto-1', name: 'Burger', description: 'Burger', price: 10.00 }
+        const pizza = { id: '1', restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
+        const burger = { id: '2', restaurantId: 'resto-1', name: 'Burger', description: 'Burger', price: 10.00 }
 
         store.addItem(pizza)
         store.addItem(pizza)
@@ -281,19 +281,19 @@ describe('useCartStore', () => {
       it('devrait mettre à jour le prix après modification de quantité', () => {
         const store = useCartStore()
 
-        const food = { id: 1, restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
+        const food = { id: '1', restaurantId: 'resto-1', name: 'Pizza', description: 'Pizza', price: 12.50 }
 
         store.addItem(food)
         expect(store.totalPrice).toBe(12.50)
 
-        store.updateQuantity(1, 4)
+        store.updateQuantity('1', 4)
         expect(store.totalPrice).toBe(50.00) // 4 * 12.50
       })
 
       it('devrait gérer les nombres décimaux correctement', () => {
         const store = useCartStore()
 
-        const food = { id: 1, restaurantId: 'resto-1', name: 'Salade', description: 'Salade', price: 7.99 }
+        const food = { id: '1', restaurantId: 'resto-1', name: 'Salade', description: 'Salade', price: 7.99 }
 
         store.addItem(food)
         store.addItem(food)
@@ -310,7 +310,7 @@ describe('useCartStore', () => {
       const store = useCartStore()
       
       // On vérifie qu'on peut ajouter des trucs
-      store.addItem({ id: 1, restaurantId: 'r1', name: 'Test', description: 'Test', price: 10 })
+      store.addItem({ id: '1', restaurantId: 'r1', name: 'Test', description: 'Test', price: 10 })
       
       expect(store.items).toHaveLength(1)
     })

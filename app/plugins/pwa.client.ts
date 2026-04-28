@@ -6,7 +6,6 @@ export default defineNuxtPlugin(() => {
   if (typeof window === 'undefined') return;
   
   if ('serviceWorker' in navigator) {
-    console.log('[PWA] Initialisation du Service Worker...');
     
     navigator.serviceWorker
       .register('/sw.js', { scope: '/' })

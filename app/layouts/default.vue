@@ -50,7 +50,7 @@
               <NuxtLink v-if="user.currentUser.role === 'ADMIN'" @click="menuOpen = false" to="/admin" class="rounded border-2 border-black px-4 py-2 hover:border-purple-600 transition text-center">{{ $t('nav.backOffice') }}</NuxtLink>
               <NuxtLink v-if="user.currentUser.role === 'RESTAURATEUR'" @click="menuOpen = false" to="/restaurateur" class="rounded border-2 border-black px-4 py-2 hover:border-[#3AF24B] transition text-center">{{ $t('nav.myRestaurant') }}</NuxtLink>
               <NuxtLink @click="menuOpen = false" to="/profile" class="rounded border-2 border-black px-4 py-2 hover:border-[#3AF24B] transition text-center">{{ user.currentUser.name }}</NuxtLink>
-              <button @click="logout; menuOpen = false" class="rounded bg-black text-white px-4 py-2 hover:bg-[#3AF24B] hover:text-black transition">{{ $t('nav.logout') }}</button>
+              <button type="button" @click="logoutAndCloseMenu" class="rounded bg-black text-white px-4 py-2 hover:bg-[#3AF24B] hover:text-black transition">{{ $t('nav.logout') }}</button>
             </template>
             <div class="flex justify-center mt-2">
               <LazyLanguageSwitcher />
@@ -80,14 +80,19 @@ const router = useRouter()
 const year = new Date().getFullYear()
 const menuOpen = ref(false)
 
-function logout() {
-  user.logout()
+async function logout() {
+  await user.logout();
   toast.info({
-    title: t('auth.logoutSuccess'),
-    message: t('auth.logoutMessage'),
-    timeout: 2000,
-  })
-  router.push('/')
+    title: t("auth.logoutSuccess"),
+    message: t("auth.logoutMessage"),
+    timeout: 2000
+  });
+  await router.push("/");
+}
+
+async function logoutAndCloseMenu() {
+  menuOpen.value = false;
+  await logout();
 }
 </script>
 

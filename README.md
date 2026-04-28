@@ -1,364 +1,106 @@
-# Grosmino's - Plateforme de livraison de repas
+# UberEatLike Front (Nuxt 4)
 
-> Application web moderne de livraison de repas avec gestion multi-rôles, développée avec Nuxt 4, TypeScript et Tailwind CSS.
+Front-end Nuxt du projet Uber Eats (M1), connecté à l’API Fastify/Prisma.
 
-## Aperçu
+## Stack
 
-Grosmino's est une plateforme complète de commande et livraison de repas en ligne, offrant une expérience utilisateur moderne et fluide. L'application gère trois types d'utilisateurs (Clients, Restaurateurs, Administrateurs) avec des fonctionnalités dédiées à chaque rôle.
+- Nuxt 4 + Vue 3 + TypeScript
+- Pinia (+ persisted state)
+- Tailwind CSS
+- i18n (FR/EN)
+- Vitest + Playwright
 
-### Points clés
+## Prérequis
 
-- SSR (Server-Side Rendering) pour un SEO optimal
-- Internationalisation FR/EN avec switch dynamique
-- Authentification avec middleware sécurisés
-- Gestion d'état centralisée avec Pinia
-- Design moderne et responsive avec Tailwind CSS
-- TypeScript strict pour une qualité de code optimale
-
-## 🚀 Déploiement
-
-L'application est déployée en production sur Vercel avec déploiement automatique.
-
-### CI/CD - Tests Automatisés
-
-GitHub Actions exécute automatiquement à chaque push/PR :
-- Tests unitaires (Vitest) : 47 tests
-- Tests E2E (Playwright) : 10 tests
-- Upload des rapports en cas d'échec
-- Déploiement automatique sur Vercel (si tous les tests passent)
-
-Pipeline de déploiement :
-1. Tests unitaires + Tests E2E (parallèles)
-2. Si tous passent → Déploiement production Vercel
-3. Si un test échoue → Pas de déploiement
-
-Lien de production : https://grosminos.vercel.app
-
-### Configuration Vercel
-
-Le projet est configuré pour :
-- Build automatique avec `npm run build`
-- Preview deployments pour chaque PR
-- Rollback instantané en cas de problème
-- SSL/HTTPS automatique
-- Edge Functions pour des performances optimales
-
-## Fonctionnalités
-
-### Pour les Clients
-- Recherche et navigation dans les restaurants
-- Consultation des menus et détails des plats
-- Panier avec gestion des quantités
-- Historique et suivi des commandes
-- Gestion du profil utilisateur
-
-### Pour les Restaurateurs
-- Dashboard de gestion du restaurant
-- Gestion complète du menu (CRUD)
-- Visualisation des commandes
-- Modification des informations du restaurant
-- Statistiques en temps réel
-
-### Pour les Administrateurs
-- Gestion des restaurateurs
-- Ajout/Modification/Suppression de restaurants
-- Vue d'ensemble du système
-- Contrôle d'accès complet
-
-## Technologies
-
-### Core
-- Framework Vue.js avec SSR
-- TypeScript - Typage strict
-- Tailwind CSS 4 - Framework CSS utility-first
-
-### State Management & Data
-- Pinia - Store Vue.js moderne
-- @pinia-plugin-persistedstate - Persistance du state
-
-### Testing
-- Vitest - Tests unitaires des stores
-- Playwright - Tests End-to-End (E2E)
-
-### Internationalisation
-- @nuxtjs/i18n - Support multilingue (FR/EN)
-
-### UI/UX
-- Vue 3 Composition API Architecture réactive moderne
-- IziToast - Notifications élégantes
+- Node.js 18+ (20+ recommandé)
+- npm
+- API `uberEats-api` démarrée
 
 ## Installation
 
-### Prérequis
-
-- Node.js 18.x ou supérieur
-- npm, pnpm, yarn ou bun
-
-### Étapes
-
 ```bash
-# Cloner le repository
-git clone https://github.com/EliotGIRAUD/uberEatLike.git
-cd uberEatLike
-
-# Installer les dépendances
 npm install
-
-# Lancer le serveur de développement
-npm run dev
 ```
 
-L'application sera accessible sur `http://localhost:3000`
+## Variables d'environnement
 
-## Utilisation
+Créer un `.env` dans `uberEatLike` :
 
-### Développement
+```env
+NUXT_PUBLIC_API_BASE=http://localhost:3001
+```
+
+## Lancer le front
 
 ```bash
-# Serveur de développement avec hot-reload
+# Dev
 npm run dev
 
-# Build de production
+# Build
 npm run build
 
-# Prévisualiser la build de production
+# Preview
 npm run preview
-
-# Générer le site statique
-npm run generate
-
-# Lancer les tests unitaires
-npm test
-
-# Lancer les tests en mode watch
-npm run test:watch
-
-# Analyser le bundle
-npm run analyze
-
-# Optimiser les images (convertir en WebP/AVIF)
-npm run optimize:images
 ```
 
-### Comptes de test
+Application disponible sur `http://localhost:3000`.
 
-Pour tester l'application, vous pouvez créer des comptes ou utiliser les rôles suivants :
+## Scripts utiles
 
-| Rôle | Email | Fonctionnalités |
-|------|-------|-----------------|
-| Client | Navigation, commandes, panier |
-| Restaurateur | Gestion menu, commandes |
-| Admin | Gestion complète |
+- `npm run dev`
+- `npm run build`
+- `npm test`
+- `npm run test:watch`
+- `npm run test:e2e`
+- `npm run analyze`
 
-## Rôles utilisateurs
+## Comptes de test
 
-### Client
-Le client peut naviguer parmi les restaurants, consulter les menus, ajouter des plats au panier et passer des commandes.
+Ces comptes viennent du seed API (`uberEats-api`):
 
-Pages accessibles :
-- `/restaurants` - Liste des restaurants
-- `/restaurants/[id]` - Détail d'un restaurant
-- `/foods/[id]` - Détail d'un plat
-- `/cart` - Panier
-- `/orders` - Mes commandes
-- `/profile` - Mon profil
+- Admin: `admin@seed.local` / `admin12345`
+- Restaurateur: `restaurant@seed.local` / `resto12345`
+- Client: `client@seed.local` / `client12345`
 
-### Restaurateur
-Le restaurateur gère son établissement, ses plats et consulte ses commandes.
+## Parcours rapides de vérification
 
-Pages accessibles :
-- `/restaurateur` - Dashboard
-  - Gestion du profil du restaurant
-  - CRUD des plats
-  - Visualisation des commandes
+1. Client:
+   - `/restaurants` -> liste
+   - `/restaurants/:id` -> détail + plats
+   - panier + création commande
+   - `/orders` -> commandes client
+2. Restaurateur:
+   - `/restaurateur` -> infos resto, plats, commandes
+3. Admin:
+   - `/admin` -> listing restaurants + création
 
-### Administrateur
-L'administrateur a un accès complet pour gérer tous les restaurateurs de la plateforme.
+## Notes d’intégration API
 
-Pages accessibles :
-- `/admin` - Back office
-  - Gestion des restaurateurs (CRUD)
-  - Statistiques globales
+- Les endpoints paginés REST sont consommés via l’enveloppe:
 
-## Structure du projet
-
-### Stores Pinia
-
-| Store | Responsabilité |
-| `user.ts` | Authentification et gestion des utilisateurs |
-| `cart.ts` | Panier d'achat avec getters (totalItems, totalPrice) |
-| `order.ts` | Gestion des commandes |
-| `food.ts` | CRUD des plats |
-| `restaurateur.ts` | CRUD des restaurants |
-
-### Middleware
-
-| Middleware | Fonction |
-| `auth.ts` | Vérifie l'authentification |
-| `guest.ts` | Redirige les utilisateurs connectés |
-| `client.ts` | Réservé aux clients |
-| `admin.ts` | Réservé aux administrateurs |
-| `restaurateur.ts` | Réservé aux restaurateurs |
-
-## Fonctionnalités avancées
-
-### Progressive Web App (PWA)
-
-L'application est une PWA complète installable sur mobile et desktop :
-
-**Service Worker** :
-- Navigation offline basique
-- Mise en cache automatique des ressources
-- Stratégie Network-First avec fallback Cache
-- Mise à jour automatique du Service Worker
-
-**Manifest** :
-- Icônes 192x192 et 512x512
-- Thème personnalisé (#3AF24B)
-- Raccourcis vers Restaurants et Panier
-- Mode standalone
-
-Installation :
-```bash
-# Le Service Worker s'enregistre automatiquement
-# Visitez l'app et cliquez sur "Installer" dans le navigateur
+```json
+{
+  "data": [],
+  "pagination": { "total": 0, "limit": 20, "offset": 0 }
+}
 ```
 
-### Optimisation des Images
+- Routes utilisées côté front:
+  - `/restaurants`
+  - `/restaurants/:id`
+  - `/restaurants/:id/dishes`
+  - `/users/me/orders`
+  - `/restaurants/me/orders`
 
-Le projet utilise des images optimisées pour des performances maximales :
+## Dépannage
 
-**Formats supportés** :
-- AVIF (meilleure compression)
-- WebP
-- PNG/JPG (fallback pour anciens navigateurs)
+- Si aucun restaurant ne s’affiche:
+  - vérifier `NUXT_PUBLIC_API_BASE`
+  - vérifier que l’API tourne sur `:3001`
+  - exécuter côté API: `npx prisma migrate deploy && npm run db:seed`
 
-**Composant OptimizedImage** :
-```vue
-<OptimizedImage
-  src="/images/food.jpg"
-  webpSrc="/images/food.webp"
-  avifSrc="/images/food.avif"
-  alt="Plat délicieux"
-  loading="lazy"
-/>
-```
-
-**Générer les images optimisées** :
-```bash
-# Convertir toutes les images PNG/JPG en WebP et AVIF
-npm run optimize:images
-```
-
-### Lazy Loading & Code Splitting
-
-**Optimisations du bundle** :
-- Lazy loading automatique des composants (préfixe `Lazy`)
-- Code splitting des pages automatique par Nuxt
-- Séparation manuelle des chunks (stores, i18n)
-
-**Analyse du bundle** :
-```bash
-# Construire et analyser le bundle
-npm run analyze
-
-# Voir la documentation complète : BUNDLE_OPTIMIZATION.md
-```
-
-### Server-Side Rendering (SSR)
-
-Toutes les pages publiques sont rendues côté serveur pour :
-- Meilleur référencement SEO
-- Temps de chargement initial réduit
-- Performance optimale
-
-Pages en SSR :
-- `/restaurants` - Liste des restaurants
-- `/restaurants/[id]` - Détail d'un restaurant
-- `/foods/[id]` - Détail d'un plat avec SEO produit
-
-Pages en CSR (Client-Side) :
-- `/cart` - Panier (nécessite authentification)
-- `/orders` - Commandes (nécessite authentification)
-- `/profile` - Profil utilisateur (nécessite authentification)
-
-### Internationalisation (i18n)
-
-Support multilingue avec changement dynamique :
-
-Langues supportées :    
-- 🇫🇷 Français (par défaut)
-- 🇬🇧 English
-
-### Tests automatisés
-
-Le projet dispose d'une suite de tests complète couvrant les tests unitaires et E2E :
-
-#### Tests unitaires (Vitest)
-
-Coverage :
-- 47 tests unitaires passent avec succès
-- Store `cart` : 20 tests (addItem, removeItem, updateQuantity, clearCart, getters)
-- Store `user` : 22 tests (login, logout, register, updateProfile)
-- Store `restaurateur` : 5 tests (addRestaurateur)
-
-Commandes :
-```bash
-npm test              # Lancer les tests unitaires
-npm run test:watch    # Mode watch pour développement
-```
-
-#### Tests End-to-End (Playwright)
-
-Coverage :
-- Tests de navigation et routing
-- Tests d'authentification (login/register)
-- Tests du parcours restaurant → plat
-- Tests du panier (ajout/suppression d'articles)
-
-Commandes :
-```bash
-npm run test:e2e          # Lancer les tests E2E
-npm run test:e2e:ui       # Interface graphique Playwright
-npm run test:e2e:headed   # Tests avec navigateur visible
-npm run test:e2e:report   # Voir le rapport des tests
-```
-
-Configuration :
-- Navigateur : Chromium
-- Mode headless par défaut
-- Screenshots automatiques en cas d'échec
-- Rapport HTML détaillé
-
-## Roadmap
-
-### Version actuelle (v1.0)
-- Authentification multi-rôles
-- Gestion des restaurants et menus
-- Système de commandes
-- Internationalisation FR/EN
-- SSR et SEO optimisés
-- Tests unitaires (Vitest) : 47 tests
-- Tests E2E (Playwright) : Navigation, Auth, Cart
-- Déploiement continu sur Vercel (déploiement automatique sur push master)
-- Gestion d'erreurs réseau avec retry
-- PWA avec Service Worker 
-- Images optimisées
-- Lazy loading
-- Bundle optimisé
-
-### Prochaines étapes (v1.1)
-- Tests E2E supplémentaires (commandes complètes, profil utilisateur)
-- Score Lighthouse accessibilité ≥ 90
-
-### Futures fonctionnalités (v2.0)
-- Paiement en ligne
-- Suivi en temps réel des livraisons
-- Système de notation et avis
-- Notifications push
-
-## Auteur
-
-**Eliot** - Front-End Master 1
+- Si login échoue:
+  - vérifier qu’il n’y a pas d’espace en fin de mot de passe
+  - vider le stockage local/session et se reconnecter
 
 

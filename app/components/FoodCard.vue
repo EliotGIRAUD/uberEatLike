@@ -30,8 +30,8 @@
 import { useCartStore } from '../stores/cart'
 
 interface Food {
-  id: number
-  restaurantId: string | number
+  id: string
+  restaurantId: string
   name: string
   description: string
   grosseDescription?: string
@@ -44,7 +44,22 @@ const cart = useCartStore()
 const toast = useToast()
 
 function addToCart() {
-  cart.addItem(props.food)
+  const result = cart.addItem({
+    id: props.food.id,
+    restaurantId: String(props.food.restaurantId),
+    name: props.food.name,
+    description: props.food.description,
+    price: props.food.price,
+    imageUrl: props.food.imageUrl
+  })
+  if (result.success === false) {
+    toast.error({
+      title: 'Panier',
+      message: result.message,
+      timeout: 3500
+    })
+    return
+  }
   toast.success({
     title: 'Ajouté au panier !',
     message: `${props.food.name} a été ajouté à votre panier`,

@@ -105,8 +105,8 @@ useHead({
   ],
 })
 
-function logout() {
-  user.logout()
+async function logout() {
+  await user.logout();
 }
 </script>
 

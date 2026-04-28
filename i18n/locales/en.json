@@ -78,7 +78,10 @@
     "emptyWarning": "Empty cart",
     "emptyWarningMessage": "Add items before ordering",
     "orderSuccess": "Order placed!",
-    "orderSuccessMessage": "Your order #{id} has been successfully created"
+    "orderSuccessMessage": "Your order #{id} has been successfully created",
+    "clientOnlyOrder": "Only customer accounts can place orders here.",
+    "orderFailed": "Your order could not be created.",
+    "mixedRestaurantError": "Your cart contains items from multiple restaurants."
   },
   "orders": {
     "title": "My {highlight}",
@@ -86,12 +89,17 @@
     "subtitle": "Track the status of your orders in real time",
     "empty": "You haven't placed any orders yet",
     "discover": "Discover restaurants",
+    "loadError": "Could not load orders",
+    "retry": "Retry",
+    "needLogin": "Sign in to see your orders.",
+    "clientOnlyList": "Customer orders appear here. Use the restaurant back office for kitchen orders.",
     "orderNumber": "Order #{id}",
     "total": "Total",
     "status": {
       "pending": "Pending",
       "confirmed": "Confirmed",
       "preparing": "Preparing",
+      "ready": "Ready",
       "delivered": "Delivered",
       "cancelled": "Cancelled"
     }
@@ -120,7 +128,10 @@
     "cancelled": "Cancelled",
     "cancelledMessage": "Changes have been cancelled",
     "passwordMismatch": "Passwords do not match",
-    "passwordTooShort": "Password must be at least 3 characters long",
+    "passwordTooShort": "Password must be at least 6 characters long",
+    "apiEditClientOnly": "Email and password can only be changed on this page for customer accounts. You can still update your display name below (saved locally).",
+    "displayNameHint": "Shown in the app; not synced to the server.",
+    "displayNameOnlySaved": "Display name saved. Non-customer accounts cannot change email or password here.",
     "updateSuccess": "Profile updated",
     "updateSuccessMessage": "Your information has been successfully saved",
     "updateError": "Error",
@@ -146,6 +157,9 @@
     "loginErrorMessage": "Incorrect email or password",
     "registerSuccess": "Registration successful!",
     "registerWelcome": "Welcome {name}",
+    "registerError": "Registration failed",
+    "registerErrorMessage": "Check your details or try another email.",
+    "registerClientOnlyHint": "Sign-up creates a customer account only. Restaurant or admin accounts are issued separately.",
     "logoutSuccess": "Logout",
     "logoutMessage": "You have been successfully logged out"
   },

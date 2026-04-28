@@ -64,11 +64,13 @@
               >
                 {{ t('cart.clear') }}
               </button>
-              <button 
-                @click="placeOrder" 
-                class="rounded-xl bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-8 py-4 font-bold hover:from-black hover:to-gray-800 hover:text-white transition-all duration-300 hover:scale-105 shadow-lg"
+              <button
+                type="button"
+                :disabled="ordering"
+                @click="placeOrder"
+                class="rounded-xl bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-8 py-4 font-bold hover:from-black hover:to-gray-800 hover:text-white transition-all duration-300 hover:scale-105 shadow-lg disabled:opacity-60 disabled:pointer-events-none"
               >
-                {{ t('cart.order') }}
+                {{ ordering ? "…" : t("cart.order") }}
               </button>
             </div>
           </div>
@@ -79,9 +81,11 @@
 </template>
 
 <script setup lang="ts">
-import { useCartStore } from '../stores/cart'
-import { useUserStore } from '~/stores/user'
-import { useOrderStore } from '../stores/order'
+import { ref } from "vue";
+import { useCartStore } from "../stores/cart";
+import { useUserStore } from "~/stores/user";
+import { useOrderStore } from "../stores/order";
+import type { ApiError } from "~/composables/useApi";
 
 definePageMeta({
   middleware: ['client']
@@ -91,8 +95,9 @@ const { t } = useI18n()
 const userStore = useUserStore()
 const router = useRouter()
 const cart = useCartStore()
-const orderStore = useOrderStore()
-const toast = useToast()
+const orderStore = useOrderStore();
+const toast = useToast();
+const ordering = ref(false);
 
 useHead({
   title: t('seo.cart.title'),
@@ -111,8 +116,8 @@ function clearCartWithConfirm() {
   })
 }
 
-function removeItemWithNotif(id: number) {
-  cart.removeItem(id)
+function removeItemWithNotif(id: string) {
+  cart.removeItem(id);
   toast.info({
     title: t('cart.itemRemoved'),
     message: t('cart.itemRemovedMessage'),
@@ -120,40 +125,71 @@ function removeItemWithNotif(id: number) {
   })
 }
 
-function placeOrder() {
+async function placeOrder() {
   if (!userStore.currentUser?.email) {
     toast.error({
-      title: t('cart.error'),
-      message: t('cart.loginRequired'),
-      timeout: 3000,
-    })
-    return
+      title: t("cart.error"),
+      message: t("cart.loginRequired"),
+      timeout: 3000
+    });
+    return;
+  }
+
+  if (userStore.currentUser.role !== "CLIENT") {
+    toast.error({
+      title: t("cart.error"),
+      message: t("cart.clientOnlyOrder"),
+      timeout: 3000
+    });
+    return;
   }
 
   if (cart.items.length === 0) {
     toast.warning({
-      title: t('cart.emptyWarning'),
-      message: t('cart.emptyWarningMessage'),
-      timeout: 2000,
-    })
-    return
+      title: t("cart.emptyWarning"),
+      message: t("cart.emptyWarningMessage"),
+      timeout: 2000
+    });
+    return;
   }
 
-  const order = orderStore.createOrder(
-    userStore.currentUser.email,
-    cart.items,
-    cart.totalPrice
-  )
+  const first = cart.items[0];
+  if (!first) return;
+  const restaurantId = first.restaurantId;
+  const byDish = new Map<string, number>();
+  for (const line of cart.items) {
+    if (line.restaurantId !== restaurantId) {
+      toast.error({
+        title: t("cart.error"),
+        message: t("cart.mixedRestaurantError"),
+        timeout: 3500
+      });
+      return;
+    }
+    byDish.set(line.id, (byDish.get(line.id) ?? 0) + line.quantity);
+  }
+  const items = [...byDish.entries()].map(([dishId, quantity]) => ({ dishId, quantity }));
 
-  cart.clearCart()
-
-  toast.success({
-    title: t('cart.orderSuccess'),
-    message: t('cart.orderSuccessMessage', { id: order.id }),
-    timeout: 3000,
-  })
-
-  router.push('/orders')
+  ordering.value = true;
+  try {
+    const orderId = await orderStore.createOrderApi(restaurantId, items);
+    cart.clearCart();
+    toast.success({
+      title: t("cart.orderSuccess"),
+      message: t("cart.orderSuccessMessage", { id: orderId }),
+      timeout: 3000
+    });
+    await router.push("/orders");
+  } catch (e) {
+    const err = e as ApiError;
+    toast.error({
+      title: t("cart.error"),
+      message: err?.detail ?? t("cart.orderFailed"),
+      timeout: 4000
+    });
+  } finally {
+    ordering.value = false;
+  }
 }
 </script>
 

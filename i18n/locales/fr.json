@@ -78,7 +78,10 @@
     "emptyWarning": "Panier vide",
     "emptyWarningMessage": "Ajoutez des articles avant de commander",
     "orderSuccess": "Commande passée !",
-    "orderSuccessMessage": "Votre commande #{id} a été créée avec succès"
+    "orderSuccessMessage": "Votre commande #{id} a été créée avec succès",
+    "clientOnlyOrder": "Seuls les comptes client peuvent passer commande ici.",
+    "orderFailed": "La commande n’a pas pu être créée.",
+    "mixedRestaurantError": "Votre panier contient des articles de plusieurs restaurants."
   },
   "orders": {
     "title": "Mes {highlight}",
@@ -86,12 +89,17 @@
     "subtitle": "Suivez l'état de vos commandes en temps réel",
     "empty": "Vous n'avez pas encore passé de commande",
     "discover": "Découvrir les restaurants",
+    "loadError": "Impossible de charger les commandes",
+    "retry": "Réessayer",
+    "needLogin": "Connectez-vous pour voir vos commandes.",
+    "clientOnlyList": "Les commandes client sont affichées ici. Utilisez l’espace restaurateur pour vos commandes en cuisine.",
     "orderNumber": "Commande #{id}",
     "total": "Total",
     "status": {
       "pending": "En attente",
       "confirmed": "Confirmée",
       "preparing": "En préparation",
+      "ready": "Prête",
       "delivered": "Livrée",
       "cancelled": "Annulée"
     }
@@ -120,7 +128,10 @@
     "cancelled": "Annulé",
     "cancelledMessage": "Les modifications ont été annulées",
     "passwordMismatch": "Les mots de passe ne correspondent pas",
-    "passwordTooShort": "Le mot de passe doit contenir au moins 3 caractères",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+    "apiEditClientOnly": "La modification de l’email ou du mot de passe via cette page n’est disponible que pour les comptes client. Vous pouvez toutefois ajuster votre nom affiché ci-dessous (stocké localement).",
+    "displayNameHint": "Affiché dans l’application ; non synchronisé avec le serveur.",
+    "displayNameOnlySaved": "Nom affiché enregistré. Compte non client : email et mot de passe ne sont pas modifiables ici.",
     "updateSuccess": "Profil mis à jour",
     "updateSuccessMessage": "Vos informations ont été enregistrées avec succès",
     "updateError": "Erreur",
@@ -146,6 +157,9 @@
     "loginErrorMessage": "Email ou mot de passe incorrect",
     "registerSuccess": "Inscription réussie !",
     "registerWelcome": "Bienvenue {name}",
+    "registerError": "Inscription impossible",
+    "registerErrorMessage": "Vérifiez vos informations ou utilisez un autre email.",
+    "registerClientOnlyHint": "Inscription réservée aux comptes client. Comptes restaurateur ou admin : contact administrateur.",
     "logoutSuccess": "Déconnexion",
     "logoutMessage": "Vous avez été déconnecté avec succès"
   },

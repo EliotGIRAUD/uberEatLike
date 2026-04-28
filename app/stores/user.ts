@@ -1,105 +1,153 @@
-import { defineStore } from 'pinia'
-import { useRestaurateurStore } from './restaurateur'
+import { defineStore } from "pinia";
 
-export type UserRole = 'ADMIN' | 'CLIENT' | 'RESTAURATEUR'
+export type UserRole = "ADMIN" | "CLIENT" | "RESTAURATEUR";
 
 export interface AppUser {
-  name: string
-  email: string
-  password: string
-  role: UserRole
-  restaurateurId?: string 
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  /** Identifiant du restaurant (API) lorsque le rôle est restaurateur */
+  restaurateurId?: string;
 }
 
 interface UserState {
-  users: AppUser[]
-  currentUser: AppUser | null
-  isLoggedIn: boolean
+  accessToken: string | null;
+  refreshToken: string | null;
+  currentUser: AppUser | null;
+  isLoggedIn: boolean;
 }
 
-export const useUserStore = defineStore('user', {
+function displayNameFromEmail(email: string): string {
+  const local = email.split("@")[0] || email;
+  if (!local) return email;
+  return local.charAt(0).toUpperCase() + local.slice(1);
+}
+
+function mapRole(r: "USER" | "RESTAURANT" | "ADMIN"): UserRole {
+  if (r === "USER") return "CLIENT";
+  if (r === "RESTAURANT") return "RESTAURATEUR";
+  return "ADMIN";
+}
+
+export const useUserStore = defineStore("user", {
   state: (): UserState => ({
-    users: [],
+    accessToken: null,
+    refreshToken: null,
     currentUser: null,
-    isLoggedIn: false,
+    isLoggedIn: false
   }),
   actions: {
-    async initDefaultAdmin() {
-      try {
-        const response = await fetch('/admin.json')
-        if (response.ok) {
-          const adminData: AppUser = await response.json()
-          const adminIndex = this.users.findIndex(u => u.email.toLowerCase() === adminData.email.toLowerCase())
-          if (adminIndex !== -1) {
-            // Mettre à jour l'admin existant avec les nouvelles données
-            this.users[adminIndex] = { ...adminData }
-          } else {
-            this.users.push(adminData)
-          }
+    setTokens(accessToken: string, refreshToken: string) {
+      this.accessToken = accessToken;
+      this.refreshToken = refreshToken;
+    },
+    clearSession() {
+      this.accessToken = null;
+      this.refreshToken = null;
+      this.currentUser = null;
+      this.isLoggedIn = false;
+    },
+    async hydrateFromMe(preferredDisplayName?: string) {
+      const { request } = useApi();
+      const me = await request<{ id: string; email: string; role: "USER" | "RESTAURANT" | "ADMIN" }>("/auth/me");
+      const role = mapRole(me.role);
+      let restaurateurId: string | undefined;
+      if (me.role === "RESTAURANT") {
+        const restaurant = await request<{
+          id: string;
+          name: string;
+        }>("/restaurants/me");
+        restaurateurId = restaurant.id;
+      }
+      const name =
+        preferredDisplayName?.trim() ||
+        this.currentUser?.name ||
+        displayNameFromEmail(me.email);
+      this.currentUser = {
+        id: me.id,
+        email: me.email,
+        name,
+        role,
+        restaurateurId
+      };
+      this.isLoggedIn = true;
+    },
+    async login(payload: { email: string; password: string }) {
+      const email = payload.email.trim();
+      const password = payload.password.trim();
+      const config = useRuntimeConfig();
+      const base = (config.public.apiBase as string) || "http://localhost:3001";
+      const res = await fetch(`${base.replace(/\/$/, "")}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      if (!res.ok) {
+        let detail = "Échec de la connexion";
+        try {
+          const j = (await res.json()) as { detail?: string };
+          if (j.detail) detail = j.detail;
+        } catch {
+          /* ignore */
         }
-      } catch (error) {
-        console.error('Erreur lors du chargement de l\'admin par défaut:', error)
+        throw new Error(detail);
       }
+      const data = (await res.json()) as { accessToken: string; refreshToken: string };
+      this.setTokens(data.accessToken, data.refreshToken);
+      await this.hydrateFromMe(displayNameFromEmail(email));
     },
-    registerOrLogin(payload: AppUser) {
-      const existing = this.users.find(u => u.email.toLowerCase() === payload.email.toLowerCase())
-      if (!existing) {
-        this.users.push({ ...payload })
-      } else {
-        existing.name = payload.name
-        existing.password = payload.password
-        existing.role = payload.role
-      }
-      this.currentUser = { ...payload }
-      this.isLoggedIn = true
-    },
-    login(payload: { email: string; password: string }) {
-      const found = this.users.find(u => u.email.toLowerCase() === payload.email.toLowerCase() && u.password === payload.password)
-      if (found) {
-        this.currentUser = { ...found }
-        this.isLoggedIn = true
-        return true
-      }
-
-      const restaurateurStore = useRestaurateurStore()
-      const restaurateur = restaurateurStore.getRestaurateurByEmail(payload.email)
-      
-      if (restaurateur && restaurateur.password === payload.password) {
-        this.currentUser = {
-          name: restaurateur.nom,
-          email: restaurateur.email,
-          password: restaurateur.password,
-          role: 'RESTAURATEUR',
-          restaurateurId: restaurateur.id,
+    async registerAccount(name: string, email: string, password: string) {
+      const config = useRuntimeConfig();
+      const base = (config.public.apiBase as string) || "http://localhost:3001";
+      const res = await fetch(`${base.replace(/\/$/, "")}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      if (!res.ok) {
+        let detail = "Inscription impossible";
+        try {
+          const j = (await res.json()) as { detail?: string };
+          if (j.detail) detail = j.detail;
+        } catch {
+          /* ignore */
         }
-        this.isLoggedIn = true
-        return true
+        throw new Error(detail);
       }
-
-      return false
+      const data = (await res.json()) as { accessToken: string; refreshToken: string };
+      this.setTokens(data.accessToken, data.refreshToken);
+      await this.hydrateFromMe(name);
     },
-    logout() {
-      this.currentUser = null
-      this.isLoggedIn = false
-    },
-    updateProfile(payload: Partial<AppUser>) {
-      if (!this.currentUser) return false
-      
-      if (payload.email && payload.email !== this.currentUser.email) {
-        const emailExists = this.users.find(u => u.email.toLowerCase() === (payload.email as string).toLowerCase())
-        if (emailExists) return false
+    async logout() {
+      if (this.accessToken) {
+        try {
+          const { request } = useApi();
+          await request("/auth/logout", { method: "POST" });
+        } catch {
+          /* ignore */
+        }
       }
-      
-      const oldEmail = this.currentUser.email
-      this.currentUser = { ...this.currentUser, ...payload }
-      
-      const userIndex = this.users.findIndex(u => u.email.toLowerCase() === oldEmail.toLowerCase())
-      if (userIndex !== -1) {
-        this.users[userIndex] = { ...this.currentUser }
-      }
-      
-      return true
+      this.clearSession();
     },
+    async updateProfileApi(payload: { email?: string; password?: string }) {
+      const { request } = useApi();
+      const body: Record<string, string> = {};
+      if (payload.email) body.email = payload.email;
+      if (payload.password) body.password = payload.password;
+      if (Object.keys(body).length === 0) return;
+      await request("/users/me", { method: "PATCH", body: JSON.stringify(body) });
+      await this.hydrateFromMe(this.currentUser?.name);
+      if (this.currentUser && payload.email) {
+        this.currentUser.email = payload.email;
+      }
+    },
+    /** Nom d’affichage local (l’API ne expose pas de champ « nom » pour les clients). */
+    setDisplayName(name: string) {
+      if (!this.currentUser) return;
+      const n = name.trim();
+      if (n) this.currentUser.name = n;
+    }
   },
-  persist: true,
-})
+  persist: true
+});

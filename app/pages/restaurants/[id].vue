@@ -4,10 +4,11 @@
       <BackButton fallbackHref="/restaurants" />
       <div class="bg-white rounded-2xl shadow-xl p-8 sm:p-12 text-center mt-6">
         <p class="text-red-600 text-xl font-bold mb-2">Erreur de chargement</p>
-        <p class="text-gray-600 mb-6">Impossible de charger les données. Vérifiez votre connexion.</p>
-        <button 
-          @click="() => window.location.reload()" 
+        <p class="text-gray-600 mb-6">Impossible de charger les données. Vérifiez votre connexion et {{ runtimeConfig.public.apiBase }}.</p>
+        <button
+          type="button"
           class="rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 font-bold hover:from-red-700 hover:to-red-800 transition-all hover:scale-105 shadow-lg"
+          @click="reloadPage"
         >
           Réessayer
         </button>
@@ -32,7 +33,7 @@
 
     <div v-else class="max-w-7xl mx-auto space-y-8">
       <BackButton fallbackHref="/restaurants" />
-      
+
       <header class="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
         <div class="flex flex-col sm:flex-row items-start gap-6">
           <div v-if="restaurant.imageUrl" class="w-full sm:w-40 h-40 rounded-xl shadow-md flex-shrink-0 overflow-hidden">
@@ -41,10 +42,10 @@
           <div v-else class="w-full sm:w-40 h-40 bg-gradient-to-br from-[#3AF24B] to-emerald-400 rounded-xl shadow-md flex-shrink-0 flex items-center justify-center text-white text-2xl font-bold">
             Restaurant
           </div>
-          
+
           <div class="flex-1">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">{{ restaurant.name }}</h1>
-            
+
             <div class="flex flex-wrap items-center gap-2 mb-4">
               <span class="inline-flex items-center gap-1 bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-4 py-2 rounded-full text-sm font-bold shadow-md">
                 {{ restaurant.cuisine || 'Restaurant' }}
@@ -56,16 +57,16 @@
                 {{ restaurant.priceRange }}
               </span>
             </div>
-            
+
             <p v-if="restaurant.description" class="text-gray-700 mb-3 leading-relaxed">{{ restaurant.description }}</p>
-            
+
             <p class="text-gray-600 text-sm font-medium">
               {{ restaurant.address }}
             </p>
           </div>
         </div>
       </header>
-      
+
       <section>
         <div class="mb-6">
           <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
@@ -73,12 +74,12 @@
           </h2>
           <p class="text-lg text-gray-600">{{ t('restaurants.menuSubtitle') }}</p>
         </div>
-        
+
         <div v-if="foods.length === 0" class="bg-white rounded-2xl shadow-xl p-12 text-center">
           <p class="text-gray-900 text-xl font-bold mb-2">{{ t('restaurants.noFoods') }}</p>
           <p class="text-gray-500">{{ t('restaurants.noFoodsHint') }}</p>
         </div>
-        
+
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <LazyFoodCard v-for="f in foods" :key="f.id" :food="f" />
         </div>
@@ -88,105 +89,143 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import BackButton from '~/components/BackButton.vue'
-import { useRestaurateurStore } from '~/stores/restaurateur'
-import { useFoodStore } from '~/stores/food'
+import { computed } from "vue";
+import BackButton from "~/components/BackButton.vue";
 
-const { t } = useI18n()
-const restaurateurStore = useRestaurateurStore()
-const foodStore = useFoodStore()
-const route = useRoute()
+const { t } = useI18n();
+const route = useRoute();
+const runtimeConfig = useRuntimeConfig();
 
-type RestaurantJSON = {
-  id: number
-  name: string
-  address: string
-  cuisine: string
-  rating: number
-  priceRange: string
-  description: string
-  imageUrl?: string
+type ApiRestaurant = {
+  id: string;
+  name: string;
+  image?: string | null;
+  address?: string | null;
+  postalCode?: string | null;
+  city?: string | null;
+  ownerId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type ApiDish = {
+  id: string;
+  name: string;
+  description?: string | null;
+  price: number;
+  image?: string | null;
+  restaurantId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type Paginated<T> = {
+  data: T[];
+  pagination: { total: number; limit: number; offset: number };
+};
+
+type DetailRestaurant = {
+  id: string;
+  name: string;
+  address: string;
+  cuisine?: string;
+  rating?: number;
+  priceRange?: string;
+  description?: string;
+  imageUrl?: string;
+};
+
+function formatAddress(r: ApiRestaurant): string {
+  const parts = [r.address, r.postalCode, r.city].filter(Boolean);
+  return parts.length ? parts.join(", ") : "Adresse non renseignée";
 }
 
-type Food = {
-  id: number
-  restaurantId: number
-  name: string
-  description: string
-  grosseDescription?: string
-  price: number
-  imageUrl?: string
-}
-
-const restaurantId = computed(() => route.params.id)
-const isNumericId = computed(() => !isNaN(Number(restaurantId.value)))
-
-const { data: jsonRestaurants, error: restaurantError, pending: restaurantPending } = await useAsyncData(
-  'restaurant-detail-restaurants',
-  () => $fetch<RestaurantJSON[]>('/api/restaurants'),
-  { default: () => [] }
-)
-
-const { data: jsonFoods, error: foodsError, pending: foodsPending } = await useAsyncData(
-  'restaurant-detail-foods',
-  () => $fetch<Food[]>('/api/foods'),
-  { default: () => [] }
-)
-
-const restaurant = computed(() => {
-  if (isNumericId.value) {
-    const jsonRestaurant = jsonRestaurants.value?.find(r => r.id === Number(restaurantId.value))
-    return jsonRestaurant
-  } else {
-    const restaurateurData = restaurateurStore.getRestaurateurById(restaurantId.value as string)
-    if (restaurateurData) {
-      return {
-        name: restaurateurData.nom,
-        address: `${restaurateurData.adresse}, ${restaurateurData.codePostal} ${restaurateurData.ville}`,
-        cuisine: undefined,
-        rating: undefined,
-        priceRange: undefined,
-        description: undefined,
-        imageUrl: undefined,
-      }
-    }
-    return null
+function absoluteImageUrl(base: string, image?: string | null): string | undefined {
+  let imageUrl = image ?? undefined;
+  if (imageUrl && !imageUrl.startsWith("http")) {
+    imageUrl = `${base}${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
   }
-})
+  return imageUrl;
+}
+
+const { data: apiRestaurant, error: restaurantError, pending: restaurantPending } = await useAsyncData(
+  () => `restaurant-detail-${route.params.id}`,
+  async () => {
+    const base = (runtimeConfig.public.apiBase as string).replace(/\/$/, "");
+    const id = String(route.params.id);
+    try {
+      return await $fetch<ApiRestaurant>(`${base}/restaurants/${id}`);
+    } catch {
+      return null;
+    }
+  }
+);
+
+const { data: apiDishes, error: foodsError, pending: foodsPending } = await useAsyncData(
+  () => `restaurant-dishes-${route.params.id}`,
+  async () => {
+    const base = (runtimeConfig.public.apiBase as string).replace(/\/$/, "");
+    const res = await $fetch<Paginated<ApiDish>>(
+      `${base}/restaurants/${route.params.id}/dishes?limit=100`
+    );
+    return res.data;
+  },
+  { default: () => [] as ApiDish[] }
+);
+
+const restaurant = computed((): DetailRestaurant | null => {
+  const r = apiRestaurant.value;
+  if (!r) return null;
+  const base = (runtimeConfig.public.apiBase as string).replace(/\/$/, "");
+  return {
+    id: r.id,
+    name: r.name,
+    address: formatAddress(r),
+    cuisine: r.city || undefined,
+    imageUrl: absoluteImageUrl(base, r.image)
+  };
+});
 
 const foods = computed(() => {
-  if (isNumericId.value) {
-    return jsonFoods.value?.filter(f => f.restaurantId === Number(restaurantId.value)) || []
-  } else {
-    return foodStore.getFoodsByRestaurant(restaurantId.value as string)
+  const base = (runtimeConfig.public.apiBase as string).replace(/\/$/, "");
+  return (apiDishes.value || []).map((d) => ({
+    id: d.id,
+    restaurantId: d.restaurantId,
+    name: d.name,
+    description: d.description ?? "",
+    price: d.price,
+    imageUrl: absoluteImageUrl(base, d.image)
+  }));
+});
+
+function reloadPage() {
+  if (import.meta.client) {
+    window.location.reload();
   }
-})
+}
 
 useHead(() => ({
-  title: restaurant.value 
-    ? t('seo.restaurant.title', { name: restaurant.value.name })
-    : t('seo.restaurants.title'),
+  title: restaurant.value
+    ? t("seo.restaurant.title", { name: restaurant.value.name })
+    : t("seo.restaurants.title"),
   meta: [
-    { 
-      name: 'description', 
-      content: restaurant.value 
-        ? t('seo.restaurant.description', { 
-            name: restaurant.value.name, 
-            cuisine: restaurant.value.cuisine || 'Restaurant',
-            address: restaurant.value.address 
+    {
+      name: "description",
+      content: restaurant.value
+        ? t("seo.restaurant.description", {
+            name: restaurant.value.name,
+            cuisine: restaurant.value.cuisine || "Restaurant",
+            address: restaurant.value.address
           })
-        : t('seo.restaurants.description')
+        : t("seo.restaurants.description")
     },
-    { 
-      property: 'og:title', 
-      content: restaurant.value 
-        ? t('seo.restaurant.title', { name: restaurant.value.name })
-        : t('seo.restaurants.title')
+    {
+      property: "og:title",
+      content: restaurant.value
+        ? t("seo.restaurant.title", { name: restaurant.value.name })
+        : t("seo.restaurants.title")
     },
-    { property: 'og:type', content: 'restaurant' },
-  ],
-}))
+    { property: "og:type", content: "restaurant" }
+  ]
+}));
 </script>
-
-
