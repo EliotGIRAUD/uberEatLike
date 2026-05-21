@@ -32,6 +32,9 @@
               <div v-if="searchQuery" class="mt-3 text-sm font-semibold text-gray-600 pl-2">
                 {{ t('restaurants.found', { count: filteredRestaurants.length }) }}
               </div>
+              <p v-else-if="totalCount > 0" class="mt-3 text-sm font-semibold text-gray-600 pl-2">
+                {{ t('restaurants.showing', { shown: filteredRestaurants.length, total: totalCount }) }}
+              </p>
             </div>
           </div>
         </div>
@@ -43,7 +46,7 @@
         <button
           type="button"
           class="rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 font-bold hover:from-red-700 hover:to-red-800 transition-all hover:scale-105 shadow-lg"
-          @click="() => refresh()"
+          @click="reloadList"
         >
           Réessayer
         </button>
@@ -72,55 +75,70 @@
         </button>
       </div>
 
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <NuxtLink
-          v-for="r in filteredRestaurants"
-          :key="r.id"
-          :to="`/restaurants/${r.id}`"
-          class="block bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden group"
-        >
-          <div class="aspect-video bg-gradient-to-br from-[#3AF24B] to-emerald-400 relative overflow-hidden">
-            <img
-              v-if="r.imageUrl"
-              :src="r.imageUrl"
-              :alt="r.name"
-              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            />
-            <div v-else class="w-full h-full flex items-center justify-center text-white text-4xl font-bold">
-              Restaurant
+      <template v-else>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <NuxtLink
+            v-for="r in filteredRestaurants"
+            :key="r.id"
+            :to="`/restaurants/${r.id}`"
+            class="block bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden group"
+          >
+            <div class="aspect-video bg-gradient-to-br from-[#3AF24B] to-emerald-400 relative overflow-hidden">
+              <img
+                v-if="r.imageUrl"
+                :src="r.imageUrl"
+                :alt="r.name"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div v-else class="w-full h-full flex items-center justify-center text-white text-4xl font-bold">
+                Restaurant
+              </div>
+              <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold">
+                {{ r.ville || 'Partenaire' }}
+              </div>
             </div>
-            <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold">
-              {{ r.ville || 'Partenaire' }}
-            </div>
-          </div>
 
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#3AF24B] transition-colors">
-              {{ r.name }}
-            </h3>
-            <p class="text-sm text-gray-600 mb-4 line-clamp-1">
-              {{ r.address }}
-            </p>
-            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-              <span v-if="r.cuisine" class="inline-flex items-center gap-1 bg-[#3AF24B]/20 text-[#3AF24B] px-3 py-1 rounded-full text-xs font-bold">
-                {{ r.cuisine }}
-              </span>
-              <span class="text-sm font-bold text-[#3AF24B] group-hover:translate-x-1 transition-transform">
-                {{ t('restaurants.viewMenu') }}
-              </span>
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#3AF24B] transition-colors">
+                {{ r.name }}
+              </h3>
+              <p class="text-sm text-gray-600 mb-4 line-clamp-1">
+                {{ r.address }}
+              </p>
+              <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <span v-if="r.cuisine" class="inline-flex items-center gap-1 bg-[#3AF24B]/20 text-[#3AF24B] px-3 py-1 rounded-full text-xs font-bold">
+                  {{ r.cuisine }}
+                </span>
+                <span class="text-sm font-bold text-[#3AF24B] group-hover:translate-x-1 transition-transform">
+                  {{ t('restaurants.viewMenu') }}
+                </span>
+              </div>
             </div>
-          </div>
-        </NuxtLink>
-      </div>
+          </NuxtLink>
+        </div>
+
+        <div v-if="hasMore" class="mt-10 flex justify-center">
+          <button
+            type="button"
+            class="rounded-xl bg-gradient-to-r from-[#3AF24B] to-emerald-400 text-black px-10 py-4 font-bold hover:from-black hover:to-gray-800 hover:text-white transition-all duration-300 hover:scale-105 shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+            :disabled="loadingMore"
+            @click="loadMore"
+          >
+            {{ loadingMore ? t('restaurants.loadingMore') : t('restaurants.loadMore') }}
+          </button>
+        </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 const { t } = useI18n();
 const runtimeConfig = useRuntimeConfig();
+
+const PAGE_SIZE = 6;
 
 useHead({
   title: t('seo.restaurants.title'),
@@ -160,47 +178,96 @@ type ListRestaurant = {
 };
 
 const searchQuery = ref("");
+const rawList = ref<ApiRestaurant[]>([]);
+const totalCount = ref(0);
+const pending = ref(true);
+const loadingMore = ref(false);
+const fetchError = ref<string | null>(null);
 
-const {
-  data: rawList,
-  error: fetchError,
-  pending,
-  refresh
-} = await useAsyncData(
-  "restaurants-list",
-  async () => {
-    const base = (runtimeConfig.public.apiBase as string).replace(/\/$/, "");
-    const res = await $fetch<Paginated<ApiRestaurant>>(`${base}/restaurants?limit=100`);
-    return res.data;
-  },
-  { default: () => [] as ApiRestaurant[] }
-);
+function apiBase(): string {
+  return (runtimeConfig.public.apiBase as string).replace(/\/$/, "");
+}
 
 function formatAddress(r: ApiRestaurant): string {
   const parts = [r.address, r.postalCode, r.city].filter(Boolean);
   return parts.length ? parts.join(", ") : "Adresse non renseignée";
 }
 
-const allRestaurants = computed((): ListRestaurant[] => {
-  const apiBase = (runtimeConfig.public.apiBase as string).replace(/\/$/, "");
-  return (rawList.value || []).map((r) => {
-    let imageUrl = r.image ?? undefined;
-    if (imageUrl && !imageUrl.startsWith("http")) {
-      imageUrl = `${apiBase}${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
-    }
-    return {
-      id: r.id,
-      name: r.name,
-      address: formatAddress(r),
-      ville: r.city || "",
-      cuisine: r.city || undefined,
-      imageUrl
-    };
+function mapRestaurant(r: ApiRestaurant): ListRestaurant {
+  const base = apiBase();
+  let imageUrl = r.image ?? undefined;
+  if (imageUrl && !imageUrl.startsWith("http")) {
+    imageUrl = `${base}${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
+  }
+  return {
+    id: r.id,
+    name: r.name,
+    address: formatAddress(r),
+    ville: r.city || "",
+    cuisine: r.city || undefined,
+    imageUrl
+  };
+}
+
+async function fetchPage(offset: number): Promise<Paginated<ApiRestaurant>> {
+  const params = new URLSearchParams({
+    limit: String(PAGE_SIZE),
+    offset: String(offset)
   });
-});
+  const q = searchQuery.value.trim();
+  if (q) {
+    params.set("name", q);
+  }
+  return await $fetch<Paginated<ApiRestaurant>>(`${apiBase()}/restaurants?${params}`);
+}
+
+async function loadRestaurants(append: boolean) {
+  if (!append) {
+    pending.value = true;
+    fetchError.value = null;
+  } else {
+    loadingMore.value = true;
+  }
+
+  try {
+    const offset = append ? rawList.value.length : 0;
+    const res = await fetchPage(offset);
+    if (append) {
+      rawList.value = [...rawList.value, ...res.data];
+    } else {
+      rawList.value = res.data;
+    }
+    totalCount.value = res.pagination.total;
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Erreur réseau";
+    fetchError.value = message;
+    if (!append) {
+      rawList.value = [];
+      totalCount.value = 0;
+    }
+  } finally {
+    pending.value = false;
+    loadingMore.value = false;
+  }
+}
+
+function reloadList() {
+  void loadRestaurants(false);
+}
+
+function loadMore() {
+  if (!hasMore.value || loadingMore.value) {
+    return;
+  }
+  void loadRestaurants(true);
+}
+
+const allRestaurants = computed((): ListRestaurant[] =>
+  rawList.value.map(mapRestaurant)
+);
 
 const filteredRestaurants = computed(() => {
-  if (!searchQuery.value) {
+  if (!searchQuery.value.trim()) {
     return allRestaurants.value;
   }
   const query = searchQuery.value.toLowerCase().trim();
@@ -212,4 +279,19 @@ const filteredRestaurants = computed(() => {
     return false;
   });
 });
+
+const hasMore = computed(() => rawList.value.length < totalCount.value);
+
+let searchDebounce: ReturnType<typeof setTimeout> | undefined;
+
+watch(searchQuery, () => {
+  if (searchDebounce) {
+    clearTimeout(searchDebounce);
+  }
+  searchDebounce = setTimeout(() => {
+    void loadRestaurants(false);
+  }, 350);
+});
+
+await loadRestaurants(false);
 </script>

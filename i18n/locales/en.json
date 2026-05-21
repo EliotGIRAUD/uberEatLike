@@ -51,7 +51,10 @@
     "menuHighlight": "Menu",
     "menuSubtitle": "Browse our delicious dishes and add your favorites to cart",
     "noFoods": "No dishes available at the moment",
-    "noFoodsHint": "The restaurant hasn't added any dishes to its menu yet"
+    "noFoodsHint": "The restaurant hasn't added any dishes to its menu yet",
+    "loadMore": "Load more",
+    "loadingMore": "Loading…",
+    "showing": "{shown} of {total} restaurants"
   },
   "foods": {
     "notFound": "Dish not found.",

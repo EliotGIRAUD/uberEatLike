@@ -51,7 +51,10 @@
     "menuHighlight": "Menu",
     "menuSubtitle": "Parcourez nos délicieux plats et ajoutez vos favoris au panier",
     "noFoods": "Aucun plat disponible pour le moment",
-    "noFoodsHint": "Le restaurant n'a pas encore ajouté de plats à sa carte"
+    "noFoodsHint": "Le restaurant n'a pas encore ajouté de plats à sa carte",
+    "loadMore": "Charger plus",
+    "loadingMore": "Chargement…",
+    "showing": "{shown} sur {total} restaurants"
   },
   "foods": {
     "notFound": "Plat introuvable.",
